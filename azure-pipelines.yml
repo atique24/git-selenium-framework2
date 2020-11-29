@@ -27,5 +27,5 @@ steps:
 - script: |
     pip install pytest pytest-azurepipelines
     echo %CD%
-    py.test tests\test_suite.py --browser Chrome
+    py.test tests\test_smoke\ -s -v --browser Chrome
   displayName: 'pytest'
