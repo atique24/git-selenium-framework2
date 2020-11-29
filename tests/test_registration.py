@@ -17,7 +17,7 @@ class TestRegistration(unittest.TestCase):
         self.ts = MarkTestStatus(self.driver)
 
 
-    @data(*getCsvData(fileName="C://Users//A610037//PycharmProjects//git-selenium-framework2//datafiles//registration.csv"))
+    @data(*getCsvData(fileName="datafiles//registration.csv"))
     @unpack
     @pytest.mark.run(order=6)
     def test_registration(self,firstName,lastName,emailAddress,password,confirmPassword):
