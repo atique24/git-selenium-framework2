@@ -7,11 +7,12 @@ trigger:
 - main
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'windows-latest'
 strategy:
   matrix:
     Python38:
-      python.version: '38'
+      python.version: '3.8'
+      addToPath: true
 
 steps:
 - task: UsePythonVersion@0
@@ -26,5 +27,6 @@ steps:
 
 - script: |
     pip install pytest pytest-azurepipelines
-    pytest
+    echo %CD%
+    pytest tests\test_smoke\test_suite.py -s -v --browser Chrome
   displayName: 'pytest'
