@@ -6,16 +6,16 @@ class WebDriverFactory():
 
     def get_browser_instance(self):
         if self.browser == "FF":
-            driver = webdriver.Firefox()
+            driver = webdriver.Firefox(executable_path="C://Users//A610037//PycharmProjects//drivers//geckodriver.exe")
 
         elif self.browser == "Chrome":
-            driver = webdriver.Chrome()
+            driver = webdriver.Chrome(executable_path='C://Users//A610037//PycharmProjects//drivers//chromedriver.exe')
 
         elif self.browser == "IE":
-            driver = webdriver.Ie()
+            driver = webdriver.Ie(executable_path='C://Users//A610037//PycharmProjects//drivers//IEDriverServer.exe')
 
         else:
-            driver = webdriver.Chrome()
+            driver = webdriver.Chrome(executable_path='C://Users//A610037//PycharmProjects//drivers//chromedriver.exe')
 
 
         baseUrl = "http://live.demoguru99.com/index.php/"
