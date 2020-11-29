@@ -10,8 +10,9 @@ pool:
   vmImage: 'windows-latest'
 strategy:
   matrix:
-    Python37:
-      python.version: '3.7'
+    Python38:
+      python.version: '3.8'
+      addToPath: true
 
 steps:
 - task: UsePythonVersion@0
@@ -27,6 +28,5 @@ steps:
 - script: |
     pip install pytest pytest-azurepipelines
     echo %CD%
-    cd tests\test_smoke
-    py.test -s -v --browser Chrome
+    pytest tests\test_smoke\test_suite.py -s -v --browser Chrome
   displayName: 'pytest'

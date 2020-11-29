@@ -16,7 +16,7 @@ class TestRegistration(unittest.TestCase):
         self.account = Account(self.driver)
         self.ts = MarkTestStatus(self.driver)
 
-
+    @pytest.mark.skip
     @data(*getCsvData(fileName="datafiles//registration.csv"))
     @unpack
     @pytest.mark.run(order=6)
