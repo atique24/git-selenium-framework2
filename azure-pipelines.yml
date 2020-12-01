@@ -28,4 +28,5 @@ steps:
 - script: |
     pip install pytest-azurepipelines
     pytest tests\test_smoke\test_suite_SmokeTest.py -s -v --browser Chrome --html=report.html --reruns 2
+    pytest tests\test_smoke\test_suite_SmokeTest.py -s -v --browser FF --html=report.html --reruns 2
   displayName: 'pytest'
