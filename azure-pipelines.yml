@@ -8,7 +8,12 @@ trigger:
 - main
 
 pool:
-  Default
+  vmImage: 'windows-latest'
+strategy:
+  matrix:
+    Python38:
+      python.version: '3.8'
+      addToPath: true
 
 steps:
 - task: UsePythonVersion@0
