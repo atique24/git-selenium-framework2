@@ -7,7 +7,7 @@
 trigger:
 - main
 
-pool:Default.
+pool:'Default'
 strategy:
   matrix:
     Python38:
