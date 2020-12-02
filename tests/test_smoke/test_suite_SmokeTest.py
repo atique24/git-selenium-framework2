@@ -13,5 +13,5 @@ tc4 = unittest.TestLoader().loadTestsFromModule(TestVerifyPriceDifferentView)
 tc5 = unittest.TestLoader().loadTestsFromModule(TestRegistration)
 
 
-test_suite = unittest.TestSuite([tc1,tc2,tc3,tc4,tc5])
-unittest.TextTestRunner(verbosity=2).run(test_suite)
+smoke_test = unittest.TestSuite([tc1,tc2,tc3,tc4,tc5])
+unittest.TextTestRunner(verbosity=2).run(smoke_test)
