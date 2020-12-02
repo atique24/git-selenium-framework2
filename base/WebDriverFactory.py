@@ -1,6 +1,10 @@
 from selenium import webdriver
+from utilities.customlogger import custom_logger
+import logging
 
 class WebDriverFactory():
+    cl = custom_logger(logging.INFO)
+
     def __init__(self,browser):
         self.browser = browser
 
@@ -23,6 +27,7 @@ class WebDriverFactory():
         driver.maximize_window()
         driver.implicitly_wait(15)
         driver.get(baseUrl)
+        self.cl.info('Launching the URL :: ' + str(baseUrl) + ' on browser :: ' + str(self.browser))
 
         return driver
 

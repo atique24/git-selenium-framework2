@@ -1,6 +1,9 @@
 import pytest
 from base.WebDriverFactory import WebDriverFactory
+from utilities.customlogger import custom_logger
+import logging
 
+cl = custom_logger(logging.INFO)
 def pytest_addoption(parser):
     parser.addoption("--browser")
 
@@ -8,10 +11,10 @@ def pytest_addoption(parser):
 def browser(request):
     return request.config.getoption("--browser")
 
-#for new session for each Test class
+#---------------------for new session for each Test class
 @pytest.fixture(scope="class")
 def oneTimeSetup(request,browser):
-    print("This is one time setup")
+    cl.info("Launching browser :: " + str(browser))
     wdf = WebDriverFactory(browser)
     driver = wdf.get_browser_instance()
 
