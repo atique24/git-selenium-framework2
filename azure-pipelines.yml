@@ -1,11 +1,5 @@
 # Python package
-- task: DownloadPipelineArtifact@2
-  inputs:
-    buildType: 'specific'
-    project: '8801f21d-f4e9-4b65-b01e-68baf825747c'
-    definition: '5'
-    buildVersionToDownload: 'latest'
-    targetPath: '$(Pipeline.Workspace)'
+
 # Create and test a Python package on multiple Python versions.
 # Add steps that analyze code, save the dist with the build record, publish to a PyPI-compatible index, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/python
@@ -36,3 +30,11 @@ steps:
     pip install pytest-azurepipelines
     pytest tests\test_smoke\test_suite_SmokeTest.py -s -v --browser Chrome --html=report.html --reruns 2
   displayName: 'pytest'
+
+- task: DownloadPipelineArtifact@2
+  inputs:
+    buildType: 'specific'
+    project: '8801f21d-f4e9-4b65-b01e-68baf825747c'
+    definition: '5'
+    buildVersionToDownload: 'latest'
+    targetPath: '$(Pipeline.Workspace)'
