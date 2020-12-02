@@ -9,11 +9,6 @@ trigger:
 
 pool:
   Default
-strategy:
-  matrix:
-    Python38:
-      python.version: '3.x'
-      addToPath: true
 
 steps:
 - task: UsePythonVersion@0
