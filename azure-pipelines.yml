@@ -7,8 +7,7 @@
 trigger:
 - main
 
-pool:
-  agents: 'default'
+pool: default
 strategy:
   matrix:
     Python38:
