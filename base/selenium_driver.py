@@ -22,6 +22,10 @@ class SeleniumDriver():
 
         self.actions = ActionChains(self.driver)
 
+
+
+
+
     def ByType(self, locatorType):
         locatorType = locatorType.lower()
 
