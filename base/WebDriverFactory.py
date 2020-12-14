@@ -1,6 +1,7 @@
 from selenium import webdriver
 from utilities.customlogger import custom_logger
 import logging
+from selenium.webdriver.chrome.options import Options
 
 class WebDriverFactory():
     cl = custom_logger(logging.INFO)
@@ -13,7 +14,13 @@ class WebDriverFactory():
             driver = webdriver.Firefox(executable_path="drivers//geckodriver.exe")
 
         elif self.browser == "Chrome":
-            driver = webdriver.Chrome(executable_path='drivers//chromedriver.exe')
+            chrome_options = Options()
+            chrome_options.add_experimental_option('prefs', {'geolocation': True})
+            chrome_options.add_experimental_option('useAutomationExtension', False)
+            chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+
+            driver = webdriver.Chrome(options=chrome_options,executable_path='drivers//chromedriver.exe')
+            #driver = webdriver.Chrome(executable_path='drivers//chromedriver.exe')
 
         elif self.browser == "IE":
             driver = webdriver.Ie(executable_path='drivers//IEDriverServer.exe')
