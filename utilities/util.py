@@ -90,16 +90,15 @@ class Utilities():
             return False
 
 
-    def verify_values(self,expectedValue,ActualValue):
-        try:
-            if expectedValue == ActualValue:
-                self.cl.info("Matched")
-                return True
-            else:
-                self.cl.info("Values dont match")
-                return False
-        except:
-            self.cl.info("Exception occured.. Values dont match")
+    def verify_value(self, actualValue, expectedValue):
+        self.cl.info("Actual value from application  is :: " + str(actualValue))
+        self.cl.info("Expected value from application  is :: " + str(expectedValue))
+
+        if str(actualValue) == str(expectedValue):
+            self.cl.info("### Verfication Passed")
+            return True
+        else:
+            self.cl.info("### Verfication Failed")
             return False
 
 
