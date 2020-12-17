@@ -19,7 +19,7 @@ class TestRegistration(unittest.TestCase):
 
     @data(*getCsvData(fileName="datafiles//registration.csv"))
     @unpack
-    @pytest.mark.run(order=6)
+    @pytest.mark.skip
     def test_registration(self,firstName,lastName,emailAddress,password,confirmPassword):
         result = self.account.register(firstName,lastName,emailAddress,password,confirmPassword)
         self.ts.mark(result=result,resultMessage='Registration Successfull')

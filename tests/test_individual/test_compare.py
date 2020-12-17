@@ -11,7 +11,8 @@ class TestCompare(unittest.TestCase):
         self.mb = MobilePage(self.driver)
         self.ts = MarkTestStatus(self.driver)
 
-    @pytest.mark.run(order=5)
+
+    @pytest.mark.xfail(order=5)
     def test_compare_mobile(self):
         self.mb.mobile_tab()
         self.mb.click_list_view()

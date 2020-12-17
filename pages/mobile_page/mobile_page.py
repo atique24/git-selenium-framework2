@@ -103,7 +103,9 @@ class MobilePage(BasePage):
 
     def verify_price_different_view(self):
         self.click_list_view()
-        return self.utill.verify_values(self.sony_price_list_view(),self.sony_price_grid_view())
+        value1 = self.sony_price_list_view()
+        value2 = self.sony_price_grid_view()
+        return self.utill.verify_value(value1,value2)
 
     def verify_max_cart_error(self):
         self.add_to_cart()

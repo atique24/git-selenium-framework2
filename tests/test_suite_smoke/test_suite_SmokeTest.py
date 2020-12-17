@@ -1,10 +1,10 @@
 
 import unittest
-from tests.test_cart import TestCart
-from tests.test_compare import TestCompare
-from tests.test_sort_by import TestSortBy
-from tests.test_verify_price_different_view import TestVerifyPriceDifferentView
-from tests.test_registration import TestRegistration
+from tests.test_individual.test_cart import TestCart
+from tests.test_individual.test_compare import TestCompare
+from tests.test_individual.test_sort_by import TestSortBy
+from tests.test_individual.test_verify_price_different_view import TestVerifyPriceDifferentView
+from tests.test_individual.test_registration import TestRegistration
 
 tc1 = unittest.TestLoader().loadTestsFromModule(TestCart)
 tc2 = unittest.TestLoader().loadTestsFromModule(TestCompare)
