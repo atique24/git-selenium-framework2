@@ -2,6 +2,7 @@ from base.selenium_driver import SeleniumDriver
 from utilities.customlogger import custom_logger
 import logging
 from pages.mobile_page.mobile_page import MobilePage
+import time
 
 
 class Account(SeleniumDriver):
@@ -40,7 +41,9 @@ class Account(SeleniumDriver):
         self.elementClick(self._add_to_wishlist,'xpath')
         self.elementClick(self._share_wishlist,'xpath')
         self.elementSend(self._emailaddress_wishlist,'id','test@two.com')
+        time.sleep(5)
         self.elementSend(self._message_wishlist, 'id', 'Hello Could you please buy for me')
+        time.sleep(5)
         self.elementClick(self._share_wishlist,'xpath')
         return self.isElementDisplayed(self._message_success_sharelist,'xpath')
 
@@ -57,6 +60,8 @@ class Account(SeleniumDriver):
         self.elementClick(self._checkbox, 'id')
         self.elementClick(self._register2,'xpath')
         return self.isElementDisplayed(self._success_message,'xpath')
+
+
 
 
 

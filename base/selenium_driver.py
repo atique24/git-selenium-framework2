@@ -1,4 +1,3 @@
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import *
@@ -21,10 +20,6 @@ class SeleniumDriver():
         self.driver = driver
 
         self.actions = ActionChains(self.driver)
-
-
-
-
 
     def ByType(self, locatorType):
         locatorType = locatorType.lower()
@@ -58,12 +53,14 @@ class SeleniumDriver():
             self.driver.execute_script("arguments[0].style.border='3px solid red'", element);
             self.cl.info(
                 "Element found with locatorType : " + str(locatorType) + " & locator : " + str(locator) + str(element))
-            return element
-        except:
+
+        except Exception as e:
             self.cl.info(
-                "Element could not be found with type : " + str(locatorType) + " and locator : " + str(locator))
-            raise Exception
+                "Element could not be found with type : " + str(locatorType) + " and locator : " + str(locator) + str(
+                    e))
             print_stack()
+
+        return element
 
     def findElements(self, locator, locatorType):
         element = []
@@ -71,15 +68,14 @@ class SeleniumDriver():
             bytype = self.ByType(locatorType)
             element = self.driver.find_elements(bytype, locator)
             self.cl.info("Element found with locatorType : " + str(locatorType) + "& locator : " + str(locator))
-            return element
-        except:
+
+        except Exception as e:
             self.cl.info(
-                "Element could not be found with locatortype : " + str(locatorType) + " and locator : " + str(locator))
-            raise Exception
+                "Element could not be found with locatortype : " + str(locatorType) + " and locator : " + str(locator) + "exception:: " + str(e))
             print_stack()
+        return element
 
     def get_element_dropdown_value(self, locator, locatorType, selectType, value):
-        element = None
         try:
             element = self.findElement(locator, locatorType)
 
@@ -102,7 +98,6 @@ class SeleniumDriver():
             print_stack()
 
     def elementClick(self, locator, locatorType):
-        element = None
         try:
             element = self.findElement(locator, locatorType)
             element.click()
@@ -114,15 +109,13 @@ class SeleniumDriver():
             print_stack()
 
     def elementSend(self, locator, locatorType, message):
-        element = None
         try:
             element = self.findElement(locator, locatorType)
             element.clear()
             element.send_keys(message)
             self.cl.info("Text : " + str(message) + " entered on locator: " + locator)
-        except:
-            raise Exception
-            self.cl.info("Unable to send the message on locator: " + locator)
+        except Exception as e:
+            self.cl.info("Unable to send the message on locator: " + locator + "Exception :: " + str(e))
             print_stack()
 
     def getTitle(self):
@@ -171,6 +164,7 @@ class SeleniumDriver():
 
     def getAttributelist(self, locator, locatorType, attributeType):
         element_attribute = []
+
         try:
             element = self.findElements(locator, locatorType)
             for item in element:
@@ -178,10 +172,11 @@ class SeleniumDriver():
                 element_attribute.append(elementAttribute)
                 self.cl.info("Value of Attribute :: " + attributeType + " is " + elementAttribute)
             return element_attribute
-        except:
-            raise Exception
-            self.cl.info("Unable to find the value of attribute for element : " + locator)
+
+        except Exception as e :
+            self.cl.info("Unable to find the value of attribute for element : " + locator + " exception :: " + str(e))
             print_stack()
+        return element_attribute
 
     def get_value_of_css_property(self, locator, locatorType, attributeType):
         try:
@@ -239,9 +234,9 @@ class SeleniumDriver():
                 self.cl.info("Element with locator " + str(locator) + "is not present")
                 return False
 
-        except:
-            raise Exception
-            self.cl.info("Unable to find element")
+        except Exception as e:
+            self.cl.info("exception occured :: " + str(e))
+            return False
             print_stack()
 
     def elementclear(self, locator, locatorType):
@@ -258,7 +253,7 @@ class SeleniumDriver():
 
     def savescreenshots(self, resultMessage):
         filename = resultMessage + str(round(time.time() * 10000)) + ".png"
-        screenshotDirectory = "../screenshots/"
+        screenshotDirectory = "..//screenshots//"
         relativeFilename = screenshotDirectory + filename
 
         currentDirectory = os.path.dirname(__file__)
@@ -280,16 +275,18 @@ class SeleniumDriver():
             element = self.findElement(locator, locatorType)
             isDisplayed = element.is_displayed()
 
-            if isDisplayed:
+            if isDisplayed is True:
                 self.cl.info("Element is displayed with locator :: " + str(locator))
-                return isDisplayed
+                return True
             else:
                 self.cl.info("Element is not displayed with locator :: " + str(locator))
-                return isDisplayed
-        except:
-            raise Exception
-            self.cl.warning("Exception occured while executing isElementDisplayed")
+                return False
+
+        except Exception as e:
+            self.cl.warning("Exception occured while executing isElementDisplayed :: exception occured :: " + str(e))
+            return False
             print_stack()
+
 
     def scrollingVertical(self, direction):
         direction = direction.lower()
@@ -349,7 +346,6 @@ class SeleniumDriver():
             print_stack()
 
     def elementSendSpecial(self, locator, locatorType, message):
-        element = None
         try:
             element = self.findElement(locator, locatorType)
             for items in message:
@@ -361,7 +357,6 @@ class SeleniumDriver():
             print_stack()
 
     def slider(self, locator, locatorType, xcord, ycord):
-        element = None
         try:
             element = self.findElement(locator, locatorType)
             self.actions.drag_and_drop_by_offset(source=element, xoffset=xcord, yoffset=ycord).perform()
@@ -499,41 +494,3 @@ class SeleniumDriver():
         except:
             self.cl.info("Unable to right click on element " + str(element))
             raise Exception
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

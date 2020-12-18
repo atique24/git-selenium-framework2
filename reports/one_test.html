@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Test Report</title>
+    <link href="assets/style.css" rel="stylesheet" type="text/css"/></head>
+  <body onLoad="init()">
+    <script>/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+function toArray(iter) {
+    if (iter === null) {
+        return null;
+    }
+    return Array.prototype.slice.call(iter);
+}
+
+function find(selector, elem) { // eslint-disable-line no-redeclare
+    if (!elem) {
+        elem = document;
+    }
+    return elem.querySelector(selector);
+}
+
+function findAll(selector, elem) {
+    if (!elem) {
+        elem = document;
+    }
+    return toArray(elem.querySelectorAll(selector));
+}
+
+function sortColumn(elem) {
+    toggleSortStates(elem);
+    const colIndex = toArray(elem.parentNode.childNodes).indexOf(elem);
+    let key;
+    if (elem.classList.contains('result')) {
+        key = keyResult;
+    } else if (elem.classList.contains('links')) {
+        key = keyLink;
+    } else {
+        key = keyAlpha;
+    }
+    sortTable(elem, key(colIndex));
+}
+
+function showAllExtras() { // eslint-disable-line no-unused-vars
+    findAll('.col-result').forEach(showExtras);
+}
+
+function hideAllExtras() { // eslint-disable-line no-unused-vars
+    findAll('.col-result').forEach(hideExtras);
+}
+
+function showExtras(colresultElem) {
+    const extras = colresultElem.parentNode.nextElementSibling;
+    const expandcollapse = colresultElem.firstElementChild;
+    extras.classList.remove('collapsed');
+    expandcollapse.classList.remove('expander');
+    expandcollapse.classList.add('collapser');
+}
+
+function hideExtras(colresultElem) {
+    const extras = colresultElem.parentNode.nextElementSibling;
+    const expandcollapse = colresultElem.firstElementChild;
+    extras.classList.add('collapsed');
+    expandcollapse.classList.remove('collapser');
+    expandcollapse.classList.add('expander');
+}
+
+function showFilters() {
+    const filterItems = document.getElementsByClassName('filter');
+    for (let i = 0; i < filterItems.length; i++)
+        filterItems[i].hidden = false;
+}
+
+function addCollapse() {
+    // Add links for show/hide all
+    const resulttable = find('table#results-table');
+    const showhideall = document.createElement('p');
+    showhideall.innerHTML = '<a href="javascript:showAllExtras()">Show all details</a> / ' +
+                            '<a href="javascript:hideAllExtras()">Hide all details</a>';
+    resulttable.parentElement.insertBefore(showhideall, resulttable);
+
+    // Add show/hide link to each result
+    findAll('.col-result').forEach(function(elem) {
+        const collapsed = getQueryParameter('collapsed') || 'Passed';
+        const extras = elem.parentNode.nextElementSibling;
+        const expandcollapse = document.createElement('span');
+        if (extras.classList.contains('collapsed')) {
+            expandcollapse.classList.add('expander');
+        } else if (collapsed.includes(elem.innerHTML)) {
+            extras.classList.add('collapsed');
+            expandcollapse.classList.add('expander');
+        } else {
+            expandcollapse.classList.add('collapser');
+        }
+        elem.appendChild(expandcollapse);
+
+        elem.addEventListener('click', function(event) {
+            if (event.currentTarget.parentNode.nextElementSibling.classList.contains('collapsed')) {
+                showExtras(event.currentTarget);
+            } else {
+                hideExtras(event.currentTarget);
+            }
+        });
+    });
+}
+
+function getQueryParameter(name) {
+    const match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+}
+
+function init () { // eslint-disable-line no-unused-vars
+    resetSortHeaders();
+
+    addCollapse();
+
+    showFilters();
+
+    sortColumn(find('.initial-sort'));
+
+    findAll('.sortable').forEach(function(elem) {
+        elem.addEventListener('click',
+            function() {
+                sortColumn(elem);
+            }, false);
+    });
+}
+
+function sortTable(clicked, keyFunc) {
+    const rows = findAll('.results-table-row');
+    const reversed = !clicked.classList.contains('asc');
+    const sortedRows = sort(rows, keyFunc, reversed);
+    /* Whole table is removed here because browsers acts much slower
+     * when appending existing elements.
+     */
+    const thead = document.getElementById('results-table-head');
+    document.getElementById('results-table').remove();
+    const parent = document.createElement('table');
+    parent.id = 'results-table';
+    parent.appendChild(thead);
+    sortedRows.forEach(function(elem) {
+        parent.appendChild(elem);
+    });
+    document.getElementsByTagName('BODY')[0].appendChild(parent);
+}
+
+function sort(items, keyFunc, reversed) {
+    const sortArray = items.map(function(item, i) {
+        return [keyFunc(item), i];
+    });
+
+    sortArray.sort(function(a, b) {
+        const keyA = a[0];
+        const keyB = b[0];
+
+        if (keyA == keyB) return 0;
+
+        if (reversed) {
+            return keyA < keyB ? 1 : -1;
+        } else {
+            return keyA > keyB ? 1 : -1;
+        }
+    });
+
+    return sortArray.map(function(item) {
+        const index = item[1];
+        return items[index];
+    });
+}
+
+function keyAlpha(colIndex) {
+    return function(elem) {
+        return elem.childNodes[1].childNodes[colIndex].firstChild.data.toLowerCase();
+    };
+}
+
+function keyLink(colIndex) {
+    return function(elem) {
+        const dataCell = elem.childNodes[1].childNodes[colIndex].firstChild;
+        return dataCell == null ? '' : dataCell.innerText.toLowerCase();
+    };
+}
+
+function keyResult(colIndex) {
+    return function(elem) {
+        const strings = ['Error', 'Failed', 'Rerun', 'XFailed', 'XPassed',
+            'Skipped', 'Passed'];
+        return strings.indexOf(elem.childNodes[1].childNodes[colIndex].firstChild.data);
+    };
+}
+
+function resetSortHeaders() {
+    findAll('.sort-icon').forEach(function(elem) {
+        elem.parentNode.removeChild(elem);
+    });
+    findAll('.sortable').forEach(function(elem) {
+        const icon = document.createElement('div');
+        icon.className = 'sort-icon';
+        icon.textContent = 'vvv';
+        elem.insertBefore(icon, elem.firstChild);
+        elem.classList.remove('desc', 'active');
+        elem.classList.add('asc', 'inactive');
+    });
+}
+
+function toggleSortStates(elem) {
+    //if active, toggle between asc and desc
+    if (elem.classList.contains('active')) {
+        elem.classList.toggle('asc');
+        elem.classList.toggle('desc');
+    }
+
+    //if inactive, reset all other functions and add ascending active
+    if (elem.classList.contains('inactive')) {
+        resetSortHeaders();
+        elem.classList.remove('inactive');
+        elem.classList.add('active');
+    }
+}
+
+function isAllRowsHidden(value) {
+    return value.hidden == false;
+}
+
+function filterTable(elem) { // eslint-disable-line no-unused-vars
+    const outcomeAtt = 'data-test-result';
+    const outcome = elem.getAttribute(outcomeAtt);
+    const classOutcome = outcome + ' results-table-row';
+    const outcomeRows = document.getElementsByClassName(classOutcome);
+
+    for(let i = 0; i < outcomeRows.length; i++){
+        outcomeRows[i].hidden = !elem.checked;
+    }
+
+    const rows = findAll('.results-table-row').filter(isAllRowsHidden);
+    const allRowsHidden = rows.length == 0 ? true : false;
+    const notFoundMessage = document.getElementById('not-found-message');
+    notFoundMessage.hidden = !allRowsHidden;
+}
+</script>
+    <h1>one_test.html</h1>
+    <p>Report generated on 17-Dec-2020 at 23:33:39 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a> v3.1.1</p>
+    <h2>Environment</h2>
+    <table id="environment">
+      <tr>
+        <td>JAVA_HOME</td>
+        <td>C:\Program Files\Java\jdk-14.0.2</td></tr>
+      <tr>
+        <td>Packages</td>
+        <td>{"pluggy": "0.13.1", "py": "1.9.0", "pytest": "6.2.1"}</td></tr>
+      <tr>
+        <td>Platform</td>
+        <td>Windows-10-10.0.18362-SP0</td></tr>
+      <tr>
+        <td>Plugins</td>
+        <td>{"allure-pytest": "2.8.22", "bdd": "4.0.2", "fixtures": "0.1.0", "forked": "1.3.0", "html": "3.1.1", "metadata": "1.10.0", "ordering": "0.6", "rerunfailures": "9.1.1", "xdist": "2.1.0"}</td></tr>
+      <tr>
+        <td>Python</td>
+        <td>3.8.2</td></tr></table>
+    <h2>Summary</h2>
+    <p>1 tests ran in 42.04 seconds. </p>
+    <p class="filter" hidden="true">(Un)check the boxes to filter the results.</p><input checked="true" class="filter" data-test-result="passed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="passed">0 passed</span>, <input checked="true" class="filter" data-test-result="skipped" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="skipped">0 skipped</span>, <input checked="true" class="filter" data-test-result="failed" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="failed">1 failed</span>, <input checked="true" class="filter" data-test-result="error" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="error">0 errors</span>, <input checked="true" class="filter" data-test-result="xfailed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xfailed">0 expected failures</span>, <input checked="true" class="filter" data-test-result="xpassed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xpassed">0 unexpected passes</span>, <input checked="true" class="filter" data-test-result="rerun" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="rerun">0 rerun</span>
+    <h2>Results</h2>
+    <table id="results-table">
+      <thead id="results-table-head">
+        <tr>
+          <th class="sortable result initial-sort" col="result">Result</th>
+          <th class="sortable" col="name">Test</th>
+          <th class="sortable" col="duration">Duration</th>
+          <th class="sortable links" col="links">Links</th></tr>
+        <tr hidden="true" id="not-found-message">
+          <th colspan="4">No results found. Try to check the filters</th></tr></thead>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">test_individual/test_registration.py::TestRegistration::test_registration_1___test____thirtyseven____test_thirtyseven_com____test12345____test12345__</td>
+          <td class="col-duration">41.65</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">self = &lt;test_registration.TestRegistration testMethod=test_registration_1___test____thirtyseven____test_thirtyseven_com____test12345____test12345__&gt;, firstName = &#x27;test&#x27;<br/>lastName = &#x27;thirtyseven&#x27;, emailAddress = &#x27;test@thirtyseven.com&#x27;, password = &#x27;test12345&#x27;, confirmPassword = &#x27;test12345&#x27;<br/><br/>    @data(*getCsvData(fileName=&quot;..//datafiles//registration.csv&quot;))<br/>    @unpack<br/>    @pytest.mark.run(order=4)<br/>    def test_registration(self,firstName,lastName,emailAddress,password,confirmPassword):<br/>        result1 = self.account.register(firstName,lastName,emailAddress,password,confirmPassword)<br/>        self.ts.mark(result=result1,resultMessage=&#x27;Registration Successfull&#x27;)<br/>&gt;       result2 = self.account.add_to_wishlist()<br/><br/>test_individual\test_registration.py:26: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/>..\pages\account_creation\account_creation.py:41: in add_to_wishlist<br/>    self.elementClick(self._share_wishlist,&#x27;xpath&#x27;)<br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>self = &lt;pages.account_creation.account_creation.Account object at 0x044A4B98&gt;, locator = &quot;//span[text()=&#x27;Share Wishlist&#x27;]&quot;, locatorType = &#x27;xpath&#x27;<br/><br/>    def elementClick(self, locator, locatorType):<br/>        try:<br/>            element = self.findElement(locator, locatorType)<br/>&gt;           element.click()<br/><span class="error">E           AttributeError: &#x27;NoneType&#x27; object has no attribute &#x27;click&#x27;</span><br/><br/>..\base\selenium_driver.py:100: AttributeError<br/> -------------------------------Captured log setup------------------------------- <br/>INFO     &lt;module&gt;:conftest.py:17 Launching browser :: Chrome
+INFO     WebDriverFactory:WebDriverFactory.py:38 Launching the URL :: http://live.demoguru99.com/index.php/ on browser :: Chrome<br/> ------------------------------Captured stdout call------------------------------ <br/>result is :: None
+<br/> ------------------------------Captured stderr call------------------------------ <br/>  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\runpy.py&quot;, line 193, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\runpy.py&quot;, line 86, in _run_code
+    exec(code, run_globals)
+  File &quot;C:\Users\A610037\AppData\Local\Programs\Python\Python38-32\Scripts\pytest.exe\__main__.py&quot;, line 7, in &lt;module&gt;
+    sys.exit(console_main())
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\config\__init__.py&quot;, line 185, in console_main
+    code = main()
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\config\__init__.py&quot;, line 162, in main
+    ret: Union[ExitCode, int] = config.hook.pytest_cmdline_main(
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\hooks.py&quot;, line 286, in __call__
+    return self._hookexec(self, self.get_hookimpls(), kwargs)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\manager.py&quot;, line 93, in _hookexec
+    return self._inner_hookexec(hook, methods, kwargs)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\manager.py&quot;, line 84, in &lt;lambda&gt;
+    self._inner_hookexec = lambda hook, methods, kwargs: hook.multicall(
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\callers.py&quot;, line 187, in _multicall
+    res = hook_impl.function(*args)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\main.py&quot;, line 316, in pytest_cmdline_main
+    return wrap_session(config, _main)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\main.py&quot;, line 269, in wrap_session
+    session.exitstatus = doit(config, session) or 0
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\main.py&quot;, line 323, in _main
+    config.hook.pytest_runtestloop(session=session)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\hooks.py&quot;, line 286, in __call__
+    return self._hookexec(self, self.get_hookimpls(), kwargs)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\manager.py&quot;, line 93, in _hookexec
+    return self._inner_hookexec(hook, methods, kwargs)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\manager.py&quot;, line 84, in &lt;lambda&gt;
+    self._inner_hookexec = lambda hook, methods, kwargs: hook.multicall(
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\callers.py&quot;, line 187, in _multicall
+    res = hook_impl.function(*args)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\main.py&quot;, line 348, in pytest_runtestloop
+    item.config.hook.pytest_runtest_protocol(item=item, nextitem=nextitem)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\hooks.py&quot;, line 286, in __call__
+    return self._hookexec(self, self.get_hookimpls(), kwargs)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\manager.py&quot;, line 93, in _hookexec
+    return self._inner_hookexec(hook, methods, kwargs)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\manager.py&quot;, line 84, in &lt;lambda&gt;
+    self._inner_hookexec = lambda hook, methods, kwargs: hook.multicall(
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\callers.py&quot;, line 187, in _multicall
+    res = hook_impl.function(*args)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\runner.py&quot;, line 109, in pytest_runtest_protocol
+    runtestprotocol(item, nextitem=nextitem)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\runner.py&quot;, line 126, in runtestprotocol
+    reports.append(call_and_report(item, &quot;call&quot;, log))
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\runner.py&quot;, line 215, in call_and_report
+    call = call_runtest_hook(item, when, **kwds)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\runner.py&quot;, line 254, in call_runtest_hook
+    return CallInfo.from_call(
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\runner.py&quot;, line 311, in from_call
+    result: Optional[TResult] = func()
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\runner.py&quot;, line 255, in &lt;lambda&gt;
+    lambda: ihook(item=item, **kwds), when=when, reraise=reraise
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\hooks.py&quot;, line 286, in __call__
+    return self._hookexec(self, self.get_hookimpls(), kwargs)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\manager.py&quot;, line 93, in _hookexec
+    return self._inner_hookexec(hook, methods, kwargs)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\manager.py&quot;, line 84, in &lt;lambda&gt;
+    self._inner_hookexec = lambda hook, methods, kwargs: hook.multicall(
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\callers.py&quot;, line 187, in _multicall
+    res = hook_impl.function(*args)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\runner.py&quot;, line 162, in pytest_runtest_call
+    item.runtest()
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\unittest.py&quot;, line 321, in runtest
+    self._testcase(result=self)  # type: ignore[arg-type]
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\unittest\case.py&quot;, line 736, in __call__
+    return self.run(*args, **kwds)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\unittest\case.py&quot;, line 676, in run
+    self._callTestMethod(testMethod)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\unittest\case.py&quot;, line 633, in _callTestMethod
+    method()
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\ddt.py&quot;, line 182, in wrapper
+    return func(self, *args, **kwargs)
+  File &quot;C:\Users\A610037\PycharmProjects\git-selenium-framework2\tests\test_individual\test_registration.py&quot;, line 24, in test_registration
+    result1 = self.account.register(firstName,lastName,emailAddress,password,confirmPassword)
+  File &quot;C:\Users\A610037\PycharmProjects\git-selenium-framework2\pages\account_creation\account_creation.py&quot;, line 59, in register
+    result = self.isElementDisplayed(self._success_message,&#x27;xpath&#x27;)
+  File &quot;C:\Users\A610037\PycharmProjects\git-selenium-framework2\base\selenium_driver.py&quot;, line 271, in isElementDisplayed
+    element = self.findElement(locator, locatorType)
+  File &quot;C:\Users\A610037\PycharmProjects\git-selenium-framework2\base\selenium_driver.py&quot;, line 62, in findElement
+    print_stack()
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\runpy.py&quot;, line 193, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\runpy.py&quot;, line 86, in _run_code
+    exec(code, run_globals)
+  File &quot;C:\Users\A610037\AppData\Local\Programs\Python\Python38-32\Scripts\pytest.exe\__main__.py&quot;, line 7, in &lt;module&gt;
+    sys.exit(console_main())
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\config\__init__.py&quot;, line 185, in console_main
+    code = main()
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\config\__init__.py&quot;, line 162, in main
+    ret: Union[ExitCode, int] = config.hook.pytest_cmdline_main(
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\hooks.py&quot;, line 286, in __call__
+    return self._hookexec(self, self.get_hookimpls(), kwargs)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\manager.py&quot;, line 93, in _hookexec
+    return self._inner_hookexec(hook, methods, kwargs)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\manager.py&quot;, line 84, in &lt;lambda&gt;
+    self._inner_hookexec = lambda hook, methods, kwargs: hook.multicall(
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\callers.py&quot;, line 187, in _multicall
+    res = hook_impl.function(*args)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\main.py&quot;, line 316, in pytest_cmdline_main
+    return wrap_session(config, _main)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\main.py&quot;, line 269, in wrap_session
+    session.exitstatus = doit(config, session) or 0
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\main.py&quot;, line 323, in _main
+    config.hook.pytest_runtestloop(session=session)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\hooks.py&quot;, line 286, in __call__
+    return self._hookexec(self, self.get_hookimpls(), kwargs)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\manager.py&quot;, line 93, in _hookexec
+    return self._inner_hookexec(hook, methods, kwargs)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\manager.py&quot;, line 84, in &lt;lambda&gt;
+    self._inner_hookexec = lambda hook, methods, kwargs: hook.multicall(
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\callers.py&quot;, line 187, in _multicall
+    res = hook_impl.function(*args)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\main.py&quot;, line 348, in pytest_runtestloop
+    item.config.hook.pytest_runtest_protocol(item=item, nextitem=nextitem)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\hooks.py&quot;, line 286, in __call__
+    return self._hookexec(self, self.get_hookimpls(), kwargs)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\manager.py&quot;, line 93, in _hookexec
+    return self._inner_hookexec(hook, methods, kwargs)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\manager.py&quot;, line 84, in &lt;lambda&gt;
+    self._inner_hookexec = lambda hook, methods, kwargs: hook.multicall(
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\callers.py&quot;, line 187, in _multicall
+    res = hook_impl.function(*args)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\runner.py&quot;, line 109, in pytest_runtest_protocol
+    runtestprotocol(item, nextitem=nextitem)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\runner.py&quot;, line 126, in runtestprotocol
+    reports.append(call_and_report(item, &quot;call&quot;, log))
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\runner.py&quot;, line 215, in call_and_report
+    call = call_runtest_hook(item, when, **kwds)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\runner.py&quot;, line 254, in call_runtest_hook
+    return CallInfo.from_call(
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\runner.py&quot;, line 311, in from_call
+    result: Optional[TResult] = func()
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\runner.py&quot;, line 255, in &lt;lambda&gt;
+    lambda: ihook(item=item, **kwds), when=when, reraise=reraise
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\hooks.py&quot;, line 286, in __call__
+    return self._hookexec(self, self.get_hookimpls(), kwargs)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\manager.py&quot;, line 93, in _hookexec
+    return self._inner_hookexec(hook, methods, kwargs)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\manager.py&quot;, line 84, in &lt;lambda&gt;
+    self._inner_hookexec = lambda hook, methods, kwargs: hook.multicall(
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\callers.py&quot;, line 187, in _multicall
+    res = hook_impl.function(*args)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\runner.py&quot;, line 162, in pytest_runtest_call
+    item.runtest()
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\unittest.py&quot;, line 321, in runtest
+    self._testcase(result=self)  # type: ignore[arg-type]
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\unittest\case.py&quot;, line 736, in __call__
+    return self.run(*args, **kwds)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\unittest\case.py&quot;, line 676, in run
+    self._callTestMethod(testMethod)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\unittest\case.py&quot;, line 633, in _callTestMethod
+    method()
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\ddt.py&quot;, line 182, in wrapper
+    return func(self, *args, **kwargs)
+  File &quot;C:\Users\A610037\PycharmProjects\git-selenium-framework2\tests\test_individual\test_registration.py&quot;, line 24, in test_registration
+    result1 = self.account.register(firstName,lastName,emailAddress,password,confirmPassword)
+  File &quot;C:\Users\A610037\PycharmProjects\git-selenium-framework2\pages\account_creation\account_creation.py&quot;, line 59, in register
+    result = self.isElementDisplayed(self._success_message,&#x27;xpath&#x27;)
+  File &quot;C:\Users\A610037\PycharmProjects\git-selenium-framework2\base\selenium_driver.py&quot;, line 282, in isElementDisplayed
+    print_stack()
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\runpy.py&quot;, line 193, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\runpy.py&quot;, line 86, in _run_code
+    exec(code, run_globals)
+  File &quot;C:\Users\A610037\AppData\Local\Programs\Python\Python38-32\Scripts\pytest.exe\__main__.py&quot;, line 7, in &lt;module&gt;
+    sys.exit(console_main())
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\config\__init__.py&quot;, line 185, in console_main
+    code = main()
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\config\__init__.py&quot;, line 162, in main
+    ret: Union[ExitCode, int] = config.hook.pytest_cmdline_main(
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\hooks.py&quot;, line 286, in __call__
+    return self._hookexec(self, self.get_hookimpls(), kwargs)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\manager.py&quot;, line 93, in _hookexec
+    return self._inner_hookexec(hook, methods, kwargs)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\manager.py&quot;, line 84, in &lt;lambda&gt;
+    self._inner_hookexec = lambda hook, methods, kwargs: hook.multicall(
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\callers.py&quot;, line 187, in _multicall
+    res = hook_impl.function(*args)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\main.py&quot;, line 316, in pytest_cmdline_main
+    return wrap_session(config, _main)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\main.py&quot;, line 269, in wrap_session
+    session.exitstatus = doit(config, session) or 0
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\main.py&quot;, line 323, in _main
+    config.hook.pytest_runtestloop(session=session)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\hooks.py&quot;, line 286, in __call__
+    return self._hookexec(self, self.get_hookimpls(), kwargs)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\manager.py&quot;, line 93, in _hookexec
+    return self._inner_hookexec(hook, methods, kwargs)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\manager.py&quot;, line 84, in &lt;lambda&gt;
+    self._inner_hookexec = lambda hook, methods, kwargs: hook.multicall(
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\callers.py&quot;, line 187, in _multicall
+    res = hook_impl.function(*args)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\main.py&quot;, line 348, in pytest_runtestloop
+    item.config.hook.pytest_runtest_protocol(item=item, nextitem=nextitem)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\hooks.py&quot;, line 286, in __call__
+    return self._hookexec(self, self.get_hookimpls(), kwargs)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\manager.py&quot;, line 93, in _hookexec
+    return self._inner_hookexec(hook, methods, kwargs)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\manager.py&quot;, line 84, in &lt;lambda&gt;
+    self._inner_hookexec = lambda hook, methods, kwargs: hook.multicall(
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\callers.py&quot;, line 187, in _multicall
+    res = hook_impl.function(*args)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\runner.py&quot;, line 109, in pytest_runtest_protocol
+    runtestprotocol(item, nextitem=nextitem)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\runner.py&quot;, line 126, in runtestprotocol
+    reports.append(call_and_report(item, &quot;call&quot;, log))
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\runner.py&quot;, line 215, in call_and_report
+    call = call_runtest_hook(item, when, **kwds)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\runner.py&quot;, line 254, in call_runtest_hook
+    return CallInfo.from_call(
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\runner.py&quot;, line 311, in from_call
+    result: Optional[TResult] = func()
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\runner.py&quot;, line 255, in &lt;lambda&gt;
+    lambda: ihook(item=item, **kwds), when=when, reraise=reraise
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\hooks.py&quot;, line 286, in __call__
+    return self._hookexec(self, self.get_hookimpls(), kwargs)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\manager.py&quot;, line 93, in _hookexec
+    return self._inner_hookexec(hook, methods, kwargs)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\manager.py&quot;, line 84, in &lt;lambda&gt;
+    self._inner_hookexec = lambda hook, methods, kwargs: hook.multicall(
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\pluggy\callers.py&quot;, line 187, in _multicall
+    res = hook_impl.function(*args)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\runner.py&quot;, line 162, in pytest_runtest_call
+    item.runtest()
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\_pytest\unittest.py&quot;, line 321, in runtest
+    self._testcase(result=self)  # type: ignore[arg-type]
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\unittest\case.py&quot;, line 736, in __call__
+    return self.run(*args, **kwds)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\unittest\case.py&quot;, line 676, in run
+    self._callTestMethod(testMethod)
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\unittest\case.py&quot;, line 633, in _callTestMethod
+    method()
+  File &quot;c:\users\a610037\appdata\local\programs\python\python38-32\lib\site-packages\ddt.py&quot;, line 182, in wrapper
+    return func(self, *args, **kwargs)
+  File &quot;C:\Users\A610037\PycharmProjects\git-selenium-framework2\tests\test_individual\test_registration.py&quot;, line 26, in test_registration
+    result2 = self.account.add_to_wishlist()
+  File &quot;C:\Users\A610037\PycharmProjects\git-selenium-framework2\pages\account_creation\account_creation.py&quot;, line 41, in add_to_wishlist
+    self.elementClick(self._share_wishlist,&#x27;xpath&#x27;)
+  File &quot;C:\Users\A610037\PycharmProjects\git-selenium-framework2\base\selenium_driver.py&quot;, line 99, in elementClick
+    element = self.findElement(locator, locatorType)
+  File &quot;C:\Users\A610037\PycharmProjects\git-selenium-framework2\base\selenium_driver.py&quot;, line 62, in findElement
+    print_stack()
+<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     Account:selenium_driver.py:54 Element found with locatorType : xpath &amp; locator : //a/span[text()=&#x27;Account&#x27;]&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;0aa00db4fca5ad7b8156ca22e77038e0&quot;, element=&quot;6192c0b2-4e77-4d1e-abfa-a398249c48e9&quot;)&gt;
+INFO     Account:selenium_driver.py:101 Clicked on Element : &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;0aa00db4fca5ad7b8156ca22e77038e0&quot;, element=&quot;6192c0b2-4e77-4d1e-abfa-a398249c48e9&quot;)&gt;
+INFO     Account:selenium_driver.py:54 Element found with locatorType : link &amp; locator : Register&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;0aa00db4fca5ad7b8156ca22e77038e0&quot;, element=&quot;42f3b201-0949-4a63-ba82-254cc66bb4ff&quot;)&gt;
+INFO     Account:selenium_driver.py:101 Clicked on Element : &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;0aa00db4fca5ad7b8156ca22e77038e0&quot;, element=&quot;42f3b201-0949-4a63-ba82-254cc66bb4ff&quot;)&gt;
+INFO     Account:selenium_driver.py:54 Element found with locatorType : id &amp; locator : firstname&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;0aa00db4fca5ad7b8156ca22e77038e0&quot;, element=&quot;89cbbe91-5d75-47cb-b480-ed1c5cceb04a&quot;)&gt;
+INFO     Account:selenium_driver.py:114 Text : test entered on locator: firstname
+INFO     Account:selenium_driver.py:54 Element found with locatorType : id &amp; locator : lastname&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;0aa00db4fca5ad7b8156ca22e77038e0&quot;, element=&quot;b0a823a7-8d75-4c06-a093-0370105db4d4&quot;)&gt;
+INFO     Account:selenium_driver.py:114 Text : thirtyseven entered on locator: lastname
+INFO     Account:selenium_driver.py:54 Element found with locatorType : id &amp; locator : email_address&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;0aa00db4fca5ad7b8156ca22e77038e0&quot;, element=&quot;e8e410b2-569d-4faa-b6a3-d43f4631b765&quot;)&gt;
+INFO     Account:selenium_driver.py:114 Text : test@thirtyseven.com entered on locator: email_address
+INFO     Account:selenium_driver.py:54 Element found with locatorType : id &amp; locator : password&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;0aa00db4fca5ad7b8156ca22e77038e0&quot;, element=&quot;314fa9ca-900d-426e-a3fe-1abfbd7c7ba0&quot;)&gt;
+INFO     Account:selenium_driver.py:114 Text : test12345 entered on locator: password
+INFO     Account:selenium_driver.py:54 Element found with locatorType : id &amp; locator : confirmation&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;0aa00db4fca5ad7b8156ca22e77038e0&quot;, element=&quot;dad91ac5-3030-4deb-ab65-41d67b829c1a&quot;)&gt;
+INFO     Account:selenium_driver.py:114 Text : test12345 entered on locator: confirmation
+INFO     Account:selenium_driver.py:54 Element found with locatorType : id &amp; locator : is_subscribed&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;0aa00db4fca5ad7b8156ca22e77038e0&quot;, element=&quot;6a4318c5-963d-49e9-8fd9-293440f3cd00&quot;)&gt;
+INFO     Account:selenium_driver.py:101 Clicked on Element : &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;0aa00db4fca5ad7b8156ca22e77038e0&quot;, element=&quot;6a4318c5-963d-49e9-8fd9-293440f3cd00&quot;)&gt;
+INFO     Account:selenium_driver.py:54 Element found with locatorType : xpath &amp; locator : //button[@title=&#x27;Register&#x27;]&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;0aa00db4fca5ad7b8156ca22e77038e0&quot;, element=&quot;a544ea16-bab3-46b8-93f1-ffabf3e6029d&quot;)&gt;
+INFO     Account:selenium_driver.py:101 Clicked on Element : &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;0aa00db4fca5ad7b8156ca22e77038e0&quot;, element=&quot;a544ea16-bab3-46b8-93f1-ffabf3e6029d&quot;)&gt;
+INFO     Account:selenium_driver.py:59 Element could not be found with type : xpath and locator : //span[text()=&#x27;Thank you for registering with Main Website Store.&#x27;]Message: no such element: Unable to locate element: {&quot;method&quot;:&quot;xpath&quot;,&quot;selector&quot;:&quot;//span[text()=&#x27;Thank you for registering with Main Website Store.&#x27;]&quot;}
+  (Session info: chrome=87.0.4280.88)
+
+WARNING  Account:selenium_driver.py:281 Exception occured while executing isElementDisplayed :: exception occured :: &#x27;NoneType&#x27; object has no attribute &#x27;is_displayed&#x27;
+INFO     MarkTestStatus:mark_test_status.py:29 ###Verification Failed :: + Registration Successfull
+INFO     MarkTestStatus:mark_test_status.py:30 [&#x27;Fail&#x27;]
+INFO     Account:selenium_driver.py:54 Element found with locatorType : link &amp; locator : TV&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;0aa00db4fca5ad7b8156ca22e77038e0&quot;, element=&quot;cd87ce8b-af41-4282-96ab-5f5ceec2d065&quot;)&gt;
+INFO     Account:selenium_driver.py:101 Clicked on Element : &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;0aa00db4fca5ad7b8156ca22e77038e0&quot;, element=&quot;cd87ce8b-af41-4282-96ab-5f5ceec2d065&quot;)&gt;
+INFO     Account:selenium_driver.py:54 Element found with locatorType : xpath &amp; locator : //a[@title=&#x27;LG LCD&#x27;]//following-sibling::div/child::div/ul/li/a&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;0aa00db4fca5ad7b8156ca22e77038e0&quot;, element=&quot;7fc4e46d-6abe-4ba4-99e8-b4870e3f8631&quot;)&gt;
+INFO     Account:selenium_driver.py:101 Clicked on Element : &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;0aa00db4fca5ad7b8156ca22e77038e0&quot;, element=&quot;7fc4e46d-6abe-4ba4-99e8-b4870e3f8631&quot;)&gt;
+INFO     Account:selenium_driver.py:59 Element could not be found with type : xpath and locator : //span[text()=&#x27;Share Wishlist&#x27;]Message: no such element: Unable to locate element: {&quot;method&quot;:&quot;xpath&quot;,&quot;selector&quot;:&quot;//span[text()=&#x27;Share Wishlist&#x27;]&quot;}
+  (Session info: chrome=87.0.4280.88)<br/></div></td></tr></tbody></table></body></html>

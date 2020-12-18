@@ -19,10 +19,10 @@ class TestRegistration(unittest.TestCase):
 
     @data(*getCsvData(fileName="datafiles//registration.csv"))
     @unpack
-    @pytest.mark.skip
+    @pytest.mark.run(order=4)
     def test_registration(self,firstName,lastName,emailAddress,password,confirmPassword):
-        result = self.account.register(firstName,lastName,emailAddress,password,confirmPassword)
-        self.ts.mark(result=result,resultMessage='Registration Successfull')
+        result1 = self.account.register(firstName,lastName,emailAddress,password,confirmPassword)
+        self.ts.mark(result=result1,resultMessage='Registration Successfull')
         result2 = self.account.add_to_wishlist()
-        self.ts.finalMark(testcase='test_registration_share_wishlist',result=result,resultMessage="Wishlist shared successfully")
+        self.ts.finalMark(testcase='test_registration_share_wishlist',result=result2,resultMessage="Wishlist shared successfully")
 
