@@ -71,7 +71,8 @@ class SeleniumDriver():
 
         except Exception as e:
             self.cl.info(
-                "Element could not be found with locatortype : " + str(locatorType) + " and locator : " + str(locator) + "exception:: " + str(e))
+                "Element could not be found with locatortype : " + str(locatorType) + " and locator : " + str(
+                    locator) + "exception:: " + str(e))
             print_stack()
         return element
 
@@ -92,9 +93,8 @@ class SeleniumDriver():
                 sel.select_by_index(value)
                 self.cl.info("Selected element with index " + str(value) + " from the drop down using Index position")
 
-        except:
-            self.cl.info("Unable to select element from the dropdown")
-            raise Exception
+        except Exception as e:
+            self.cl.info("Unable to select element from the dropdown. Exception occurred :: " + str(e))
             print_stack()
 
     def elementClick(self, locator, locatorType):
@@ -103,9 +103,8 @@ class SeleniumDriver():
             element.click()
             self.cl.info("Clicked on Element : " + str(element))
 
-        except ElementClickInterceptedException:
-            self.cl.info("Unable to click the element: " + locator)
-            raise Exception
+        except Exception as e:
+            self.cl.info("Unable to click the element: " + locator + ". Exception occured :: " + str(e))
             print_stack()
 
     def elementSend(self, locator, locatorType, message):
@@ -122,16 +121,17 @@ class SeleniumDriver():
         return self.driver.title
 
     def getText(self, locator, locatorType):
-        element = None
+        element_text = None
         try:
             element = self.findElement(locator, locatorType)
             element_text = element.text
             self.cl.info("Text of the element : " + locator + " is " + element_text)
             return element_text
-        except:
-            raise Exception
-            self.cl.info("Unable to find the text for element : " + locator)
+        except Exception as e:
+            self.cl.info(
+                "Unable to find the text for element : " + locator + ". Following Exception occured :: " + str(e))
             print_stack()
+        return element_text
 
     def getTextElementList(self, locator, locatorType):
         elementText = []
@@ -146,21 +146,24 @@ class SeleniumDriver():
             self.cl.info(elementText2)
             return elementText2
 
-        except:
-            raise Exception
-            self.cl.info("Unable to return text for elements")
+        except Exception as e:
+            self.cl.info("Unable to return text for elements. Following Exception occured :: " + str(e))
             print_stack()
+        return elementText2
 
     def getAttribute(self, locator, locatorType, attributeType):
+        elementAttribute = None
         try:
             element = self.findElement(locator, locatorType)
             elementAttribute = element.get_attribute(attributeType)
             self.cl.info("Value of Attribute :: " + attributeType + " is " + str(elementAttribute))
             return elementAttribute
-        except:
-            raise Exception
-            self.cl.info("Unable to find the value of attribute for element : " + locator)
+        except Exception as e:
+            self.cl.info(
+                "Unable to find the value of attribute for element : " + locator + ". Following exception occured :: " + str(
+                    e))
             print_stack()
+        return elementAttribute
 
     def getAttributelist(self, locator, locatorType, attributeType):
         element_attribute = []
@@ -173,7 +176,7 @@ class SeleniumDriver():
                 self.cl.info("Value of Attribute :: " + attributeType + " is " + elementAttribute)
             return element_attribute
 
-        except Exception as e :
+        except Exception as e:
             self.cl.info("Unable to find the value of attribute for element : " + locator + " exception :: " + str(e))
             print_stack()
         return element_attribute
@@ -189,10 +192,12 @@ class SeleniumDriver():
                 return formatted_name
             else:
                 return cssAttributeProperty
-        except:
-            raise Exception
-            self.cl.info("Unable to find the value of attribute for element : " + locator)
+        except Exception as e:
+            self.cl.info(
+                "Unable to find the value of attribute for element : " + locator + ". Following Exception Occured :: " + str(
+                    e))
             print_stack()
+        return cssAttributeProperty
 
     def explicitwait(self, locator, locatorType, time, poll):
         try:
@@ -287,7 +292,6 @@ class SeleniumDriver():
             return False
             print_stack()
 
-
     def scrollingVertical(self, direction):
         direction = direction.lower()
         try:
@@ -318,31 +322,29 @@ class SeleniumDriver():
             self.cl.warning("Exception occured when trying to scroll the screen")
             print_stack()
 
-    def switch(self, value):
+    def switchFrame(self, value):
         try:
             self.driver.switch_to.frame(value)
             self.cl.info("Switched to Iframe :: " + str(value))
 
-        except NoSuchFrameException:
-            self.cl.error("Error while switching to Iframe")
-            raise Exception
+        except Exception as e:
+            self.cl.error("Error while switching to Iframe" + ". Following Exception occured :: " + str(e))
             print_stack()
 
     def switchParentFrame(self):
         try:
             self.driver.switch_to.parent_frame()
-        except:
-            self.cl.info("Unable to  to Parent Frame")
-            raise Exception
+        except Exception as e:
+            self.cl.info("Unable to  to Parent Frame. Following Exception occured :: " + str(e))
             print_stack()
 
-    def switch_default(self):
+    def switch_default_content(self):
         try:
             self.driver.switch_to.default_content()
             self.cl.info("Switched to default content")
 
-        except:
-            self.cl.error("Error while switching to Default Content")
+        except Exception as e:
+            self.cl.error("Error while switching to Default Content. Exception occurred :: " + str(e))
             print_stack()
 
     def elementSendSpecial(self, locator, locatorType, message):
@@ -351,18 +353,17 @@ class SeleniumDriver():
             for items in message:
                 element.send_keys(items)
             self.cl.info("Text : " + message + " entered on locator: " + locator)
-        except:
-            raise Exception
-            self.cl.info("Unable to send the message on locator: " + locator)
+        except Exception as e:
+            self.cl.info(
+                "Unable to send the message on locator: " + locator + ". Following Exception occured :: " + str(e))
             print_stack()
 
     def slider(self, locator, locatorType, xcord, ycord):
         try:
             element = self.findElement(locator, locatorType)
             self.actions.drag_and_drop_by_offset(source=element, xoffset=xcord, yoffset=ycord).perform()
-        except:
-            raise Exception
-            self.cl.info("Exception orrcured during sliding")
+        except Exception as e:
+            self.cl.info("Exception orrcured during sliding. Following Exception occured :: " + str(e))
             print_stack()
 
     def double_clickk(self, locator, locatorType):
@@ -370,9 +371,8 @@ class SeleniumDriver():
             element = self.findElement(locator, locatorType)
             self.actions.double_click(element).perform()
             self.cl.info("Double Clicked on :: " + str(element))
-        except StaleElementReferenceException:
-            self.cl.info("Exception occured during Double Click")
-            self.cl.info("Double Clicked on :: " + str(element))
+        except Exception as e:
+            self.cl.info("Exception occurred during Double Click. Following Exception occurred :: " + str(e))
             print_stack()
 
     def browserRefresh(self):
@@ -398,8 +398,8 @@ class SeleniumDriver():
                     self.driver.switch_to.window(items)
                     self.cl.info("Switched to window :: " + str(items))
 
-        except:
-            self.cl.info("Unable to  to new window")
+        except Exception as e:
+            self.cl.info("Unable to switch to new window. Following Exception occurred :: " + str(e))
 
     def switch_to_parent_window(self):
         try:
@@ -410,8 +410,8 @@ class SeleniumDriver():
                     self.driver.switch_to.window(items)
                     self.cl.info("Switched to window :: " + str(items))
 
-        except:
-            self.cl.info("Unable to  to new window")
+        except Exception as e:
+            self.cl.info("Unable to  to new window. Following Exception occurred :: " + str(e))
 
     def browserback(self):
         self.driver.back()
@@ -423,25 +423,24 @@ class SeleniumDriver():
         try:
             self.actions.key_down(Keys.DOWN).key_down(Keys.ENTER).perform()
             # self.actions.send_keys(Keys.ARROW_DOWN).send_keys(Keys.ENTER).perform()
-        except StaleElementReferenceException:
-            self.actions.key_down(Keys.DOWN).key_down(Keys.ENTER).perform()
-            raise Exception
+
+        except Exception as e:
+            self.cl.info("Unable to press ENTER key. Following Exception occurred :: " + str(e))
+
 
     def enter(self):
         try:
             self.actions.key_down(Keys.ENTER).key_up(Keys.ENTER).perform()
             self.cl.info("Pressed ENTER")
-        except:
-            self.cl.info("Unable to press ENTER key")
-            raise Exception
+        except Exception as e:
+            self.cl.info("Unable to press ENTER key. Following Exception occurred :: " + str(e))
 
     def close_new_window(self):
         try:
             self.actions.key_down(Keys.CONTROL).send_keys('W').perform()
             self.cl.info("Pressing CTRL + W to close the new window")
-        except:
-            self.cl.info("Unable to perform Action :: CTRL + W")
-            raise Exception
+        except Exception as e:
+            self.cl.info("Unable to perform Action :: CTRL + W. Following Exception occurred :: " + str(e))
             print_stack()
 
     def js_element_click(self, locator, locatorType):
@@ -449,9 +448,9 @@ class SeleniumDriver():
             element = self.findElement(locator, locatorType)
             self.driver.execute_script("arguments[0].click();", element);
 
-        except:
-            self.cl.info("Unable to click on element :: " + str(element))
-            raise Exception
+        except Exception as e:
+            self.cl.info(
+                "Unable to click on element :: " + str(element) + ". Following Exception occurred :: " + str(e))
 
     def js_select_list(self, locator, locatorType, message):
         try:
@@ -460,18 +459,16 @@ class SeleniumDriver():
             element.send_keys(message)
             self.cl.info("Sending message :: " + str(message) + "locator :: " + str(locator))
 
-        except:
-            self.cl.info("Exception Occured")
-            raise Exception
+        except Exception as e:
+            self.cl.info("Exception Occured. Following Exception :: " + str(e))
             print_stack()
 
     def stop_page_load(self):
         try:
             self.driver.execute_script("return window.stop");
             self.cl.info("Page load stop")
-        except:
-            self.cl.info("Unable to stop the page load")
-            raise Exception
+        except Exception as e:
+            self.cl.info("Unable to stop the page load. Following Exception occurred :: " + str(e))
 
     # def js_double_click(self,locator,locatorType):
     #     try:
@@ -486,11 +483,11 @@ class SeleniumDriver():
     #         raise Exception
     #         self.cl.info("Unable to Double click element :: " + str(element))
 
-    def right_click(self, locator, locatorType):
+    def right_clickk(self, locator, locatorType):
         try:
             element = self.findElement(locator, locatorType)
             self.actions.context_click(element).key_down(Keys.DOWN).key_down(Keys.ENTER).perform()
 
-        except:
-            self.cl.info("Unable to right click on element " + str(element))
-            raise Exception
+        except Exception as e:
+            self.cl.info(
+                "Unable to right click on element " + str(element) + ". Following Exception Occured :: " + str(e))
