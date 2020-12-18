@@ -21,14 +21,14 @@ class WebDriverFactory():
             chrome_options.add_experimental_option('useAutomationExtension', False)
             chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
 
-            driver = webdriver.Chrome(options=chrome_options,executable_path='..//drivers//chromedriver.exe')
+            driver = webdriver.Chrome(options=chrome_options,executable_path='drivers//chromedriver.exe')
 
 
         elif self.browser == "IE":
-            driver = webdriver.Ie(executable_path='..//drivers//IEDriverServer.exe')
+            driver = webdriver.Ie(executable_path='drivers//IEDriverServer.exe')
 
         else:
-            driver = webdriver.Chrome(executable_path='..//drivers//chromedriver.exe')
+            driver = webdriver.Chrome(executable_path='drivers//chromedriver.exe')
 
 
         baseUrl = "http://live.demoguru99.com/index.php/"

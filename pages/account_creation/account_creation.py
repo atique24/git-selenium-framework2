@@ -36,13 +36,13 @@ class Account(SeleniumDriver):
     def click_tv_tab(self):
         self.elementClick(self._tv,'link')
 
-    def add_to_wishlist(self):
+    def add_to_wishlist(self,emailAddress,message):
         self.click_tv_tab()
         self.elementClick(self._add_to_wishlist,'xpath')
         self.elementClick(self._share_wishlist,'xpath')
-        self.elementSend(self._emailaddress_wishlist,'id','test@two.com')
+        self.elementSend(self._emailaddress_wishlist,'id',emailAddress)
         time.sleep(5)
-        self.elementSend(self._message_wishlist, 'id', 'Hello Could you please buy for me')
+        self.elementSend(self._message_wishlist, 'id', message)
         time.sleep(5)
         self.elementClick(self._share_wishlist,'xpath')
         return self.isElementDisplayed(self._message_success_sharelist,'xpath')
