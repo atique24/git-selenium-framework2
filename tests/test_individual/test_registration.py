@@ -5,10 +5,11 @@ import pytest
 from pages.account_creation.account_creation import Account
 from ddt import ddt,data,unpack
 from utilities.csvdata import getCsvData
+from tests.base_test import BaseTest
 
 @ddt()
-@pytest.mark.usefixtures("oneTimeSetup")
-class TestRegistration(unittest.TestCase):
+#@pytest.mark.usefixtures("oneTimeSetup")    #use BaseTest instead of fixture
+class TestRegistration(BaseTest,unittest.TestCase):
 
     @pytest.fixture(autouse=True)
     def classObject(self,oneTimeSetup):

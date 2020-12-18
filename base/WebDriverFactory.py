@@ -15,7 +15,8 @@ class WebDriverFactory():
 
         elif self.browser == "Chrome":
             chrome_options = Options()
-            download_dir = "C://Users//A610037//Downloads//download_chrome"
+            #download_dir = "C://Users//A610037//Downloads//download_chrome"
+            chrome_options.add_argument('--start-maximized')
             chrome_options.add_experimental_option('prefs', {'geolocation': True})
             chrome_options.add_experimental_option('useAutomationExtension', False)
             chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])

@@ -21,19 +21,19 @@ class MarkTestStatus(SeleniumDriver):
                 else:
                     self.resultlist.append("Fail")
                     self.savescreenshots(resultMessage)
-                    self.cl.info("###Verification Failed :: + " + resultMessage)
+                    self.cl.error("###Verification Failed :: + " + resultMessage)
 
             else:
                 self.resultlist.append("Fail")
                 self.savescreenshots(resultMessage)
-                self.cl.info("###Verification Failed :: + " + resultMessage)
+                self.cl.error("###Verification Failed :: + " + resultMessage)
 
 
-        except:
+        except Exception as e:
             self.resultlist.append("Fail")
             self.savescreenshots(resultMessage)
-            self.cl.info("### Exception Occured !!!")
-            self.cl.info(self.resultlist)
+            self.cl.error("### Exception Occured !!!" + "Exception :: " + str(e))
+
 
     def mark(self, result, resultMessage):
         self.setResult(result, resultMessage)
@@ -42,7 +42,7 @@ class MarkTestStatus(SeleniumDriver):
         self.setResult(result, resultMessage)
 
         if "Fail" in self.resultlist:
-            self.cl.info(testcase + "### Test Failed")
+            self.cl.error(testcase + "### Test Failed")
             self.resultlist.clear()
             assert True == False
 
