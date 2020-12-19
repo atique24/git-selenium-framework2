@@ -4,6 +4,7 @@ from utilities.customlogger import custom_logger
 import logging
 
 cl = custom_logger(logging.INFO)
+
 def pytest_addoption(parser):
     parser.addoption("--browser")
 
@@ -35,3 +36,5 @@ def oneTimeSetup(request,browser):
 
     yield driver
     driver.quit()
+
+

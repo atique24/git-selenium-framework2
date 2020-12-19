@@ -3,7 +3,7 @@ from utilities.mark_test_status import MarkTestStatus
 import unittest
 import pytest
 from pages.account_creation.account_creation import Account
-from ddt import ddt,data,unpack
+from ddt import ddt,data,unpack, file_data
 from utilities.csvdata import getCsvData
 from tests.base_test import BaseTest
 
@@ -18,8 +18,9 @@ class TestRegistration(BaseTest,unittest.TestCase):
         self.ts = MarkTestStatus(self.driver)
 
 
-    @data(*getCsvData(fileName="datafiles//registration.csv"))
-    @unpack
+    #@data(*getCsvData(fileName="datafiles//registration.csv"))
+    @file_data("..//..//datafiles//registration.json")
+    #@unpack
     @pytest.mark.run(order=4)
     def test_registration(self,firstName,lastName,emailAddress,password,confirmPassword,message):
         result1 = self.account.register(firstName,lastName,emailAddress,password,confirmPassword)
