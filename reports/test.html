@@ -243,7 +243,7 @@ function filterTable(elem) { // eslint-disable-line no-unused-vars
 }
 </script>
     <h1>test.html</h1>
-    <p>Report generated on 19-Dec-2020 at 13:45:55 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a> v3.1.1</p>
+    <p>Report generated on 19-Dec-2020 at 23:18:24 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a> v3.1.1</p>
     <h2>Environment</h2>
     <table id="environment">
       <tr>
@@ -262,8 +262,8 @@ function filterTable(elem) { // eslint-disable-line no-unused-vars
         <td>Python</td>
         <td>3.8.2</td></tr></table>
     <h2>Summary</h2>
-    <p>1 tests ran in 20.13 seconds. </p>
-    <p class="filter" hidden="true">(Un)check the boxes to filter the results.</p><input checked="true" class="filter" data-test-result="passed" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="passed">1 passed</span>, <input checked="true" class="filter" data-test-result="skipped" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="skipped">0 skipped</span>, <input checked="true" class="filter" data-test-result="failed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="failed">0 failed</span>, <input checked="true" class="filter" data-test-result="error" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="error">0 errors</span>, <input checked="true" class="filter" data-test-result="xfailed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xfailed">0 expected failures</span>, <input checked="true" class="filter" data-test-result="xpassed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xpassed">0 unexpected passes</span>, <input checked="true" class="filter" data-test-result="rerun" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="rerun">0 rerun</span>
+    <p>1 tests ran in 6.32 seconds. </p>
+    <p class="filter" hidden="true">(Un)check the boxes to filter the results.</p><input checked="true" class="filter" data-test-result="passed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="passed">0 passed</span>, <input checked="true" class="filter" data-test-result="skipped" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="skipped">0 skipped</span>, <input checked="true" class="filter" data-test-result="failed" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="failed">1 failed</span>, <input checked="true" class="filter" data-test-result="error" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="error">0 errors</span>, <input checked="true" class="filter" data-test-result="xfailed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xfailed">0 expected failures</span>, <input checked="true" class="filter" data-test-result="xpassed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xpassed">0 unexpected passes</span>, <input checked="true" class="filter" data-test-result="rerun" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="rerun">0 rerun</span>
     <h2>Results</h2>
     <table id="results-table">
       <thead id="results-table-head">
@@ -274,49 +274,13 @@ function filterTable(elem) { // eslint-disable-line no-unused-vars
           <th class="sortable links" col="links">Links</th></tr>
         <tr hidden="true" id="not-found-message">
           <th colspan="4">No results found. Try to check the filters</th></tr></thead>
-      <tbody class="passed results-table-row">
+      <tbody class="failed results-table-row">
         <tr>
-          <td class="col-result">Passed</td>
+          <td class="col-result">Failed</td>
           <td class="col-name">tests/test_individual/test_registration.py::TestRegistration::test_registration_00001</td>
-          <td class="col-duration">19.68</td>
+          <td class="col-duration">5.96</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
-            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     &lt;module&gt;:conftest.py:18 Launching browser :: Chrome
-INFO     WebDriverFactory:WebDriverFactory.py:39 Launching the URL :: http://live.demoguru99.com/index.php/ on browser :: Chrome<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     Account:selenium_driver.py:54 Element found with locatorType : xpath &amp; locator : //a/span[text()=&#x27;Account&#x27;]&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;898b7b9a2ab85c81afefd266f5a7c031&quot;, element=&quot;cf44a403-22b5-4998-a5c7-d56a1f0e8aaf&quot;)&gt;
-INFO     Account:selenium_driver.py:104 Clicked on Element : &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;898b7b9a2ab85c81afefd266f5a7c031&quot;, element=&quot;cf44a403-22b5-4998-a5c7-d56a1f0e8aaf&quot;)&gt;
-INFO     Account:selenium_driver.py:54 Element found with locatorType : link &amp; locator : Register&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;898b7b9a2ab85c81afefd266f5a7c031&quot;, element=&quot;61d2c91c-6bda-4eaa-b344-9b2d7d8d0886&quot;)&gt;
-INFO     Account:selenium_driver.py:104 Clicked on Element : &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;898b7b9a2ab85c81afefd266f5a7c031&quot;, element=&quot;61d2c91c-6bda-4eaa-b344-9b2d7d8d0886&quot;)&gt;
-INFO     Account:selenium_driver.py:54 Element found with locatorType : id &amp; locator : firstname&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;898b7b9a2ab85c81afefd266f5a7c031&quot;, element=&quot;1efaf32e-77e6-4204-bc85-70b12f70b2d4&quot;)&gt;
-INFO     Account:selenium_driver.py:115 Text : test entered on locator: firstname
-INFO     Account:selenium_driver.py:54 Element found with locatorType : id &amp; locator : lastname&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;898b7b9a2ab85c81afefd266f5a7c031&quot;, element=&quot;88f34444-b245-40ce-9bd0-f684af5bad8f&quot;)&gt;
-INFO     Account:selenium_driver.py:115 Text : fortythree entered on locator: lastname
-INFO     Account:selenium_driver.py:54 Element found with locatorType : id &amp; locator : email_address&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;898b7b9a2ab85c81afefd266f5a7c031&quot;, element=&quot;15725083-572e-4600-aa65-54fe666452ff&quot;)&gt;
-INFO     Account:selenium_driver.py:115 Text : test@fortythree.com entered on locator: email_address
-INFO     Account:selenium_driver.py:54 Element found with locatorType : id &amp; locator : password&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;898b7b9a2ab85c81afefd266f5a7c031&quot;, element=&quot;0f9fdb17-9433-4799-8c69-bdca71021a58&quot;)&gt;
-INFO     Account:selenium_driver.py:115 Text : test12345 entered on locator: password
-INFO     Account:selenium_driver.py:54 Element found with locatorType : id &amp; locator : confirmation&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;898b7b9a2ab85c81afefd266f5a7c031&quot;, element=&quot;abd642cb-2a73-47a0-99d2-3cde0b626869&quot;)&gt;
-INFO     Account:selenium_driver.py:115 Text : test12345 entered on locator: confirmation
-INFO     Account:selenium_driver.py:54 Element found with locatorType : id &amp; locator : is_subscribed&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;898b7b9a2ab85c81afefd266f5a7c031&quot;, element=&quot;0bc80111-c22c-4bb1-8f8e-14c4c465c014&quot;)&gt;
-INFO     Account:selenium_driver.py:104 Clicked on Element : &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;898b7b9a2ab85c81afefd266f5a7c031&quot;, element=&quot;0bc80111-c22c-4bb1-8f8e-14c4c465c014&quot;)&gt;
-INFO     Account:selenium_driver.py:54 Element found with locatorType : xpath &amp; locator : //button[@title=&#x27;Register&#x27;]&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;898b7b9a2ab85c81afefd266f5a7c031&quot;, element=&quot;0d479959-7b16-4deb-af26-1a6843f8a1b3&quot;)&gt;
-INFO     Account:selenium_driver.py:104 Clicked on Element : &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;898b7b9a2ab85c81afefd266f5a7c031&quot;, element=&quot;0d479959-7b16-4deb-af26-1a6843f8a1b3&quot;)&gt;
-INFO     Account:selenium_driver.py:54 Element found with locatorType : xpath &amp; locator : //span[text()=&#x27;Thank you for registering with Main Website Store.&#x27;]&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;898b7b9a2ab85c81afefd266f5a7c031&quot;, element=&quot;9b1974a2-308e-4edb-97bd-b40c99062f7a&quot;)&gt;
-INFO     Account:selenium_driver.py:284 Element is displayed with locator :: //span[text()=&#x27;Thank you for registering with Main Website Store.&#x27;]
-INFO     MarkTestStatus:mark_test_status.py:20 ###Verification Successfull :: + Registration Successfull
-INFO     Account:selenium_driver.py:54 Element found with locatorType : link &amp; locator : TV&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;898b7b9a2ab85c81afefd266f5a7c031&quot;, element=&quot;d461e506-3443-46cd-abc4-5615bde81593&quot;)&gt;
-INFO     Account:selenium_driver.py:104 Clicked on Element : &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;898b7b9a2ab85c81afefd266f5a7c031&quot;, element=&quot;d461e506-3443-46cd-abc4-5615bde81593&quot;)&gt;
-INFO     Account:selenium_driver.py:54 Element found with locatorType : xpath &amp; locator : //a[@title=&#x27;LG LCD&#x27;]//following-sibling::div/child::div/ul/li/a&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;898b7b9a2ab85c81afefd266f5a7c031&quot;, element=&quot;fbe6930b-d5bf-4ae5-8abf-cb0ae841e062&quot;)&gt;
-INFO     Account:selenium_driver.py:104 Clicked on Element : &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;898b7b9a2ab85c81afefd266f5a7c031&quot;, element=&quot;fbe6930b-d5bf-4ae5-8abf-cb0ae841e062&quot;)&gt;
-INFO     Account:selenium_driver.py:54 Element found with locatorType : xpath &amp; locator : //span[text()=&#x27;Share Wishlist&#x27;]&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;898b7b9a2ab85c81afefd266f5a7c031&quot;, element=&quot;451d566d-71ba-47b7-8a38-9391db8e686c&quot;)&gt;
-INFO     Account:selenium_driver.py:104 Clicked on Element : &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;898b7b9a2ab85c81afefd266f5a7c031&quot;, element=&quot;451d566d-71ba-47b7-8a38-9391db8e686c&quot;)&gt;
-INFO     Account:selenium_driver.py:54 Element found with locatorType : id &amp; locator : email_address&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;898b7b9a2ab85c81afefd266f5a7c031&quot;, element=&quot;971cd751-364f-47cc-b06d-6b26d9ee42fb&quot;)&gt;
-INFO     Account:selenium_driver.py:115 Text : test@fortythree.com entered on locator: email_address
-INFO     Account:selenium_driver.py:54 Element found with locatorType : id &amp; locator : message&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;898b7b9a2ab85c81afefd266f5a7c031&quot;, element=&quot;39a2aae7-fb91-493d-b196-2e0b63fd3d4e&quot;)&gt;
-INFO     Account:selenium_driver.py:115 Text : Hello Could you please buy for me entered on locator: message
-INFO     Account:selenium_driver.py:54 Element found with locatorType : xpath &amp; locator : //span[text()=&#x27;Share Wishlist&#x27;]&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;898b7b9a2ab85c81afefd266f5a7c031&quot;, element=&quot;9437d276-e55f-4c21-86db-e59cff5a21af&quot;)&gt;
-INFO     Account:selenium_driver.py:104 Clicked on Element : &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;898b7b9a2ab85c81afefd266f5a7c031&quot;, element=&quot;9437d276-e55f-4c21-86db-e59cff5a21af&quot;)&gt;
-INFO     Account:selenium_driver.py:54 Element found with locatorType : xpath &amp; locator : //span[text()=&#x27;Your Wishlist has been shared.&#x27;]&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;898b7b9a2ab85c81afefd266f5a7c031&quot;, element=&quot;90ca7dc7-228f-4723-b644-5cce8922f420&quot;)&gt;
-INFO     Account:selenium_driver.py:284 Element is displayed with locator :: //span[text()=&#x27;Your Wishlist has been shared.&#x27;]
-INFO     MarkTestStatus:mark_test_status.py:20 ###Verification Successfull :: + Wishlist shared successfully
-INFO     MarkTestStatus:mark_test_status.py:50 test_registration_share_wishlist### Test Passed<br/></div></td></tr></tbody></table></body></html>
+            <div class="log">self = &lt;test_registration.TestRegistration testMethod=test_registration_00001&gt;, firstName = &#x27;test&#x27;, lastName = &#x27;fortyfour&#x27;, emailAddress = &#x27;test@fortyfour.com&#x27;<br/>password = &#x27;test12345&#x27;, confirmPassword = &#x27;test12345&#x27;, message = &#x27;Hello Could you please buy for me&#x27;<br/><br/>    @file_data(&quot;..//..//datafiles//registration.json&quot;)<br/>    #@unpack<br/>    @pytest.mark.run(order=4)<br/>    def test_registration(self,firstName,lastName,emailAddress,password,confirmPassword,message):<br/>&gt;       result1 = self.account.register(firstName,lastName,emailAddress,password,confirmPassword)<br/><span class="error">E       AttributeError: &#x27;TestRegistration&#x27; object has no attribute &#x27;account&#x27;</span><br/><br/>tests\test_individual\test_registration.py:26: AttributeError<br/> -------------------------------Captured log setup------------------------------- <br/>INFO     &lt;module&gt;:conftest.py:18 Launching browser :: Chrome
+INFO     WebDriverFactory:WebDriverFactory.py:39 Launching the URL :: http://live.demoguru99.com/index.php/ on browser :: Chrome<br/></div></td></tr></tbody></table></body></html>
