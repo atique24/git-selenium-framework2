@@ -17,10 +17,10 @@ strategy:
 steps:
 - task: UsePythonVersion@0
   inputs:
-    versionSpec: '3.8'
+    versionSpec: '$(python.version)'
     addToPath: true
     architecture: 'x64'
-  displayName: 'Use Python 3.8'
+  displayName: 'Use Python $(python.version)'
 
 - script: |
     python -m pip install --upgrade pip
@@ -29,7 +29,7 @@ steps:
 
 - script: |
     pip install pytest-azurepipelines
-    pytest tests\test_smoke\test_suite_SmokeTest.py -s -v --browser Chrome --html=report.html --reruns 2
+    py.test -s -v tests\test_individual\test_registration.py --browser Chrome --html=report.html --reruns 2
   displayName: 'pytest'
 
 - task: DownloadPipelineArtifact@2
