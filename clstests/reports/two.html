@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Test Report</title>
+    <link href="assets/style.css" rel="stylesheet" type="text/css"/></head>
+  <body onLoad="init()">
+    <script>/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+function toArray(iter) {
+    if (iter === null) {
+        return null;
+    }
+    return Array.prototype.slice.call(iter);
+}
+
+function find(selector, elem) {
+    if (!elem) {
+        elem = document;
+    }
+    return elem.querySelector(selector);
+}
+
+function find_all(selector, elem) {
+    if (!elem) {
+        elem = document;
+    }
+    return toArray(elem.querySelectorAll(selector));
+}
+
+function sort_column(elem) {
+    toggle_sort_states(elem);
+    var colIndex = toArray(elem.parentNode.childNodes).indexOf(elem);
+    var key;
+    if (elem.classList.contains('numeric')) {
+        key = key_num;
+    } else if (elem.classList.contains('result')) {
+        key = key_result;
+    } else {
+        key = key_alpha;
+    }
+    sort_table(elem, key(colIndex));
+}
+
+function show_all_extras() {
+    find_all('.col-result').forEach(show_extras);
+}
+
+function hide_all_extras() {
+    find_all('.col-result').forEach(hide_extras);
+}
+
+function show_extras(colresult_elem) {
+    var extras = colresult_elem.parentNode.nextElementSibling;
+    var expandcollapse = colresult_elem.firstElementChild;
+    extras.classList.remove("collapsed");
+    expandcollapse.classList.remove("expander");
+    expandcollapse.classList.add("collapser");
+}
+
+function hide_extras(colresult_elem) {
+    var extras = colresult_elem.parentNode.nextElementSibling;
+    var expandcollapse = colresult_elem.firstElementChild;
+    extras.classList.add("collapsed");
+    expandcollapse.classList.remove("collapser");
+    expandcollapse.classList.add("expander");
+}
+
+function show_filters() {
+    var filter_items = document.getElementsByClassName('filter');
+    for (var i = 0; i < filter_items.length; i++)
+        filter_items[i].hidden = false;
+}
+
+function add_collapse() {
+    // Add links for show/hide all
+    var resulttable = find('table#results-table');
+    var showhideall = document.createElement("p");
+    showhideall.innerHTML = '<a href="javascript:show_all_extras()">Show all details</a> / ' +
+                            '<a href="javascript:hide_all_extras()">Hide all details</a>';
+    resulttable.parentElement.insertBefore(showhideall, resulttable);
+
+    // Add show/hide link to each result
+    find_all('.col-result').forEach(function(elem) {
+        var collapsed = get_query_parameter('collapsed') || 'Passed';
+        var extras = elem.parentNode.nextElementSibling;
+        var expandcollapse = document.createElement("span");
+        if (extras.classList.contains("collapsed")) {
+            expandcollapse.classList.add("expander")
+        } else if (collapsed.includes(elem.innerHTML)) {
+            extras.classList.add("collapsed");
+            expandcollapse.classList.add("expander");
+        } else {
+            expandcollapse.classList.add("collapser");
+        }
+        elem.appendChild(expandcollapse);
+
+        elem.addEventListener("click", function(event) {
+            if (event.currentTarget.parentNode.nextElementSibling.classList.contains("collapsed")) {
+                show_extras(event.currentTarget);
+            } else {
+                hide_extras(event.currentTarget);
+            }
+        });
+    })
+}
+
+function get_query_parameter(name) {
+    var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+}
+
+function init () {
+    reset_sort_headers();
+
+    add_collapse();
+
+    show_filters();
+
+    sort_column(find('.initial-sort'));
+
+    find_all('.sortable').forEach(function(elem) {
+        elem.addEventListener("click",
+                              function(event) {
+                                  sort_column(elem);
+                              }, false)
+    });
+
+};
+
+function sort_table(clicked, key_func) {
+    var rows = find_all('.results-table-row');
+    var reversed = !clicked.classList.contains('asc');
+    var sorted_rows = sort(rows, key_func, reversed);
+    /* Whole table is removed here because browsers acts much slower
+     * when appending existing elements.
+     */
+    var thead = document.getElementById("results-table-head");
+    document.getElementById('results-table').remove();
+    var parent = document.createElement("table");
+    parent.id = "results-table";
+    parent.appendChild(thead);
+    sorted_rows.forEach(function(elem) {
+        parent.appendChild(elem);
+    });
+    document.getElementsByTagName("BODY")[0].appendChild(parent);
+}
+
+function sort(items, key_func, reversed) {
+    var sort_array = items.map(function(item, i) {
+        return [key_func(item), i];
+    });
+
+    sort_array.sort(function(a, b) {
+        var key_a = a[0];
+        var key_b = b[0];
+
+        if (key_a == key_b) return 0;
+
+        if (reversed) {
+            return (key_a < key_b ? 1 : -1);
+        } else {
+            return (key_a > key_b ? 1 : -1);
+        }
+    });
+
+    return sort_array.map(function(item) {
+        var index = item[1];
+        return items[index];
+    });
+}
+
+function key_alpha(col_index) {
+    return function(elem) {
+        return elem.childNodes[1].childNodes[col_index].firstChild.data.toLowerCase();
+    };
+}
+
+function key_num(col_index) {
+    return function(elem) {
+        return parseFloat(elem.childNodes[1].childNodes[col_index].firstChild.data);
+    };
+}
+
+function key_result(col_index) {
+    return function(elem) {
+        var strings = ['Error', 'Failed', 'Rerun', 'XFailed', 'XPassed',
+                       'Skipped', 'Passed'];
+        return strings.indexOf(elem.childNodes[1].childNodes[col_index].firstChild.data);
+    };
+}
+
+function reset_sort_headers() {
+    find_all('.sort-icon').forEach(function(elem) {
+        elem.parentNode.removeChild(elem);
+    });
+    find_all('.sortable').forEach(function(elem) {
+        var icon = document.createElement("div");
+        icon.className = "sort-icon";
+        icon.textContent = "vvv";
+        elem.insertBefore(icon, elem.firstChild);
+        elem.classList.remove("desc", "active");
+        elem.classList.add("asc", "inactive");
+    });
+}
+
+function toggle_sort_states(elem) {
+    //if active, toggle between asc and desc
+    if (elem.classList.contains('active')) {
+        elem.classList.toggle('asc');
+        elem.classList.toggle('desc');
+    }
+
+    //if inactive, reset all other functions and add ascending active
+    if (elem.classList.contains('inactive')) {
+        reset_sort_headers();
+        elem.classList.remove('inactive');
+        elem.classList.add('active');
+    }
+}
+
+function is_all_rows_hidden(value) {
+  return value.hidden == false;
+}
+
+function filter_table(elem) {
+    var outcome_att = "data-test-result";
+    var outcome = elem.getAttribute(outcome_att);
+    class_outcome = outcome + " results-table-row";
+    var outcome_rows = document.getElementsByClassName(class_outcome);
+
+    for(var i = 0; i < outcome_rows.length; i++){
+        outcome_rows[i].hidden = !elem.checked;
+    }
+
+    var rows = find_all('.results-table-row').filter(is_all_rows_hidden);
+    var all_rows_hidden = rows.length == 0 ? true : false;
+    var not_found_message = document.getElementById("not-found-message");
+    not_found_message.hidden = !all_rows_hidden;
+}
+</script>
+    <h1>two.html</h1>
+    <p>Report generated on 21-Dec-2020 at 21:56:32 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a> v2.1.1</p>
+    <h2>Environment</h2>
+    <table id="environment">
+      <tr>
+        <td>JAVA_HOME</td>
+        <td>C:\Program Files\Java\jdk-14.0.2</td></tr>
+      <tr>
+        <td>Packages</td>
+        <td>{"pluggy": "0.13.1", "py": "1.9.0", "pytest": "6.2.1"}</td></tr>
+      <tr>
+        <td>Platform</td>
+        <td>Windows-10-10.0.18362-SP0</td></tr>
+      <tr>
+        <td>Plugins</td>
+        <td>{"allure-pytest": "2.8.22", "bdd": "4.0.2", "fixtures": "0.1.0", "forked": "1.3.0", "html": "2.1.1", "metadata": "1.10.0", "ordering": "0.6", "rerunfailures": "9.1.1", "xdist": "2.1.0"}</td></tr>
+      <tr>
+        <td>Python</td>
+        <td>3.8.2</td></tr></table>
+    <h2>Summary</h2>
+    <p>1 tests ran in 73.34 seconds. </p>
+    <p class="filter" hidden="true">(Un)check the boxes to filter the results.</p><input checked="true" class="filter" data-test-result="passed" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="passed">0 passed</span>, <input checked="true" class="filter" data-test-result="skipped" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="skipped">0 skipped</span>, <input checked="true" class="filter" data-test-result="failed" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="failed">1 failed</span>, <input checked="true" class="filter" data-test-result="error" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="error">0 errors</span>, <input checked="true" class="filter" data-test-result="xfailed" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="xfailed">0 expected failures</span>, <input checked="true" class="filter" data-test-result="xpassed" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="xpassed">0 unexpected passes</span>, <input checked="true" class="filter" data-test-result="rerun" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="rerun">0 rerun</span>
+    <h2>Results</h2>
+    <table id="results-table">
+      <thead id="results-table-head">
+        <tr>
+          <th class="sortable result initial-sort" col="result">Result</th>
+          <th class="sortable" col="name">Test</th>
+          <th class="sortable numeric" col="duration">Duration</th>
+          <th>Links</th></tr>
+        <tr hidden="true" id="not-found-message">
+          <th colspan="4">No results found. Try to check the filters</th></tr></thead>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">tests/test_individual/test_registration.py::TestRegistration::test_registration_00001</td>
+          <td class="col-duration">66.45</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div><div><img src="tests/test_individual/test_registration.py_TestRegistration_test_registration_00001.png" alt="screenshot" style="width:304px;height:228px;" onclick="window.open(this.src)" align="right"/></div></div>
+            <div class="log">self = &lt;test_registration.TestRegistration testMethod=test_registration_00001&gt;, firstName = &#x27;test&#x27;, lastName = &#x27;fortysix&#x27;, emailAddress = &#x27;test@fortysix.com&#x27;<br/>password = &#x27;test12345&#x27;, confirmPassword = &#x27;test12345&#x27;, message = &#x27;Hello Could you please buy for me&#x27;<br/><br/>    @file_data(&quot;..//..//datafiles//registration.json&quot;)  # -----used for JSON FILE<br/>    <br/>    @pytest.mark.run(order=4)<br/>    def test_registration(self, firstName, lastName, emailAddress, password, confirmPassword, message):<br/>        result1 = self.account.register(firstName, lastName, emailAddress, password, confirmPassword)<br/>        self.ts.mark(result=result1, resultMessage=&#x27;Registration Successfull&#x27;)<br/>        result2 = self.account.add_to_wishlist(emailAddress, message)<br/>&gt;       self.ts.finalMark(testcase=&#x27;test_registration_share_wishlist&#x27;, result=result2,<br/>                          resultMessage=&quot;Wishlist shared successfully&quot;)<br/><br/>tests\test_individual\test_registration.py:30: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>self = &lt;utilities.mark_test_status.MarkTestStatus object at 0x04BB8610&gt;, testcase = &#x27;test_registration_share_wishlist&#x27;, result = False<br/>resultMessage = &#x27;Wishlist shared successfully&#x27;<br/><br/>    def finalMark(self, testcase, result, resultMessage):<br/>        self.setResult(result, resultMessage)<br/>    <br/>        if &quot;Fail&quot; in self.resultlist:<br/>            self.cl.error(testcase + &quot;### Test Failed&quot;)<br/>            self.resultlist.clear()<br/>&gt;           assert True == False<br/><span class="error">E           AssertionError</span><br/><br/>utilities\mark_test_status.py:47: AssertionError<br/> -------------------------------Captured log setup------------------------------- <br/>[32mINFO    [0m &lt;module&gt;:conftest.py:22 Launching browser :: Chrome
+[32mINFO    [0m WebDriverFactory:WebDriverFactory.py:39 Launching the URL :: http://live.demoguru99.com/index.php/ on browser :: Chrome<br/> -------------------------------Captured log call-------------------------------- <br/>[32mINFO    [0m Account:selenium_driver.py:54 Element found with locatorType : xpath &amp; locator : //a/span[text()=&#x27;Account&#x27;]&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;1291bcafd39628deb6bef07eea947f2c&quot;, element=&quot;7b30c44c-1a2a-4f55-89d0-d2833f39c7dc&quot;)&gt;
+[32mINFO    [0m Account:selenium_driver.py:104 Clicked on Element : &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;1291bcafd39628deb6bef07eea947f2c&quot;, element=&quot;7b30c44c-1a2a-4f55-89d0-d2833f39c7dc&quot;)&gt;
+[32mINFO    [0m Account:selenium_driver.py:54 Element found with locatorType : link &amp; locator : Register&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;1291bcafd39628deb6bef07eea947f2c&quot;, element=&quot;738671a2-3484-47bb-b567-75c2a7892681&quot;)&gt;
+[32mINFO    [0m Account:selenium_driver.py:104 Clicked on Element : &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;1291bcafd39628deb6bef07eea947f2c&quot;, element=&quot;738671a2-3484-47bb-b567-75c2a7892681&quot;)&gt;
+[32mINFO    [0m Account:selenium_driver.py:54 Element found with locatorType : id &amp; locator : firstname&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;1291bcafd39628deb6bef07eea947f2c&quot;, element=&quot;fb8accd6-41c8-41c6-b26c-1352852362d7&quot;)&gt;
+[32mINFO    [0m Account:selenium_driver.py:115 Text : test entered on locator: firstname
+[32mINFO    [0m Account:selenium_driver.py:54 Element found with locatorType : id &amp; locator : lastname&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;1291bcafd39628deb6bef07eea947f2c&quot;, element=&quot;baf40d53-95e7-467d-b892-66bd75086180&quot;)&gt;
+[32mINFO    [0m Account:selenium_driver.py:115 Text : fortysix entered on locator: lastname
+[32mINFO    [0m Account:selenium_driver.py:54 Element found with locatorType : id &amp; locator : email_address&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;1291bcafd39628deb6bef07eea947f2c&quot;, element=&quot;d1f10c3c-1542-4cdb-b6fb-2fbb033f80cc&quot;)&gt;
+[32mINFO    [0m Account:selenium_driver.py:115 Text : test@fortysix.com entered on locator: email_address
+[32mINFO    [0m Account:selenium_driver.py:54 Element found with locatorType : id &amp; locator : password&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;1291bcafd39628deb6bef07eea947f2c&quot;, element=&quot;a074d8dc-e625-4fd7-b28e-1bd681e0b890&quot;)&gt;
+[32mINFO    [0m Account:selenium_driver.py:115 Text : test12345 entered on locator: password
+[32mINFO    [0m Account:selenium_driver.py:54 Element found with locatorType : id &amp; locator : confirmation&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;1291bcafd39628deb6bef07eea947f2c&quot;, element=&quot;093b962e-3561-44dd-839f-8b0d063f39ef&quot;)&gt;
+[32mINFO    [0m Account:selenium_driver.py:115 Text : test12345 entered on locator: confirmation
+[32mINFO    [0m Account:selenium_driver.py:54 Element found with locatorType : id &amp; locator : is_subscribed&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;1291bcafd39628deb6bef07eea947f2c&quot;, element=&quot;b8290567-1347-46d1-a975-fa1837acc44e&quot;)&gt;
+[32mINFO    [0m Account:selenium_driver.py:104 Clicked on Element : &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;1291bcafd39628deb6bef07eea947f2c&quot;, element=&quot;b8290567-1347-46d1-a975-fa1837acc44e&quot;)&gt;
+[32mINFO    [0m Account:selenium_driver.py:54 Element found with locatorType : xpath &amp; locator : //button[@title=&#x27;Register&#x27;]&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;1291bcafd39628deb6bef07eea947f2c&quot;, element=&quot;04d3213e-4b92-4080-9990-339bfd70c1b1&quot;)&gt;
+[32mINFO    [0m Account:selenium_driver.py:104 Clicked on Element : &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;1291bcafd39628deb6bef07eea947f2c&quot;, element=&quot;04d3213e-4b92-4080-9990-339bfd70c1b1&quot;)&gt;
+[32mINFO    [0m Account:selenium_driver.py:58 Element could not be found with type : xpath and locator : //span[text()=&#x27;Thank you for registering with Main Website Store.&#x27;]Message: no such element: Unable to locate element: {&quot;method&quot;:&quot;xpath&quot;,&quot;selector&quot;:&quot;//span[text()=&#x27;Thank you for registering with Main Website Store.&#x27;]&quot;}
+  (Session info: chrome=87.0.4280.88)
+
+[33mWARNING [0m Account:selenium_driver.py:291 Exception occured while executing isElementDisplayed :: exception occured :: &#x27;NoneType&#x27; object has no attribute &#x27;is_displayed&#x27;
+[32mINFO    [0m MarkTestStatus:selenium_driver.py:273 ### Screenshot saved at path: C:\Users\A610037\PycharmProjects\git-selenium-framework2\base\..//screenshots//Registration Successfull16085877372033.png
+[31m[1mERROR   [0m MarkTestStatus:mark_test_status.py:24 ###Verification Failed :: + Registration Successfull
+[32mINFO    [0m Account:selenium_driver.py:54 Element found with locatorType : link &amp; locator : TV&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;1291bcafd39628deb6bef07eea947f2c&quot;, element=&quot;a863f15b-4645-4b2e-8352-5828cf10566b&quot;)&gt;
+[32mINFO    [0m Account:selenium_driver.py:104 Clicked on Element : &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;1291bcafd39628deb6bef07eea947f2c&quot;, element=&quot;a863f15b-4645-4b2e-8352-5828cf10566b&quot;)&gt;
+[32mINFO    [0m Account:selenium_driver.py:54 Element found with locatorType : xpath &amp; locator : //a[@title=&#x27;LG LCD&#x27;]//following-sibling::div/child::div/ul/li/a&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;1291bcafd39628deb6bef07eea947f2c&quot;, element=&quot;23eaf048-b797-48a8-8269-591670a78f9c&quot;)&gt;
+[32mINFO    [0m Account:selenium_driver.py:104 Clicked on Element : &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;1291bcafd39628deb6bef07eea947f2c&quot;, element=&quot;23eaf048-b797-48a8-8269-591670a78f9c&quot;)&gt;
+[32mINFO    [0m Account:selenium_driver.py:58 Element could not be found with type : xpath and locator : //span[text()=&#x27;Share Wishlist&#x27;]Message: no such element: Unable to locate element: {&quot;method&quot;:&quot;xpath&quot;,&quot;selector&quot;:&quot;//span[text()=&#x27;Share Wishlist&#x27;]&quot;}
+  (Session info: chrome=87.0.4280.88)
+
+[32mINFO    [0m Account:selenium_driver.py:107 Unable to click the element: //span[text()=&#x27;Share Wishlist&#x27;]. Exception occured :: &#x27;NoneType&#x27; object has no attribute &#x27;click&#x27;
+[32mINFO    [0m Account:selenium_driver.py:58 Element could not be found with type : id and locator : email_addressMessage: no such element: Unable to locate element: {&quot;method&quot;:&quot;css selector&quot;,&quot;selector&quot;:&quot;[id=&quot;email_address&quot;]&quot;}
+  (Session info: chrome=87.0.4280.88)
+
+[32mINFO    [0m Account:selenium_driver.py:117 Unable to send the message on locator: email_addressException :: &#x27;NoneType&#x27; object has no attribute &#x27;clear&#x27;
+[32mINFO    [0m Account:selenium_driver.py:58 Element could not be found with type : id and locator : messageMessage: no such element: Unable to locate element: {&quot;method&quot;:&quot;css selector&quot;,&quot;selector&quot;:&quot;[id=&quot;message&quot;]&quot;}
+  (Session info: chrome=87.0.4280.88)
+
+[32mINFO    [0m Account:selenium_driver.py:117 Unable to send the message on locator: messageException :: &#x27;NoneType&#x27; object has no attribute &#x27;clear&#x27;
+[32mINFO    [0m Account:selenium_driver.py:58 Element could not be found with type : xpath and locator : //span[text()=&#x27;Share Wishlist&#x27;]Message: no such element: Unable to locate element: {&quot;method&quot;:&quot;xpath&quot;,&quot;selector&quot;:&quot;//span[text()=&#x27;Share Wishlist&#x27;]&quot;}
+  (Session info: chrome=87.0.4280.88)
+
+[32mINFO    [0m Account:selenium_driver.py:107 Unable to click the element: //span[text()=&#x27;Share Wishlist&#x27;]. Exception occured :: &#x27;NoneType&#x27; object has no attribute &#x27;click&#x27;
+[32mINFO    [0m Account:selenium_driver.py:58 Element could not be found with type : xpath and locator : //span[text()=&#x27;Your Wishlist has been shared.&#x27;]Message: no such element: Unable to locate element: {&quot;method&quot;:&quot;xpath&quot;,&quot;selector&quot;:&quot;//span[text()=&#x27;Your Wishlist has been shared.&#x27;]&quot;}
+  (Session info: chrome=87.0.4280.88)
+
+[33mWARNING [0m Account:selenium_driver.py:291 Exception occured while executing isElementDisplayed :: exception occured :: &#x27;NoneType&#x27; object has no attribute &#x27;is_displayed&#x27;
+[32mINFO    [0m MarkTestStatus:selenium_driver.py:273 ### Screenshot saved at path: C:\Users\A610037\PycharmProjects\git-selenium-framework2\base\..//screenshots//Wishlist shared successfully16085877898397.png
+[31m[1mERROR   [0m MarkTestStatus:mark_test_status.py:24 ###Verification Failed :: + Wishlist shared successfully
+[31m[1mERROR   [0m MarkTestStatus:mark_test_status.py:45 test_registration_share_wishlist### Test Failed<br/></div></td></tr></tbody></table></body></html>

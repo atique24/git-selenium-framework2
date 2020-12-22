@@ -9,8 +9,8 @@ from tests.base_test import BaseTest
 
 
 @ddt()
-# @pytest.mark.usefixtures("oneTimeSetup") -------instead inherit BaseTest instead of fixture
-class TestRegistration(BaseTest, unittest.TestCase):
+@pytest.mark.usefixtures("oneTimeSetup") #-------instead inherit BaseTest instead of fixture
+class TestRegistration(unittest.TestCase):
 
     @pytest.fixture(autouse=True)
     def classObject(self, oneTimeSetup):

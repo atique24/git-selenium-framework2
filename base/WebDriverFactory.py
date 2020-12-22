@@ -34,7 +34,7 @@ class WebDriverFactory():
         baseUrl = "http://live.demoguru99.com/index.php/"
         driver.delete_all_cookies()
         driver.maximize_window()
-        driver.implicitly_wait(15)
+        driver.implicitly_wait(10)
         driver.get(baseUrl)
         self.cl.info('Launching the URL :: ' + str(baseUrl) + ' on browser :: ' + str(self.browser))
 
