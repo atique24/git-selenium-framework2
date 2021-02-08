@@ -6,6 +6,7 @@ from pages.account_creation.account_creation import Account
 from ddt import ddt, data, unpack, file_data
 from utilities.csvdata import getCsvData
 from tests.base_test import BaseTest
+import time
 
 
 @ddt()
@@ -21,7 +22,6 @@ class TestRegistration(unittest.TestCase):
     # @data(*getCsvData(fileName="datafiles//registration.csv"))  ----used for csv,excel
     # @unpack   -----used for csv,excel
     @file_data("..//..//datafiles//registration.json")  # -----used for JSON FILE
-
     @pytest.mark.run(order=4)
     def test_registration(self, firstName, lastName, emailAddress, password, confirmPassword, message):
         result1 = self.account.register(firstName, lastName, emailAddress, password, confirmPassword)
@@ -29,3 +29,5 @@ class TestRegistration(unittest.TestCase):
         result2 = self.account.add_to_wishlist(emailAddress, message)
         self.ts.finalMark(testcase='test_registration_share_wishlist', result=result2,
                           resultMessage="Wishlist shared successfully")
+
+

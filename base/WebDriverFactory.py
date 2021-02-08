@@ -10,7 +10,7 @@ class WebDriverFactory():
         self.browser = browser
 
     def get_browser_instance(self):
-        if self.browser == "Firefox":
+        if self.browser == "FF":
             driver = webdriver.Firefox(executable_path="drivers//geckodriver.exe")
 
         elif self.browser == "Chrome":
@@ -24,7 +24,7 @@ class WebDriverFactory():
             driver = webdriver.Chrome(options=chrome_options,executable_path='drivers//chromedriver.exe')
 
 
-        elif self.browser == "Ie":
+        elif self.browser == "IE":
             driver = webdriver.Ie(executable_path='drivers//IEDriverServer.exe')
 
         else:

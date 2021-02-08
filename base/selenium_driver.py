@@ -52,11 +52,11 @@ class SeleniumDriver():
             self.driver.execute_script("arguments[0].scrollIntoView(true);", element);
             self.driver.execute_script("arguments[0].style.border='3px solid red'", element);
             self.cl.info(
-                "Element found with locatorType : " + str(locatorType) + " & locator : " + str(locator) + str(element))
+                "Element found with locatorType : " + str(locatorType) + " & locator : " + str(locator) + " & element : " + str(element))
 
         except Exception as e:
             self.cl.info(
-                "Element could not be found with type : " + str(locatorType) + " and locator : " + str(locator) + str(
+                "Element could not be found with type : " + str(locatorType) + " and locator : " + str(locator) + ". Following error occurred : " + str(
                     e))
             print_stack()
 
@@ -379,21 +379,33 @@ class SeleniumDriver():
         self.driver.refresh()
 
     def current_handle_window(self):
-        current_window = self.driver.current_window_handle
-        self.cl.info("The current window handle is :: " + str(current_window))
+        current_window = None
+        try:
+            current_window = self.driver.current_window_handle
+            self.cl.info("The current window handle is :: " + str(current_window))
+            #return current_window
+
+        except Exception as e:
+            self.cl.info('Unable to get the current window. Exception Occurred :: ' + str(e))
         return current_window
 
+
     def all_window_handles(self):
-        all_handles = self.driver.window_handles
-        self.cl.info("All available Window's are :: " + str(all_handles))
-        return all_handles
+        all_window_available = None
+        try:
+            all_window_available = self.driver.window_handles
+            self.cl.info("All available Window's are :: " + str(all_handles))
+
+        except Exception as e:
+            self.cl.info('Unable to get all the windows. Exception Occured :: ' + str(e))
+        return all_window_available
 
     def switching_to_window(self):
         try:
             current_window = self.current_handle_window()
-            all_windows = self.all_window_handles()
+            all_window_available = self.all_window_handles()
 
-            for items in all_windows:
+            for items in all_window_available:
                 if items != current_window:
                     self.driver.switch_to.window(items)
                     self.cl.info("Switched to window :: " + str(items))
@@ -403,9 +415,9 @@ class SeleniumDriver():
 
     def switch_to_parent_window(self):
         try:
-            all_windows = self.all_window_handles()
+            all_window_available = self.all_window_handles()
 
-            for items in all_windows:
+            for items in all_window_available:
                 if items == all_windows[0]:
                     self.driver.switch_to.window(items)
                     self.cl.info("Switched to window :: " + str(items))
@@ -491,3 +503,7 @@ class SeleniumDriver():
         except Exception as e:
             self.cl.info(
                 "Unable to right click on element " + str(element) + ". Following Exception Occured :: " + str(e))
+
+
+    def driver_get(self,url):
+        self.driver.get(url)

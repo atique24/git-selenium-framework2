@@ -22,3 +22,4 @@ class TestCompare(BaseTest,unittest.TestCase):
         self.ts.finalMark(testcase="Test Compare Mobile", result=result,
                           resultMessage="Compared Successfully")
 
+

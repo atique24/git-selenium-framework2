@@ -18,3 +18,4 @@ class TestVerifyPriceDifferentView(BaseTest,unittest.TestCase):
         self.mb.mobile_tab()
         result = self.mb.verify_price_different_view()
         self.ts.finalMark(testcase='Verify price in different view',result=result,resultMessage='Value Matched')
+

@@ -18,3 +18,4 @@ class TestCart(BaseTest,unittest.TestCase):
         result = self.mb.verify_max_cart_error()
         self.ts.finalMark(testcase='Verify max cart error message',result=result,resultMessage='Error displayed')
 
+
