@@ -7,3 +7,5 @@ pytest-rerunfailures
 xlrd
 ddt
 cx_Oracle
+pytest-reporter-html1
+pytest-xdist
