@@ -3,10 +3,12 @@ from utilities.customlogger import custom_logger
 import logging
 from pages.mobile_page.mobile_page import MobilePage
 import time
+from pages.account_creation.account_creation_locators import *
 
 
 class Account(SeleniumDriver):
     cl = custom_logger(loglevel=logging.INFO)
+
 
     def __init__(self,driver):
         super(Account, self).__init__(driver)
@@ -14,50 +16,31 @@ class Account(SeleniumDriver):
         self.mb = MobilePage(self.driver)
 
 
-    #locators
-    _account = "//a/span[text()='Account']"
-    _register = "Register"
-    _firstname = "firstname"
-    _lastname = "lastname"
-    _email_address = "email_address"
-    _password = "password"
-    _confirmation = "confirmation"
-    _checkbox = "is_subscribed"
-    _register2= "//button[@title='Register']"
-    _success_message = "//span[text()='Thank you for registering with Main Website Store.']"
-    _tv = "TV"
-    _add_to_wishlist = "//a[@title='LG LCD']//following-sibling::div/child::div/ul/li/a"
-    _share_wishlist = "//span[text()='Share Wishlist']"
-    _emailaddress_wishlist = "email_address"
-    _message_wishlist = "message"
-    _message_success_sharelist = "//span[text()='Your Wishlist has been shared.']"
-
-
     def click_tv_tab(self):
-        self.elementClick(self._tv,'link')
+        self.elementClick(tv)
 
     def add_to_wishlist(self,emailAddress,message):
         self.click_tv_tab()
-        self.elementClick(self._add_to_wishlist,'xpath')
-        self.elementClick(self._share_wishlist,'xpath')
-        self.elementSend(self._emailaddress_wishlist,'id',emailAddress)
-        self.elementSend(self._message_wishlist, 'id', message)
-        self.elementClick(self._share_wishlist,'xpath')
-        return self.isElementDisplayed(self._message_success_sharelist,'xpath')
+        self.elementClick(add_to_wishlist)
+        self.elementClick(share_wishlist)
+        self.elementSend(emailaddress_wishlist,emailAddress)
+        self.elementSend(message_wishlist,message)
+        self.elementClick(share_wishlist)
+        return self.isElementDisplayed(message_success_sharelist)
 
 
 
     def register(self,firstName,lastName,emailAddress,password,confirmPassword):
-        self.elementClick(self._account,'xpath')
-        self.elementClick(self._register,'link')
-        self.elementSend(self._firstname,'id',firstName)
-        self.elementSend(self._lastname,'id',lastName)
-        self.elementSend(self._email_address, 'id', emailAddress)
-        self.elementSend(self._password, 'id', password)
-        self.elementSend(self._confirmation, 'id', confirmPassword)
-        self.elementClick(self._checkbox, 'id')
-        self.elementClick(self._register2,'xpath')
-        return self.isElementDisplayed(self._success_message,'xpath')
+        self.elementClick(account)
+        self.elementClick(register)
+        self.elementSend(firstname,firstName)
+        self.elementSend(lastname,lastName)
+        self.elementSend(email_address, emailAddress)
+        self.elementSend(password_loc, password)
+        self.elementSend(confirmation, confirmPassword)
+        self.elementClick(checkbox)
+        self.elementClick(register2)
+        return self.isElementDisplayed(success_message)
 
 
 

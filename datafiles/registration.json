@@ -1,8 +1,8 @@
 [
   {
     "firstName": "test",
-    "lastName": "fortynine",
-    "emailAddress": "test@fortynine.com",
+    "lastName": "fifty",
+    "emailAddress": "test@fifty.com",
     "password": "test12345",
     "confirmPassword": "test12345",
     "message": "Hello Could you please buy for me"
