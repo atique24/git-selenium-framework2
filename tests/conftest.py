@@ -1,24 +1,28 @@
+from datetime import datetime
+
 import pytest
 from base.WebDriverFactory import WebDriverFactory
+# from base.WebDriverFactoryBB import WebdriverFactoryBB
 from utilities.customlogger import custom_logger
 import logging
-import datetime
-import os
 
 driver = None
 
 cl = custom_logger(logging.INFO)
 
+
 def pytest_addoption(parser):
     parser.addoption("--browser")
+
 
 @pytest.fixture(scope="session")
 def browser(request):
     return request.config.getoption("--browser")
 
-#---------------------for new session for each Test class
+
+# ---------------------for new session for each Test class
 @pytest.fixture(scope="class")
-def oneTimeSetup(request,browser):
+def oneTimeSetup(request, browser):
     cl.info("Launching browser :: " + str(browser))
     wdf = WebDriverFactory(browser)
     global driver
@@ -28,7 +32,18 @@ def oneTimeSetup(request,browser):
         yield driver
         driver.quit()
 
-#for single driver session for all test class
+# -------------------------- for browserStack
+# @pytest.fixture(scope="class")
+# def oneTimeSetup(request):
+#     wdf = WebdriverFactoryBB()
+#     global driver
+#     driver = wdf.get_browser_instance()
+#     if request.cls is not None:
+#         request.cls.driver = driver
+#         yield driver
+#         driver.quit()
+
+# for single driver session for all test class
 # @pytest.fixture(scope="session")
 # def oneTimeSetup(request, browser):
 #     print("This is one time setup")
@@ -38,7 +53,6 @@ def oneTimeSetup(request,browser):
 #     request.cls.driver = driver
 #     yield driver
 #     driver.quit()
-
 
 
 # @pytest.mark.hookwrapper
@@ -63,17 +77,15 @@ def oneTimeSetup(request,browser):
 #                 extra.append(pytest_html.extras.html(html))
 #         report.extra = extra
 #
+#
 # def _capture_screenshot(name):
-#     driver.get_screenshot_as_file(name)
+#         driver.get_screenshot_as_file(name)
 
 
-
-
-
-
-
-
-
-
-
-
+@pytest.hookimpl(tryfirst=True, hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    outcome = yield
+    rep = outcome.get_result()
+    if rep.when == 'call' and rep.failed:
+        now = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+        driver.save_screenshot(f"..\\screenshots\\fail_{now}.png")

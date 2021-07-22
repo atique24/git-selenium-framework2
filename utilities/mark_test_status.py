@@ -17,7 +17,7 @@ class MarkTestStatus(SeleniumDriver):
             if result is not None:
                 if result is True:
                     self.resultlist.append("Pass")
-                    self.cl.info("###Verification Successfull :: + " + resultMessage)
+                    self.cl.info("###Verification Successful :: + " + resultMessage)
                 else:
                     self.resultlist.append("Fail")
                     self.savescreenshots(resultMessage)
@@ -33,7 +33,6 @@ class MarkTestStatus(SeleniumDriver):
             self.resultlist.append("Fail")
             self.savescreenshots(resultMessage)
             self.cl.error("### Exception Occured !!!" + "Exception :: " + str(e))
-
 
     def mark(self, result, resultMessage):
         self.setResult(result, resultMessage)

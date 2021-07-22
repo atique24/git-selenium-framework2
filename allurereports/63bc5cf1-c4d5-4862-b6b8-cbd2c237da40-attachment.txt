@@ -1,0 +1,9 @@
+[32mINFO    [0m <module>:conftest.py:23 Launching browser :: Chrome
+[32mINFO    [0m WebDriverFactory:WebDriverFactory.py:40 Launching the URL :: http://www.three.co.uk/ on browser :: Chrome
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:54 Waiting for time :: 10seconds to find the element with locatorValue :: ('xpath', "//span[text()='Register']")
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:113 Clicked on Element : <selenium.webdriver.remote.webelement.WebElement (session="c7443750e47fa138e648e8becd492fdb", element="eb371d7e-e2dd-4457-98bb-6f3313584102")>
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:54 Waiting for time :: 10seconds to find the element with locatorValue :: ('id', 'MSISDN')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:124 Text : 07448061886 entered on locator: ('id', 'MSISDN')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:77 Element :: [<selenium.webdriver.remote.webelement.WebElement (session="c7443750e47fa138e648e8becd492fdb", element="55de675a-14dc-495b-8f83-10f079aa8dee")>]found for locator :: ('xpath', "//span[contains(text(),'Something')]")
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:252 [<selenium.webdriver.remote.webelement.WebElement (session="c7443750e47fa138e648e8becd492fdb", element="55de675a-14dc-495b-8f83-10f079aa8dee")>]
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:254 Element with locator ('xpath', "//span[contains(text(),'Something')]")is present
