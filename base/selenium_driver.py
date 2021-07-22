@@ -19,7 +19,6 @@ class SeleniumDriver:
 
     def __init__(self, driver):
         self.driver = driver
-
         self.actions = ActionChains(self.driver)
 
     def ByType(self, locatorType):
@@ -308,8 +307,6 @@ class SeleniumDriver:
         try:
             wait = WebDriverWait(self.driver, timeout, poll_frequency=poll)
             element = wait.until(EC.presence_of_element_located(locator))
-
-
         except Exception as e:
             self.cl.info("Unable to find element." + str(e))
 
