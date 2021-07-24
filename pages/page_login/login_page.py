@@ -1,6 +1,5 @@
-from pages.page_login.login_page_locator import LoginPageLocators
+from pages.locators import LoginPageLocators
 from base.selenium_driver import SeleniumDriver
-from assertpy import assert_that
 import allure
 
 
@@ -12,14 +11,18 @@ class Login(SeleniumDriver):
         self.lp = LoginPageLocators()
 
 
-    @allure.step("Clicking on register from homepage")
-    def click_register_linK(self):
-        self.elementClick(self.lp.register)
+    @allure.step("Enter the username")
+    def enter_username(self,username):
+        self.elementSend(self.lp.username,username)
 
-    @allure.step("Enter the registered mobile number")
-    def enter_mobile_number(self,number):
-        self.elementSend(self.lp.number, number)
+    @allure.step("Enter the password")
+    def enter_password(self,password):
+        self.elementSend(self.lp.password, password)
 
-    @allure.step("Check the Invalid mobile number is displayed")
-    def check_the_error_message(self):
-        assert_that(self.isElementPresent(self.lp.error_message)).is_false()
+    @allure.step("Click on Submit button")
+    def click_submit_button(self):
+        self.elementClick(self.lp.submit)
+
+    @allure.step("Check if the success message is displayed")
+    def check_login_successfull(self):
+        return self.isElementDisplayed(self.lp.success_message)

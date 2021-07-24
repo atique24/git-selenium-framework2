@@ -1,0 +1,18 @@
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:54 Waiting for time :: 10 seconds to find the element for locator :: ('link text', 'REGISTER')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:61 Element found for locatorValue :: ('link text', 'REGISTER')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:115 Clicked on Element : <selenium.webdriver.firefox.webelement.FirefoxWebElement (session="bc9df86d-376b-4ac6-b812-f770fd9ede1a", element="b819a5f9-32d1-466f-a967-ece7534c99cf")>
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:54 Waiting for time :: 10 seconds to find the element for locator :: ('name', 'firstName')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:61 Element found for locatorValue :: ('name', 'firstName')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:126 Text : test entered on locator: ('name', 'firstName')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:54 Waiting for time :: 10 seconds to find the element for locator :: ('name', 'lastName')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:61 Element found for locatorValue :: ('name', 'lastName')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:126 Text : test entered on locator: ('name', 'lastName')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:54 Waiting for time :: 10 seconds to find the element for locator :: ('name', 'userName')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:61 Element found for locatorValue :: ('name', 'userName')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:126 Text : test@test.com entered on locator: ('name', 'userName')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:54 Waiting for time :: 10 seconds to find the element for locator :: ('name', 'submit')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:61 Element found for locatorValue :: ('name', 'submit')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:115 Clicked on Element : <selenium.webdriver.firefox.webelement.FirefoxWebElement (session="bc9df86d-376b-4ac6-b812-f770fd9ede1a", element="b4f640bc-9531-4f92-82ad-028f8f272109")>
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:65 Element could not be found for :: ('xpath', "//font[contains(text(),'Thank you1')]") Message: 
+
+[33mWARNING [0m SeleniumDriver:selenium_driver.py:314 Exception occurred while executing isElementDisplayed :: exception occurred :: 'NoneType' object has no attribute 'is_displayed'

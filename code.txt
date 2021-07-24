@@ -1,7 +1,0 @@
-pytest -s -v --browser Chrome --template=html1/index.html --report=report.html tests.py       ------------if using pytest-reporter-html1
-
-pytest -s -v --browser Chrome --html=report.html tests.py    --------------------- if using pytest-html
-
-
-
-pytest -s -v --browser Chrome --template=html1/index.html --report=report.html tests\test_suite_smoke\test_suite_SmokeTest.py -n 3   -------------- to run test parallel

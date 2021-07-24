@@ -1,23 +1,26 @@
+import os
+
 from utilities.customlogger import custom_logger
 import time
 import random
 import string
 import logging
 from traceback import print_stack
+import datetime
+
 
 class Utilities():
     cl = custom_logger(logging.INFO)
 
-    def sleep(self,sec,info =""):
+    def sleep(self, sec, info=""):
         if info is not None:
-            self.cl.info("Wait :: " +str(sec) + " seconds for " + str(info) )
+            self.cl.info("Wait :: " + str(sec) + " seconds for " + str(info))
         try:
             time.sleep(sec)
         except InterruptedError:
             self.cl.error("Exception occured while Sleep")
 
-
-    def verify_text_contains(self,actualText, expectedText):
+    def verify_text_contains(self, actualText, expectedText):
         self.cl.info("Actual text from application URL is :: " + str(actualText))
         self.cl.info("Expected text from application URL is :: " + str(expectedText))
 
@@ -28,8 +31,7 @@ class Utilities():
             self.cl.info("### Verfication Failed !!!")
             return False
 
-
-    def verify_text(self,actualText, expectedText):
+    def verify_text(self, actualText, expectedText):
         self.cl.info("Actual text from application URL is :: " + str(actualText))
         self.cl.info("Expected text from application URL is :: " + str(expectedText))
 
@@ -40,7 +42,7 @@ class Utilities():
             self.cl.log.info("### Verfication Failed")
             return False
 
-    def getAlphaNumeric(self,length,type):
+    def getAlphaNumeric(self, length, type):
 
         alpha_num = ""
 
@@ -59,11 +61,10 @@ class Utilities():
         elif type == "letters":
             value = string.ascii_letters
 
-        for i in range(0,length):
+        for i in range(0, length):
             return alpha_num.join(random.choice(value))
 
-
-    def listcompare(self,expectedList, actualList):
+    def listcompare(self, expectedList, actualList):
         try:
             self.cl.info("Expected List is :: " + str(expectedList))
             self.cl.info("Actual List is :: " + str(actualList))
@@ -89,7 +90,6 @@ class Utilities():
             print("List Length does not match")
             return False
 
-
     def verify_value(self, actualValue, expectedValue):
         self.cl.info("Actual value from application  is :: " + str(actualValue))
         self.cl.info("Expected value from application  is :: " + str(expectedValue))
@@ -101,8 +101,9 @@ class Utilities():
             self.cl.info("### Verfication Failed")
             return False
 
-
-
+    def generate_date_time(self):
+        now = datetime.datetime.now()
+        return now.strftime('%Y-%m-%d %H-%M-%S')
 
 
 

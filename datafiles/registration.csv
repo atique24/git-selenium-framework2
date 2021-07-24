@@ -1,2 +1,2 @@
-firstName,lastName,emailAddress,password,confirmPassword,message
-test,thirtynine,test@thirtynine.com,test12345,test12345,Hello Could you please buy for me
+firstname,lastname,email
+test,test,test@test.com

@@ -16,28 +16,27 @@ class WebDriverFactory():
         self.browser = browser
 
     def get_browser_instance(self):
-        if self.browser == "FF":
+        if self.browser.lower() == "firefox":
             driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
 
-        elif self.browser == "Chrome":
+        elif self.browser.lower() == "chrome":
             chrome_options = Options()
             # download_dir = "C://Users//A610037//Downloads//download_chrome"
             chrome_options.add_argument('--start-maximized')
             chrome_options.add_experimental_option('prefs', {'geolocation': True})
             chrome_options.add_experimental_option('useAutomationExtension', False)
             chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-
             #driver = webdriver.Chrome(options=chrome_options, executable_path='drivers//chromedriver.exe')
             driver = webdriver.Chrome(ChromeDriverManager().install(),options=chrome_options)
 
-        elif self.browser == "Ie":
+        elif self.browser.lower() == "Ie":
             driver = webdriver.Ie(IEDriverManager().install())
 
-        elif self.browser == "Edge":
+        elif self.browser.lower() == "Edge":
             driver = webdriver.Edge(EdgeChromiumDriverManager().install())
 
         else:
-            driver = webdriver.Chrome(executable_path='drivers//chromedriver.exe')
+            driver = webdriver.Chrome(ChromeDriverManager().install())
 
         driver.delete_all_cookies()
         driver.maximize_window()

@@ -2,7 +2,7 @@ selenium
 pytest
 pytest-fixtures
 pytest-html
-pytest-ordering
+pytest-order
 pytest-rerunfailures
 xlrd
 ddt
@@ -11,3 +11,7 @@ pytest-reporter-html1
 pytest-xdist
 allure-pytest
 webdriver-manager
+
+
+
+

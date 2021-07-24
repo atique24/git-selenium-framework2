@@ -10,6 +10,3 @@ def excel_data(sheetIndex,rowValues,filename):
 
 
 
-atiqye = excel_data(0,0,filename="C:\\Users\\Atique\\PycharmProjects\\framework2\\datafiles\\test.xlsx")
-print(atiqye)
-

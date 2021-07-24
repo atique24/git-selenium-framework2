@@ -1,0 +1,7 @@
+pytest -s -v --browser Chrome --template=html1/index.html --report=report.html tests.py       ------------if using pytest-reporter-html1
+
+pytest -s -v --browser Chrome --html=report.html tests.py    --------------------- if using pytest-html
+
+
+
+pytest -s -v --alluredir=allurereport --browser Chrome tests\test_individual\ -n=auto --dist=loadfile   --- for allure report + parallel run

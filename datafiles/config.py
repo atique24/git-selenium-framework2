@@ -1,1 +1,1 @@
-baseUrl = "http://www.three.co.uk/"
+baseUrl = "http://demo.guru99.com/test/newtours/"

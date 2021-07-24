@@ -1,0 +1,23 @@
+[32mINFO    [0m <module>:conftest.py:28 Launching browser :: FIREFOX
+[32mINFO    [0m WDM:logger.py:22 
+
+[32mINFO    [0m WDM:logger.py:12 ====== WebDriver manager ======
+[32mINFO    [0m WDM:logger.py:12 Current firefox version is 90.0.1
+[32mINFO    [0m WDM:logger.py:12 Get LATEST driver version for 90.0.1
+[32mINFO    [0m WDM:logger.py:12 Driver [C:\Users\atique.shaikh\.wdm\drivers\geckodriver\win64\v0.29.1\geckodriver.exe] found in cache
+[32mINFO    [0m WebDriverFactory:WebDriverFactory.py:46 Launching the URL :: http://demo.guru99.com/test/newtours/ on browser :: FIREFOX
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:54 Waiting for time :: 10 seconds to find the element with locatorValue :: ('name', 'userName')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:61 Element found for locatorValue :: ('name', 'userName')
+
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:127 Text : admin entered on locator: ('name', 'userName')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:54 Waiting for time :: 10 seconds to find the element with locatorValue :: ('name', 'password')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:61 Element found for locatorValue :: ('name', 'password')
+
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:127 Text : admin entered on locator: ('name', 'password')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:54 Waiting for time :: 10 seconds to find the element with locatorValue :: ('name', 'submit')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:61 Element found for locatorValue :: ('name', 'submit')
+
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:116 Clicked on Element : <selenium.webdriver.firefox.webelement.FirefoxWebElement (session="47982f0b-36ef-4635-9a68-5fe00516135d", element="6ed9780c-7064-42db-bb24-85af60f7ac20")>
+[33mWARNING [0m SeleniumDriver:selenium_driver.py:65 Element could not be found for :: ('xpath', "//h3[text()='Login Successfully1']") Message: 
+
+[33mWARNING [0m SeleniumDriver:selenium_driver.py:314 Exception occurred while executing isElementDisplayed :: exception occurred :: 'NoneType' object has no attribute 'is_displayed'

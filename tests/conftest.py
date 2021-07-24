@@ -1,5 +1,7 @@
+import os
 from datetime import datetime
 
+import allure
 import pytest
 from base.WebDriverFactory import WebDriverFactory
 # from base.WebDriverFactoryBB import WebdriverFactoryBB
@@ -82,10 +84,26 @@ def oneTimeSetup(request, browser):
 #         driver.get_screenshot_as_file(name)
 
 
+
+
+#-------------attach screenshot to allure report
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item, call):
     outcome = yield
     rep = outcome.get_result()
     if rep.when == 'call' and rep.failed:
-        now = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-        driver.save_screenshot(f"..\\screenshots\\fail_{now}.png")
+        mode = 'a' if os.path.exists('failures') else 'w'
+        try:
+            with open('failures', mode) as f:
+                if 'oneTimeSetup' in item.fixturenames:
+                    driver = item.funcargs['oneTimeSetup']
+                else:
+                    print('Fail to take screen-shot')
+                    return
+            allure.attach(
+                driver.get_screenshot_as_png(),
+                name='screenshot',
+                attachment_type=allure.attachment_type.PNG
+            )
+        except Exception as e:
+            print('Fail to take screen-shot: {}'.format(e))
