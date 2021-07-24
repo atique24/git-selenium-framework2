@@ -1,16 +1,7 @@
 [
   {
-<<<<<<< HEAD
     "firstname" : "test",
     "lastname" : "test",
     "email" : "test@test.com"
-=======
-    "firstName": "test",
-    "lastName": "fifty",
-    "emailAddress": "test@fifty.com",
-    "password": "test12345",
-    "confirmPassword": "test12345",
-    "message": "Hello Could you please buy for me"
->>>>>>> c2b26ea8df3451ebd9aa0703cff265b9ba94f402
   }
 ]
