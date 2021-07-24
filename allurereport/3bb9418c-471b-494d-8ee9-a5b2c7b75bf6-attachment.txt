@@ -1,0 +1,20 @@
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:54 Waiting for time :: 10 seconds to find the element for locator :: ('link text', 'REGISTER')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:61 Element found for locatorValue :: ('link text', 'REGISTER')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:115 Clicked on Element : <selenium.webdriver.firefox.webelement.FirefoxWebElement (session="0fc236bf-dbac-4e62-bc87-7b6c22aad35d", element="dab26658-57d6-4c29-b406-bb3e832bacb2")>
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:54 Waiting for time :: 10 seconds to find the element for locator :: ('name', 'firstName')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:61 Element found for locatorValue :: ('name', 'firstName')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:126 Text : test entered on locator: ('name', 'firstName')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:54 Waiting for time :: 10 seconds to find the element for locator :: ('name', 'lastName')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:61 Element found for locatorValue :: ('name', 'lastName')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:126 Text : test entered on locator: ('name', 'lastName')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:54 Waiting for time :: 10 seconds to find the element for locator :: ('name', 'userName')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:61 Element found for locatorValue :: ('name', 'userName')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:126 Text : test@test.com entered on locator: ('name', 'userName')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:54 Waiting for time :: 10 seconds to find the element for locator :: ('name', 'submit')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:61 Element found for locatorValue :: ('name', 'submit')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:115 Clicked on Element : <selenium.webdriver.firefox.webelement.FirefoxWebElement (session="0fc236bf-dbac-4e62-bc87-7b6c22aad35d", element="faff3874-d0b4-45b5-9b7a-5f48c8370b42")>
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:54 Waiting for time :: 10 seconds to find the element for locator :: ('xpath', "//font[contains(text(),'Thank you')]")
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:61 Element found for locatorValue :: ('xpath', "//font[contains(text(),'Thank you')]")
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:308 Element is displayed with locator :: ('xpath', "//font[contains(text(),'Thank you')]")
+[32mINFO    [0m MarkTestStatus:mark_test_status.py:20 ###Verification Successful :: + Testing the registration functionality
+[32mINFO    [0m MarkTestStatus:mark_test_status.py:49 test_registration with data from csv### Test Passed

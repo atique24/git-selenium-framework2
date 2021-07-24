@@ -299,10 +299,10 @@ class SeleniumDriver:
             print_stack()
 
     def isElementDisplayed(self, locator):
-        element = None
-        element = self.findElement(locator)
+
         result = None
         try:
+            element = self.findElement(locator)
             result = element.is_displayed()
             if result is True:
                 self.cl.info("Element is displayed with locator :: " + str(locator))
@@ -311,7 +311,7 @@ class SeleniumDriver:
                 self.cl.info("Element is not displayed with locator :: " + str(locator))
 
         except Exception as e:
-            self.cl.warning("Exception occurred while executing isElementDisplayed :: exception occurred :: " + str(e))
+            self.cl.warning("Element is not displayed with locator :: " + str(locator) + " Exception occurred :: " + str(e))
             print_stack()
         return result
 
