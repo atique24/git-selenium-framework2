@@ -1,16 +1,22 @@
-selenium
-pytest
-pytest-fixtures
-pytest-html
-pytest-order
-pytest-rerunfailures
-xlrd
-ddt
-cx_Oracle
-pytest-reporter-html1
-pytest-xdist
-allure-pytest
-webdriver-manager
+allure-pytest==2.9.43
+assertpy==1.1
+cx-Oracle==8.1.0
+ddt==1.4.2
+pipenv==2021.5.29
+pytest==6.2.4
+pytest-cov==2.12.1
+pytest-fixtures==0.1.0
+pytest-html==3.1.1
+pytest-order==1.0.0
+pytest-reporter==0.5.1
+pytest-reporter-html1==0.8.2
+pytest-rerunfailures==10.1
+pytest-sugar==0.9.4
+pytest-xdist==2.3.0
+requests==2.25.1
+selenium==3.141.0
+webdriver-manager==3.4.2
+xlrd==2.0.1
 
 
 

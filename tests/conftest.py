@@ -34,6 +34,7 @@ def oneTimeSetup(request, browser):
         yield driver
         driver.quit()
 
+
 # -------------------------- for browserStack
 # @pytest.fixture(scope="class")
 # def oneTimeSetup(request):
@@ -84,9 +85,7 @@ def oneTimeSetup(request, browser):
 #         driver.get_screenshot_as_file(name)
 
 
-
-
-#-------------attach screenshot to allure report
+# -------------attach screenshot to allure report
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item, call):
     outcome = yield

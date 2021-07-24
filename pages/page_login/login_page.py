@@ -1,6 +1,7 @@
 from pages.locators import LoginPageLocators
 from base.selenium_driver import SeleniumDriver
 import allure
+from assertpy import assert_that
 
 
 class Login(SeleniumDriver):
@@ -25,4 +26,4 @@ class Login(SeleniumDriver):
 
     @allure.step("Check if the success message is displayed")
     def check_login_successfull(self):
-        return self.isElementDisplayed(self.lp.success_message)
+        assert_that(self.isElementDisplayed(self.lp.success_message)).is_true()

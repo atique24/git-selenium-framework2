@@ -17,4 +17,4 @@ class RegisterLocators:
     phone = (By.NAME, "phone")
     email = (By.NAME, "userName")
     submit = (By.NAME, "submit")
-    success_message=(By.XPATH,"//font[contains(text(),'Thank you1')]")
+    success_message=(By.XPATH,"//font[contains(text(),'Thank you')]")

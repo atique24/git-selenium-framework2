@@ -27,7 +27,8 @@ class TestLogin(BaseTest, unittest.TestCase):
         self.login.enter_username(username)
         self.login.enter_password(password)
         self.login.click_submit_button()
-        result = self.login.check_login_successfull()
-        self.ts.finalMark(testcase="test_login", result=result, resultMessage="Testing the login functionality")
+        self.login.check_login_successfull()   ##asserting using the assertpy library
+        # result = self.login.check_login_successfull()
+        # self.ts.finalMark(testcase="test_login", result=result, resultMessage="Testing the login functionality")
 
 
