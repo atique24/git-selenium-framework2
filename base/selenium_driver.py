@@ -50,25 +50,43 @@ class SeleniumDriver:
         element = None
         try:
             wait = WebDriverWait(self.driver, timeout=10, poll_frequency=0.2)
+<<<<<<< HEAD
             element = wait.until(EC.presence_of_element_located(locator))
             self.cl.info(
                 "Waiting for time :: " + str(timeout) + " seconds to find the element for locator :: " + str(
                     locator))
+=======
+            element = wait.until(EC.presence_of_element_located((locator["locatorType"], locator["locatorValue"])))
+            self.cl.info(
+                "Waiting for time :: " + str(timeout) + "seconds to find the element with locatorValue :: " + locator[
+                    "locatorValue"])
+            # element = self.driver.find_element(locator["locatorType"], locator["locatorValue"])
+            self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
+            self.driver.execute_script("arguments[0].style.border='3px solid red'", element)
+            self.cl.info(
+                "Element found for locatorValue :: " + str(locator["locatorValue"]) + " with locatorType :: " + locator[
+                    "locatorType"] + "\n" + str(element))
+>>>>>>> c2b26ea8df3451ebd9aa0703cff265b9ba94f402
 
             # element = self.driver.find_element(locator["locatorType"], locator["locatorValue"])
             self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
             self.driver.execute_script("arguments[0].style.border='3px solid red'", element)
             self.cl.info(
+<<<<<<< HEAD
                 "Element found for locatorValue :: " + str(locator))
 
         except Exception as e:
             self.cl.info("Element could not be found for :: " + str(locator) + ' ' + str(e))
+=======
+                "Element could not be found for :: " + str(locator["locatorValue"]))
+>>>>>>> c2b26ea8df3451ebd9aa0703cff265b9ba94f402
             print_stack()
         return element
 
     def findElements(self, locator):
         element = []
         try:
+<<<<<<< HEAD
             element = self.driver.find_elements(*locator)
             if len(element) > 0:
                 self.cl.info("Element found for locator :: " + str(locator))
@@ -81,6 +99,14 @@ class SeleniumDriver:
         except Exception as e:
             self.cl.warning(
                 "Element could not be found for :: " + str(locator) + '' + str(e))
+=======
+            element = self.driver.find_elements(locator["locatorType"], locator["locatorValue"])
+            self.cl.info("Element :: " + str(element) + "found for locator :: " + locator["locatorValue"])
+
+        except Exception as e:
+            self.cl.info(
+                "Element could not be found for :: " + locator["locatorValue"])
+>>>>>>> c2b26ea8df3451ebd9aa0703cff265b9ba94f402
             print_stack()
         return element
 
@@ -123,10 +149,17 @@ class SeleniumDriver:
             element = self.findElement(locator)
             element.clear()
             element.send_keys(message)
+<<<<<<< HEAD
             self.cl.info("Text : " + str(message) + " entered on locator: " + str(locator))
         except Exception as e:
             self.cl.info(
                 "Unable to send the message on locator: " + str(locator) + "Exception :: " + str(e))
+=======
+            self.cl.info("Text : " + str(message) + " entered on locator: " + str(locator["locatorValue"]))
+        except Exception as e:
+            self.cl.info(
+                "Unable to send the message on locator: " + str(locator["locatorValue"]) + "Exception :: " + str(e))
+>>>>>>> c2b26ea8df3451ebd9aa0703cff265b9ba94f402
             print_stack()
 
     def getTitle(self):
@@ -142,7 +175,11 @@ class SeleniumDriver:
         except Exception as e:
             self.cl.info(
                 "Unable to find the text for element : " + str(
+<<<<<<< HEAD
                     locator) + ". Following Exception occurred :: " + str(e))
+=======
+                    locator["locatorValue"]) + ". Following Exception occured :: " + str(e))
+>>>>>>> c2b26ea8df3451ebd9aa0703cff265b9ba94f402
             print_stack()
         return element_text
 
@@ -174,7 +211,11 @@ class SeleniumDriver:
         except Exception as e:
             self.cl.info(
                 "Unable to find the value of attribute for element : " + str(
+<<<<<<< HEAD
                     locator) + ". Following exception occurred :: " + str(
+=======
+                    locator["locatorValue"]) + ". Following exception occurred :: " + str(
+>>>>>>> c2b26ea8df3451ebd9aa0703cff265b9ba94f402
                     e))
             print_stack()
         return elementAttribute
@@ -192,7 +233,11 @@ class SeleniumDriver:
 
         except Exception as e:
             self.cl.info("Unable to find the value of attribute for element : " + str(
+<<<<<<< HEAD
                 locator) + " exception :: " + str(e))
+=======
+                locator["locatorValue"]) + " exception :: " + str(e))
+>>>>>>> c2b26ea8df3451ebd9aa0703cff265b9ba94f402
             print_stack()
         return element_attribute
 
@@ -210,15 +255,25 @@ class SeleniumDriver:
                 return cssAttributeProperty
 
         except Exception as e:
+<<<<<<< HEAD
             self.cl.error(
                 "Unable to find the value of attribute for element : " + str(
                     locator) + ". Following Exception occurred :: " + str(
+=======
+            self.cl.info(
+                "Unable to find the value of attribute for element : " + str(
+                    locator["locatorValue"]) + ". Following Exception occurred :: " + str(
+>>>>>>> c2b26ea8df3451ebd9aa0703cff265b9ba94f402
                     e))
             print_stack()
         return cssAttributeProperty
 
+<<<<<<< HEAD
     def explicitwait(self, locator, time=2, poll=0.2):
         element = None
+=======
+    def explicitwait(self, locator, time, poll):
+>>>>>>> c2b26ea8df3451ebd9aa0703cff265b9ba94f402
         try:
 
             wait = WebDriverWait(self.driver, timeout=time, poll_frequency=poll,
@@ -226,7 +281,11 @@ class SeleniumDriver:
                                                      NoSuchElementException, TimeoutException,
                                                      StaleElementReferenceException, ElementClickInterceptedException])
             self.cl.info(
+<<<<<<< HEAD
                 "Waiting to click on element : " + str(locator) + "for time " + str(time) + "sec")
+=======
+                "Waiting to click on element : " + str(locator["locatorValue"]) + "for time " + str(time) + "sec")
+>>>>>>> c2b26ea8df3451ebd9aa0703cff265b9ba94f402
             element = wait.until(EC.element_to_be_clickable(locator))
             self.cl.info("Element is Available for action")
 
@@ -255,6 +314,7 @@ class SeleniumDriver:
             element = self.findElements(locator)
             self.cl.info(element)
             if len(element) > 0:
+<<<<<<< HEAD
                 self.cl.info("Element with locator " + str(locator) + " is present")
                 return True
             else:
@@ -267,6 +327,20 @@ class SeleniumDriver:
             return False
 
     def elementClear(self, locator):
+=======
+                self.cl.info("Element with locator " + str(locator["locatorValue"]) + "is present")
+                return True
+            else:
+                self.cl.info("Element with locator " + str(locator["locatorValue"]) + "is not present")
+                return False
+
+        except Exception as e:
+            self.cl.info("exception occured :: " + str(e))
+            print_stack()
+            return False
+
+    def elementclear(self, locator):
+>>>>>>> c2b26ea8df3451ebd9aa0703cff265b9ba94f402
         element = None
         try:
             element = self.findElement(locator)
@@ -299,6 +373,7 @@ class SeleniumDriver:
             print_stack()
 
     def isElementDisplayed(self, locator):
+<<<<<<< HEAD
         element = None
         element = self.findElement(locator)
         try:
@@ -308,6 +383,17 @@ class SeleniumDriver:
 
             else:
                 self.cl.info("Element is not displayed with locator :: " + str(locator))
+=======
+        try:
+            element = self.findElement(locator)
+            result = element.is_displayed()
+
+            if result is True:
+                self.cl.info("Element is displayed with locator :: " + str(locator["locatorValue"]))
+
+            else:
+                self.cl.info("Element is not displayed with locator :: " + str(locator["locatorValue"]))
+>>>>>>> c2b26ea8df3451ebd9aa0703cff265b9ba94f402
 
         except Exception as e:
             self.cl.warning("Exception occurred while executing isElementDisplayed :: exception occurred :: " + str(e))
@@ -318,8 +404,11 @@ class SeleniumDriver:
         try:
             wait = WebDriverWait(self.driver, timeout, poll_frequency=poll)
             element = wait.until(EC.presence_of_element_located(locator))
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> c2b26ea8df3451ebd9aa0703cff265b9ba94f402
         except Exception as e:
             self.cl.info("Unable to find element." + str(e))
 
@@ -426,20 +515,33 @@ class SeleniumDriver:
     #     try:
     #         all_window_available = self.driver.window_handles
     #         self.cl.info("All available Window's are :: " + str(all_handles))
+<<<<<<< HEAD
     # 
     #     except Exception as e:
     #         self.cl.info('Unable to get all the windows. Exception Occured :: ' + str(e))
     #     return all_window_available
     # 
+=======
+    #
+    #     except Exception as e:
+    #         self.cl.info('Unable to get all the windows. Exception Occured :: ' + str(e))
+    #     return all_window_available
+    #
+>>>>>>> c2b26ea8df3451ebd9aa0703cff265b9ba94f402
     # def switching_to_window(self):
     #     try:
     #         current_window = self.current_handle_window()
     #         all_window_available = self.all_window_handles()
+<<<<<<< HEAD
     # 
+=======
+    #
+>>>>>>> c2b26ea8df3451ebd9aa0703cff265b9ba94f402
     #         for items in all_window_available:
     #             if items != current_window:
     #                 self.driver.switch_to.window(items)
     #                 self.cl.info("Switched to window :: " + str(items))
+<<<<<<< HEAD
     # 
     #     except Exception as e:
     #         self.cl.info("Unable to switch to new window. Following Exception occurred :: " + str(e))
@@ -448,11 +550,25 @@ class SeleniumDriver:
     #     try:
     #         all_window_available = self.all_window_handles()
     # 
+=======
+    #
+    #     except Exception as e:
+    #         self.cl.info("Unable to switch to new window. Following Exception occurred :: " + str(e))
+    #
+    # def switch_to_parent_window(self):
+    #     try:
+    #         all_window_available = self.all_window_handles()
+    #
+>>>>>>> c2b26ea8df3451ebd9aa0703cff265b9ba94f402
     #         for items in all_window_available:
     #             if items == all_windows[0]:
     #                 self.driver.switch_to.window(items)
     #                 self.cl.info("Switched to window :: " + str(items))
+<<<<<<< HEAD
     # 
+=======
+    #
+>>>>>>> c2b26ea8df3451ebd9aa0703cff265b9ba94f402
     #     except Exception as e:
     #         self.cl.info("Unable to  to new window. Following Exception occurred :: " + str(e))
 
@@ -486,7 +602,11 @@ class SeleniumDriver:
             print_stack()
 
     def js_element_click(self, locator, element=None):
+<<<<<<< HEAD
         element = None
+=======
+        element - None
+>>>>>>> c2b26ea8df3451ebd9aa0703cff265b9ba94f402
         try:
             element = self.findElement(locator)
             self.driver.execute_script("arguments[0].click();", element)
