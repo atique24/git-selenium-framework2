@@ -1,0 +1,28 @@
+[32mINFO    [0m <module>:conftest.py:28 Launching browser :: FIREFOX
+[32mINFO    [0m WDM:logger.py:22 
+
+[32mINFO    [0m WDM:logger.py:12 ====== WebDriver manager ======
+[32mINFO    [0m WDM:logger.py:12 Current firefox version is 90.0.1
+[32mINFO    [0m WDM:logger.py:12 Get LATEST driver version for 90.0.1
+[32mINFO    [0m WDM:logger.py:12 Driver [C:\Users\atique.shaikh\.wdm\drivers\geckodriver\win64\v0.29.1\geckodriver.exe] found in cache
+[32mINFO    [0m WebDriverFactory:WebDriverFactory.py:46 Launching the URL :: http://demo.guru99.com/test/newtours/ on browser :: FIREFOX
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:54 Waiting for time :: 10 seconds to find the element for locator :: ('link text', 'REGISTER')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:61 Element found for locatorValue :: ('link text', 'REGISTER')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:115 Clicked on Element : <selenium.webdriver.firefox.webelement.FirefoxWebElement (session="6c0f3192-4e99-4d52-a750-8c3cdac69b07", element="5553a81d-2b73-43ed-b4b5-dd553cbf33fb")>
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:54 Waiting for time :: 10 seconds to find the element for locator :: ('name', 'firstName')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:61 Element found for locatorValue :: ('name', 'firstName')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:126 Text : test entered on locator: ('name', 'firstName')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:54 Waiting for time :: 10 seconds to find the element for locator :: ('name', 'lastName')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:61 Element found for locatorValue :: ('name', 'lastName')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:126 Text : test entered on locator: ('name', 'lastName')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:54 Waiting for time :: 10 seconds to find the element for locator :: ('name', 'userName')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:61 Element found for locatorValue :: ('name', 'userName')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:126 Text : test@test.com entered on locator: ('name', 'userName')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:54 Waiting for time :: 10 seconds to find the element for locator :: ('name', 'submit')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:61 Element found for locatorValue :: ('name', 'submit')
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:115 Clicked on Element : <selenium.webdriver.firefox.webelement.FirefoxWebElement (session="6c0f3192-4e99-4d52-a750-8c3cdac69b07", element="bfcb5a3c-f085-439f-9fe4-0b35b283c96a")>
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:54 Waiting for time :: 10 seconds to find the element for locator :: ('xpath', "//font[contains(text(),'Thank you')]")
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:61 Element found for locatorValue :: ('xpath', "//font[contains(text(),'Thank you')]")
+[32mINFO    [0m SeleniumDriver:selenium_driver.py:308 Element is displayed with locator :: ('xpath', "//font[contains(text(),'Thank you')]")
+[32mINFO    [0m MarkTestStatus:mark_test_status.py:20 ###Verification Successful :: + Testing the registration functionality
+[32mINFO    [0m MarkTestStatus:mark_test_status.py:49 test_registration with data from json### Test Passed

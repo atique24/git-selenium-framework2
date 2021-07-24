@@ -301,6 +301,7 @@ class SeleniumDriver:
     def isElementDisplayed(self, locator):
         element = None
         element = self.findElement(locator)
+        result = None
         try:
             result = element.is_displayed()
             if result is True:
