@@ -13,7 +13,7 @@ cl = custom_logger(logging.INFO)
 
 
 def pytest_addoption(parser):
-    parser.addoption("--browser")
+    parser.addoption("--browser",action="store", default="Chrome", help="Type in browser type")
 
 
 @pytest.fixture(scope="session")
