@@ -7,7 +7,8 @@ class LoginPageLocators:
     username = (By.NAME, "userName")
     password = (By.NAME, "password")
     submit = (By.NAME, "submit")
-    success_message=(By.XPATH, "//h3[text()='Login Successfully1']")
+    success_message=(By.XPATH, "//h3[text()='Login Successfully']")
+    sign_off = (By.LINK_TEXT,"SIGN-OFF")
 
 
 class RegisterLocators:

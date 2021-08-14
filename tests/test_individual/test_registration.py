@@ -32,7 +32,7 @@ class TestRegistration(BaseTest):
         self.ts.finalMark(testcase="test_registration with data from json", result=result, resultMessage="Testing the registration functionality")
 
     @pytest.fixture()
-    def tearDown(self):
+    def AfterTest(self):
         yield
         self.driver.back()
 

@@ -1,9 +1,9 @@
 from pages.locators import RegisterLocators
-from base.selenium_driver import SeleniumDriver
+from base.SeleniumBase import SeleniumBase
 import allure
 
 
-class Registration(SeleniumDriver):
+class Registration(SeleniumBase):
 
     def __init__(self, driver):
         super().__init__(driver)

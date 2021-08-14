@@ -1,10 +1,10 @@
 from pages.locators import LoginPageLocators
-from base.selenium_driver import SeleniumDriver
+from base.SeleniumBase import SeleniumBase
 import allure
 from assertpy import assert_that
 
 
-class Login(SeleniumDriver):
+class Login(SeleniumBase):
 
     def __init__(self, driver):
         super().__init__(driver)
@@ -14,7 +14,7 @@ class Login(SeleniumDriver):
 
     @allure.step("Enter the username")
     def enter_username(self,username):
-        self.elementSend(self.lp.username,username)
+        self.elementSend(self.lp.username, username)
 
     @allure.step("Enter the password")
     def enter_password(self,password):
@@ -26,4 +26,10 @@ class Login(SeleniumDriver):
 
     @allure.step("Check if the success message is displayed")
     def check_login_successfull(self):
-        assert_that(self.isElementDisplayed(self.lp.success_message)).is_true()
+        #assert_that(self.isElementDisplayed(self.lp.success_message)).is_true()
+        return self.isElementDisplayed(self.lp.success_message)
+
+    @allure.step("Check if the sign off link is displayed")
+    def check_sign_off_link_is_displayed(self):
+        return self.isElementDisplayed(self.lp.sign_off)
+        #assert_that(self.isElementDisplayed(self.lp.sign_off)).is_true()

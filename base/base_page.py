@@ -1,8 +1,9 @@
-from base.selenium_driver import SeleniumDriver
+from base.SeleniumBase import SeleniumBase
 from utilities.util import Utilities
+from assertpy import assert_that
 
 
-class BasePage(SeleniumDriver):
+class BasePage(SeleniumBase):
     def __init__(self, driver):
         super(BasePage, self).__init__(driver)
         self.driver = driver

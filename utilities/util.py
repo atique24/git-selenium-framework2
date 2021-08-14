@@ -103,7 +103,7 @@ class Utilities():
 
     def generate_date_time(self):
         now = datetime.datetime.now()
-        return now.strftime('%Y-%m-%d %H-%M-%S')
+        return now.strftime('%Y-%m-%d %H-%M-%S-%f')
 
 
 

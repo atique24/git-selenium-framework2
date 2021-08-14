@@ -1,6 +1,5 @@
 import os
 from datetime import datetime
-
 import allure
 import pytest
 from base.WebDriverFactory import WebDriverFactory
