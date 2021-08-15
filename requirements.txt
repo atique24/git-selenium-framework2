@@ -18,7 +18,7 @@ selenium==3.141.0
 webdriver-manager==3.4.2
 xlrd==2.0.1
 pytest-check
-
+msedge-selenium-tools ==3.141
 
 
 
