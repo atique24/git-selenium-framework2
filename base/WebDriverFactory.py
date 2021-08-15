@@ -14,13 +14,15 @@ from msedge.selenium_tools import EdgeOptions
 class WebDriverFactory():
     cl = custom_logger(logging.INFO)
 
-    def __init__(self, browser):
+    def __init__(self, browser, headless):
         self.browser = browser
+        self.headless = headless
 
     def get_browser_instance(self):
         if self.browser.lower() == "firefox":
             options = FirefoxOptions()
-            options.add_argument("--headless")
+            if self.headless:
+                options.add_argument("--headless")
             #options.add_argument("--disable-gpu")
             profile = webdriver.FirefoxProfile()
             profile.accept_untrusted_certs = True
@@ -28,9 +30,10 @@ class WebDriverFactory():
 
         elif self.browser.lower() == "chrome":
             chrome_options = Options()
+            if self.headless:
+                chrome_options.add_argument('headless')
             chrome_options.add_argument('ignore-certificate-errors')
             #chrome_options.add_argument("--disable-gpu")
-            chrome_options.add_argument('headless')
             chrome_options.add_argument('--start-maximized')
             chrome_options.add_experimental_option('prefs', {'geolocation': True})
             chrome_options.add_experimental_option('useAutomationExtension', False)
@@ -55,7 +58,11 @@ class WebDriverFactory():
         driver.maximize_window()
         driver.get(config.baseUrl)
         driver.implicitly_wait(5)
+        if self.headless:
+            self.cl.info("Starting " + str(self.browser) + " browser "+ " in headless mode")
+        else:
+            self.cl.info("Starting " + str(self.browser) + " browser ")
 
-        self.cl.info('Launching the URL :: ' + str(config.baseUrl) + ' on browser :: ' + str(self.browser))
+        self.cl.info("Opening the URL :: " + str(config.baseUrl))
 
         return driver
