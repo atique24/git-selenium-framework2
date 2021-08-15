@@ -62,14 +62,14 @@ class SeleniumBase:
                     locator))
             element = wait.until(EC.presence_of_element_located(locator))
             self.cl.info(
-                "Element ----> " + str(element) + " found for locator :: " + str(locator))
+                "Element :: " + str(element.id) +  " found for locator :: " + str(locator) + ". session_id :: " + str(element.parent.session_id))
 
             # element = self.driver.find_element(*locator)
             self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
             self.driver.execute_script("arguments[0].style.border='2px solid red'", element)
 
         except Exception as e:
-            self.cl.error("No Element found for locator :: " + str(locator) + '. ' + str(
+            self.cl.error("No Element found for locator :: " + str(locator) + '. ' + "Exception Occurred :: "+ str(
                 e.__class__.__name__))
             print_stack()
         return element
@@ -79,7 +79,7 @@ class SeleniumBase:
         try:
             element = self.driver.find_elements(*locator)
             if len(element) > 0:
-                self.cl.info("Elements ----> " + str(element) + " found for locator :: " + str(locator))
+                self.cl.info("Elements ::  " + str(element.id) + ", session_id :: " + str(element.parent.session_id) + " found for locator :: " + str(locator))
 
             else:
                 self.cl.info(
@@ -157,7 +157,7 @@ class SeleniumBase:
                 if self.enableScreenshot:
                    self.saveScreenshots()
                 element.click()
-                self.cl.info("Clicked on Element : " + "----> " + str(element))
+                self.cl.info("Clicked on Element : " + str(element.id))
             else:
                 self.cl.error("Unable to click on locator. No element was found for locator :: " + str(locator))
         except Exception as e:
@@ -173,7 +173,7 @@ class SeleniumBase:
                 if self.enableScreenshot:
                     self.saveScreenshots()
                 element.send_keys(message)
-                self.cl.info("Text : " + str(message) + " entered on locator: " + str(locator))
+                self.cl.info("Text :: " + str(message) + " entered on element :: " + str(element.id))
                 if self.enableScreenshot:
                     self.saveScreenshots()
             else:
@@ -380,11 +380,11 @@ class SeleniumBase:
             if element:
                 result = element.is_displayed()
                 if result:
-                    self.cl.info("Element is displayed with locator :: " + str(locator))
+                    self.cl.info("Element is displayed for locator :: " + str(locator))
                     if self.enableScreenshot:
                         self.saveScreenshots()
                 else:
-                    self.cl.info("Element is not displayed with locator :: " + str(locator))
+                    self.cl.info("Element is not displayed for locator :: " + str(locator))
             else:
                 self.cl.error("Element is not displayed. Unable to find element with locator :: " + str(locator))
                 result = False
