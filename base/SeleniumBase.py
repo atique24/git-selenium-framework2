@@ -62,7 +62,7 @@ class SeleniumBase:
                     locator))
             element = wait.until(EC.presence_of_element_located(locator))
             self.cl.info(
-                "Element :: " + str(element.id) +  " found for locator :: " + str(locator) + ". session_id :: " + str(element.parent.session_id))
+                "Element :: " + str(element.id) +  " found for locator :: " + str(locator) + ". Session_id :: " + str(element.parent.session_id))
 
             # element = self.driver.find_element(*locator)
             self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
