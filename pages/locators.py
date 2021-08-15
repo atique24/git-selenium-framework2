@@ -12,6 +12,7 @@ class LoginPageLocators:
 
 
 class RegisterLocators:
+
     register = (By.LINK_TEXT,"REGISTER")
     firstname = (By.NAME,"firstName")
     lastname = (By.NAME,"lastName")
