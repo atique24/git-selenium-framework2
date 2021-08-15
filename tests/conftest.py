@@ -35,12 +35,11 @@ def oneTimeSetup(request, browser, screenshot):
     wdf = WebDriverFactory(browser)
     global driver
     driver = wdf.get_browser_instance()
-    print("The value of screenshot variable is " + str(screenshot))
+    #print("The value of screenshot variable is " + str(screenshot))
     SeleniumBase.EnableScreenshotForTest(screenshot)  # ------ Enable / Disable screenshot
     if request.cls is not None:
         request.cls.driver = driver
         yield driver
-
         driver.quit()
 
 
