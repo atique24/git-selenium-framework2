@@ -16,6 +16,7 @@ cl = custom_logger(logging.INFO)
 def pytest_addoption(parser):
     parser.addoption("--browser", action="store", default="Chrome", help="Type in browser type")
     parser.addoption("--screenshot", action="store_true", default=False, help="To enable/disable screenshots")
+    parser.addoption("--headless", action="store_true", default=False, help="Browser Headless mode")
 
 
 @pytest.fixture(scope="session")
@@ -28,19 +29,26 @@ def screenshot(request):
     return request.config.getoption("--screenshot")
 
 
+@pytest.fixture(scope="session")
+def headless(request):
+    return request.config.getoption("--headless")
+
+
 # ---------------------for new session for each Test class
 @pytest.fixture(scope="class")
-def oneTimeSetup(request, browser, screenshot):
-    cl.info("Launching browser :: " + str(browser))
-    wdf = WebDriverFactory(browser)
+def oneTimeSetup(request, browser, screenshot, headless):
+
+    SeleniumBase.EnableScreenshotForTest(screenshot)  # ------ Enable / Disable screenshot
+    wdf = WebDriverFactory(browser, headless)
+
     global driver
     driver = wdf.get_browser_instance()
-    #print("The value of screenshot variable is " + str(screenshot))
-    SeleniumBase.EnableScreenshotForTest(screenshot)  # ------ Enable / Disable screenshot
+
     if request.cls is not None:
         request.cls.driver = driver
         yield driver
         driver.quit()
+        cl.info("Quiting the browser session")
 
 
 # -------------------------- for browserStack
