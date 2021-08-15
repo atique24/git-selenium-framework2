@@ -14,6 +14,7 @@ from utilities.util import Utilities
 
 
 class SeleniumBase:
+    enableScreenshot = False
     cl = custom_logger(logging.INFO)
 
     def __init__(self, driver):
@@ -21,28 +22,36 @@ class SeleniumBase:
         self.actions = ActionChains(self.driver)
         self.util = Utilities()
 
-    def ByType(self, locatorType):
-        locatorType = locatorType.lower()
+    @classmethod
+    def EnableScreenshotForTest(cls, screenshot):
+        cls.enableScreenshot = screenshot
 
-        if locatorType == "id":
-            return By.ID
-        elif locatorType == "xpath":
-            return By.XPATH
-        elif locatorType == "css":
-            return By.CSS_SELECTOR
-        elif locatorType == "link":
-            return By.LINK_TEXT
-        elif locatorType == "partial link":
-            return By.PARTIAL_LINK_TEXT
-        elif locatorType == "name":
-            return By.NAME
-        elif locatorType == "tag":
-            return By.TAG_NAME
-        elif locatorType == "class":
-            return By.CLASS_NAME
+    """
+    Below method is deprecated
+    """
+    # def ByType(self, locatorType):
+    #     locatorType = locatorType.lower()
+    #
+    #     if locatorType == "id":
+    #         return By.ID
+    #     elif locatorType == "xpath":
+    #         return By.XPATH
+    #     elif locatorType == "css":
+    #         return By.CSS_SELECTOR
+    #     elif locatorType == "link":
+    #         return By.LINK_TEXT
+    #     elif locatorType == "partial link":
+    #         return By.PARTIAL_LINK_TEXT
+    #     elif locatorType == "name":
+    #         return By.NAME
+    #     elif locatorType == "tag":
+    #         return By.TAG_NAME
+    #     elif locatorType == "class":
+    #         return By.CLASS_NAME
+    #
+    #     else:
+    #         self.cl.info("Invalid Locatortype " + str(locatorType))
 
-        else:
-            self.cl.info("Invalid Locatortype " + str(locatorType))
 
     def findElement(self, locator, timeout=10, poll_frequency=0.2):
         element = None
@@ -58,8 +67,6 @@ class SeleniumBase:
             # element = self.driver.find_element(*locator)
             self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
             self.driver.execute_script("arguments[0].style.border='2px solid red'", element)
-
-
 
         except Exception as e:
             self.cl.error("No Element found for locator :: " + str(locator) + '. ' + str(
@@ -147,7 +154,8 @@ class SeleniumBase:
                 element = self.findElement(locator)
 
             if element:
-                self.saveScreenshots()
+                if self.enableScreenshot:
+                   self.saveScreenshots()
                 element.click()
                 self.cl.info("Clicked on Element : " + "----> " + str(element))
             else:
@@ -162,10 +170,12 @@ class SeleniumBase:
             if locator:
                 element = self.findElement(locator)
             if element:
-                self.saveScreenshots()
+                if self.enableScreenshot:
+                    self.saveScreenshots()
                 element.send_keys(message)
                 self.cl.info("Text : " + str(message) + " entered on locator: " + str(locator))
-                self.saveScreenshots()
+                if self.enableScreenshot:
+                    self.saveScreenshots()
             else:
                 self.cl.error(
                     "Unable to send the message on the element. No Element found for the locator ::  " + str(locator))
@@ -325,12 +335,14 @@ class SeleniumBase:
         try:
             if locator:
                 element = self.findElement(locator)
-                self.saveScreenshots()
+                if self.enableScreenshot:
+                    self.saveScreenshots()
 
             if element:
                 element.clear()
                 self.cl.info("Cleared Element : " + str(element))
-                self.saveScreenshots()
+                if self.enableScreenshot:
+                    self.saveScreenshots()
             else:
                 self.cl.error("Unable to clear the element. No element found for locator :: " +str(locator))
         except Exception as e:
@@ -369,7 +381,8 @@ class SeleniumBase:
                 result = element.is_displayed()
                 if result:
                     self.cl.info("Element is displayed with locator :: " + str(locator))
-                    self.saveScreenshots()
+                    if self.enableScreenshot:
+                        self.saveScreenshots()
                 else:
                     self.cl.info("Element is not displayed with locator :: " + str(locator))
             else:
@@ -404,12 +417,14 @@ class SeleniumBase:
         try:
             if direction == "left":
                 self.driver.execute_script("window.scrollBy(-600,0);")
-                self.saveScreenshots()
+                if self.enableScreenshot:
+                    self.saveScreenshots()
                 self.cl.info("Scrolling the screen up")
 
             if direction == "right":
                 self.driver.execute_script("window.scrollBy(1100,0);")
-                self.saveScreenshots()
+                if self.enableScreenshot:
+                    self.saveScreenshots()
                 self.cl.info("Scrolling the screen down")
 
         except:
