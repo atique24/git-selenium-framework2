@@ -1,3 +1,5 @@
+import datetime
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import *
@@ -29,6 +31,7 @@ class SeleniumBase:
     """
     Below method is deprecated
     """
+
     # def ByType(self, locatorType):
     #     locatorType = locatorType.lower()
     #
@@ -52,7 +55,6 @@ class SeleniumBase:
     #     else:
     #         self.cl.info("Invalid Locatortype " + str(locatorType))
 
-
     def findElement(self, locator, timeout=10, poll_frequency=0.2):
         element = None
         try:
@@ -62,14 +64,15 @@ class SeleniumBase:
                     locator))
             element = wait.until(EC.presence_of_element_located(locator))
             self.cl.info(
-                "Element :: " + str(element.id) +  " found for locator :: " + str(locator) + ". Session_id :: " + str(element.parent.session_id))
+                "Element :: " + str(element.id) + " found for locator :: " + str(locator) + ". Session_id :: " + str(
+                    element.parent.session_id))
 
             # element = self.driver.find_element(*locator)
             self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
             self.driver.execute_script("arguments[0].style.border='2px solid red'", element)
 
         except Exception as e:
-            self.cl.error("No Element found for locator :: " + str(locator) + '. ' + "Exception Occurred :: "+ str(
+            self.cl.error("No Element found for locator :: " + str(locator) + '. ' + "Exception Occurred :: " + str(
                 e.__class__.__name__))
             print_stack()
         return element
@@ -79,7 +82,8 @@ class SeleniumBase:
         try:
             element = self.driver.find_elements(*locator)
             if len(element) > 0:
-                self.cl.info("Elements ::  " + str(element.id) + ", session_id :: " + str(element.parent.session_id) + " found for locator :: " + str(locator))
+                self.cl.info("Elements ::  " + str(element.id) + ", session_id :: " + str(
+                    element.parent.session_id) + " found for locator :: " + str(locator))
 
             else:
                 self.cl.info(
@@ -155,7 +159,7 @@ class SeleniumBase:
 
             if element:
                 if self.enableScreenshot:
-                   self.saveScreenshots()
+                    self.saveScreenshots()
                 element.click()
                 self.cl.info("Clicked on Element : " + str(element.id))
             else:
@@ -295,7 +299,6 @@ class SeleniumBase:
             print_stack()
         return cssAttributeProperty
 
-
     def waitToClickElement(self, locator, time=2, poll=0.2):
         element = None
         try:
@@ -344,7 +347,7 @@ class SeleniumBase:
                 if self.enableScreenshot:
                     self.saveScreenshots()
             else:
-                self.cl.error("Unable to clear the element. No element found for locator :: " +str(locator))
+                self.cl.error("Unable to clear the element. No element found for locator :: " + str(locator))
         except Exception as e:
             self.cl.error("Unable to clear element. Exception :: " + '. ' + str(
                 e.__class__.__name__) + str(e))
@@ -354,7 +357,7 @@ class SeleniumBase:
         test_name = os.environ.get('PYTEST_CURRENT_TEST').split(' ')[0]  # fetch the current testname
         new_name = test_name.split("::")
         filename = new_name[-1] + "_" + self.util.generate_date_time() + ".png"
-        screenshotDirectory = "..//screenshots//"
+        screenshotDirectory = "..//screenshots//" + str(datetime.date.today()) + "//"
         relativeFilename = screenshotDirectory + filename
 
         currentDirectory = os.path.dirname(__file__)
@@ -371,6 +374,27 @@ class SeleniumBase:
             self.cl.error("### Exception Occurred " + str(
                 e.__class__.__name__) + str(e))
             print_stack()
+
+    def getInnerText(self, locator, element=None):
+        innerText = None
+        try:
+            if locator:
+                element = self.findElement(locator)
+            if element:
+                elementText = element.get_attribute("innerText")
+                self.cl.info("InnerText of element is " + str(innerText))
+            else:
+                self.cl.error(
+                    "Unable to get innerText of element. No element was found for locator :: " + str(
+                        locator))
+        except Exception as e:
+            self.cl.error(
+                "Unable to find the value of attribute for element : " + str(
+                    locator) + ". Following exception occurred :: " + '. ' + str(
+                    e.__class__.__name__) + str(
+                    e))
+            print_stack()
+        return innerText
 
     def isElementDisplayed(self, locator, element=None):
         try:
@@ -395,7 +419,6 @@ class SeleniumBase:
             print_stack()
             result = False
         return result
-
 
     def scrollingVertical(self, direction):
         direction = direction.lower()
@@ -484,13 +507,14 @@ class SeleniumBase:
                 self.actions.drag_and_drop_by_offset(source=element, xoffset=XCORD, yoffset=YCORD).perform()
                 self.saveScreenshots()
             else:
-                self.cl.error("Unable to perform slider operation on element. No element was found for locator " +str(locator))
+                self.cl.error(
+                    "Unable to perform slider operation on element. No element was found for locator " + str(locator))
         except Exception as e:
-            self.cl.error("Exception occurred during sliding. Following Exception occurred :: " +  '. ' + str(
+            self.cl.error("Exception occurred during sliding. Following Exception occurred :: " + '. ' + str(
                 e.__class__.__name__) + str(e))
             print_stack()
 
-    def doubleClick(self, locator,element=None):
+    def doubleClick(self, locator, element=None):
         try:
             if locator:
                 element = self.findElement(locator)
@@ -499,9 +523,10 @@ class SeleniumBase:
                 self.actions.double_click(element).perform()
                 self.cl.info("Double Clicked on :: " + str(element))
             else:
-                self.cl.error("Unable to perform double click on element. No element was found for locator :: " + str(locator))
+                self.cl.error(
+                    "Unable to perform double click on element. No element was found for locator :: " + str(locator))
         except Exception as e:
-            self.cl.error("Exception occurred during Double Click. Following Exception occurred :: "  + str(
+            self.cl.error("Exception occurred during Double Click. Following Exception occurred :: " + str(
                 e.__class__.__name__) + str(e))
             print_stack()
 
@@ -513,38 +538,39 @@ class SeleniumBase:
             self.cl.error("Unable to refresh the browser. Exception occurred :: " + str(
                 e.__class__.__name__) + str(e))
 
-
-    def current_handle_window(self):
-        current_window = None
-        try:
-            current_window = self.driver.current_window_handle
-            self.cl.info("The current window handle is :: " + str(current_window))
-            # return current_window
-
-        except Exception as e:
-            self.cl.error('Unable to get the current window. Exception Occurred :: ' + str(e))
-        return current_window
-
-    # def all_window_handles(self):
-    #     all_window_available = None
+    # def currentBrowserWindow(self):
+    #     current_window = None
     #     try:
-    #         all_window_available = self.driver.window_handles
-    #         self.cl.info("All available Window's are :: " + str(all_handles))
-    # 
+    #         current_window = self.driver.current_window_handle
+    #         self.cl.info("The current window is :: " + str(current_window))
+    #
     #     except Exception as e:
-    #         self.cl.info('Unable to get all the windows. Exception Occured :: ' + str(e))
-    #     return all_window_available
-    # 
-    # def switching_to_window(self):
+    #         self.cl.error('Unable to get the current window. Exception Occurred :: ' + str(
+    #             e.__class__.__name__) + str(e))
+    #
+    #     return current_window
+
+    # def allBrowserWindow(self):
+    #     all_window = None
     #     try:
-    #         current_window = self.current_handle_window()
-    #         all_window_available = self.all_window_handles()
-    # 
+    #         all_window = self.driver.window_handles
+    #         self.cl.info("All available Window's are :: " + str(all_window))
+    #
+    #     except Exception as e:
+    #         self.cl.info('Unable to get all the windows. Exception Occurred :: ' + str(
+    #             e.__class__.__name__) + str(e))
+    #     return all_window
+    #
+    # def switchWindow(self):
+    #     try:
+    #         current_window = self.currentBrowserWindow()
+    #         all_window_available = self.allBrowserWindow()
+    #
     #         for items in all_window_available:
     #             if items != current_window:
     #                 self.driver.switch_to.window(items)
     #                 self.cl.info("Switched to window :: " + str(items))
-    # 
+    #
     #     except Exception as e:
     #         self.cl.info("Unable to switch to new window. Following Exception occurred :: " + str(e))
     # 
@@ -581,13 +607,13 @@ class SeleniumBase:
     #     except Exception as e:
     #         self.cl.info("Unable to press ENTER key. Following Exception occurred :: " + str(e))
 
-    def close_new_window(self):
-        try:
-            self.actions.key_down(Keys.CONTROL).send_keys('W').perform()
-            self.cl.info("Pressing CTRL + W to close the new window")
-        except Exception as e:
-            self.cl.error("Unable to perform Action :: CTRL + W. Following Exception occurred :: " + str(e))
-            print_stack()
+    # def close_new_window(self):
+    #     try:
+    #         self.actions.key_down(Keys.CONTROL).send_keys('W').perform()
+    #         self.cl.info("Pressing CTRL + W to close the new window")
+    #     except Exception as e:
+    #         self.cl.error("Unable to perform Action :: CTRL + W. Following Exception occurred :: " + str(e))
+    #         print_stack()
 
     def js_element_click(self, locator, element=None):
         try:
@@ -601,7 +627,7 @@ class SeleniumBase:
         except Exception as e:
             self.cl.error(
                 "Unable to click on element :: " + str(element) + ". Following Exception occurred :: " + str(
-                e.__class__.__name__) + str(e))
+                    e.__class__.__name__) + str(e))
 
     def js_select_list(self, locator, message):
         try:
@@ -614,7 +640,7 @@ class SeleniumBase:
             self.cl.error("Exception Occurred. Following Exception :: " + str(e))
             print_stack()
 
-    def stop_page_load(self):
+    def stopPageLoading(self):
         try:
             self.driver.execute_script("return window.stop")
             self.cl.info("Page load stop")
@@ -645,11 +671,10 @@ class SeleniumBase:
                 self.saveScreenshots()
 
             else:
-                self.cl.error("Unable to perform right click on element. No element was found for locator :: " + str(locator))
+                self.cl.error(
+                    "Unable to perform right click on element. No element was found for locator :: " + str(locator))
 
         except Exception as e:
             self.cl.error(
                 "Unable to right click on element " + str(element) + ". Following Exception Occurred :: " + str(
-                e.__class__.__name__) + " " + str(e))
-
-
+                    e.__class__.__name__) + " " + str(e))
