@@ -1,0 +1,30 @@
+[32mINFO    [0m SeleniumBase:SeleniumBase.py:62 Waiting for 10 seconds to find the element for locator :: ('link text', 'REGISTER')
+[32mINFO    [0m SeleniumBase:SeleniumBase.py:66 Element :: 7e9b9168-d494-4ab1-b5f4-4068683ea40f found for locator :: ('link text', 'REGISTER'). Session_id :: eb986c0ed1c6b2fceb1b1ed33f2f3801
+[32mINFO    [0m SeleniumBase:SeleniumBase.py:372 ### Screenshot saved at path: C:\Users\atique.shaikh\PycharmProjects\Python - Framework\Selenium\git-selenium-framework2\base\..//screenshots//2021-08-17//test_registration_02[test-test-test@test.com]_2021-08-17 23-01-56-693453.png
+[32mINFO    [0m SeleniumBase:SeleniumBase.py:164 Clicked on Element : 7e9b9168-d494-4ab1-b5f4-4068683ea40f
+[32mINFO    [0m SeleniumBase:SeleniumBase.py:62 Waiting for 10 seconds to find the element for locator :: ('name', 'firstName')
+[32mINFO    [0m SeleniumBase:SeleniumBase.py:66 Element :: ceba1258-cf3a-4f6e-846b-66cdf0f123ba found for locator :: ('name', 'firstName'). Session_id :: eb986c0ed1c6b2fceb1b1ed33f2f3801
+[32mINFO    [0m SeleniumBase:SeleniumBase.py:372 ### Screenshot saved at path: C:\Users\atique.shaikh\PycharmProjects\Python - Framework\Selenium\git-selenium-framework2\base\..//screenshots//2021-08-17//test_registration_02[test-test-test@test.com]_2021-08-17 23-01-57-093382.png
+[32mINFO    [0m SeleniumBase:SeleniumBase.py:180 Text :: test entered on element :: ceba1258-cf3a-4f6e-846b-66cdf0f123ba
+[32mINFO    [0m SeleniumBase:SeleniumBase.py:372 ### Screenshot saved at path: C:\Users\atique.shaikh\PycharmProjects\Python - Framework\Selenium\git-selenium-framework2\base\..//screenshots//2021-08-17//test_registration_02[test-test-test@test.com]_2021-08-17 23-01-57-209074.png
+[32mINFO    [0m SeleniumBase:SeleniumBase.py:62 Waiting for 10 seconds to find the element for locator :: ('name', 'lastName')
+[32mINFO    [0m SeleniumBase:SeleniumBase.py:66 Element :: 759cf597-5ad8-40ec-b824-a6b8bec41d9f found for locator :: ('name', 'lastName'). Session_id :: eb986c0ed1c6b2fceb1b1ed33f2f3801
+[32mINFO    [0m SeleniumBase:SeleniumBase.py:372 ### Screenshot saved at path: C:\Users\atique.shaikh\PycharmProjects\Python - Framework\Selenium\git-selenium-framework2\base\..//screenshots//2021-08-17//test_registration_02[test-test-test@test.com]_2021-08-17 23-01-57-283875.png
+[32mINFO    [0m SeleniumBase:SeleniumBase.py:180 Text :: test entered on element :: 759cf597-5ad8-40ec-b824-a6b8bec41d9f
+[32mINFO    [0m SeleniumBase:SeleniumBase.py:372 ### Screenshot saved at path: C:\Users\atique.shaikh\PycharmProjects\Python - Framework\Selenium\git-selenium-framework2\base\..//screenshots//2021-08-17//test_registration_02[test-test-test@test.com]_2021-08-17 23-01-57-399601.png
+[32mINFO    [0m SeleniumBase:SeleniumBase.py:62 Waiting for 10 seconds to find the element for locator :: ('name', 'userName')
+[32mINFO    [0m SeleniumBase:SeleniumBase.py:66 Element :: ee708f1a-ee92-4de0-b467-d527a48ede96 found for locator :: ('name', 'userName'). Session_id :: eb986c0ed1c6b2fceb1b1ed33f2f3801
+[32mINFO    [0m SeleniumBase:SeleniumBase.py:372 ### Screenshot saved at path: C:\Users\atique.shaikh\PycharmProjects\Python - Framework\Selenium\git-selenium-framework2\base\..//screenshots//2021-08-17//test_registration_02[test-test-test@test.com]_2021-08-17 23-01-57-489325.png
+[32mINFO    [0m SeleniumBase:SeleniumBase.py:180 Text :: test@test.com entered on element :: ee708f1a-ee92-4de0-b467-d527a48ede96
+[32mINFO    [0m SeleniumBase:SeleniumBase.py:372 ### Screenshot saved at path: C:\Users\atique.shaikh\PycharmProjects\Python - Framework\Selenium\git-selenium-framework2\base\..//screenshots//2021-08-17//test_registration_02[test-test-test@test.com]_2021-08-17 23-01-57-603024.png
+[32mINFO    [0m SeleniumBase:SeleniumBase.py:62 Waiting for 10 seconds to find the element for locator :: ('name', 'submit')
+[32mINFO    [0m SeleniumBase:SeleniumBase.py:66 Element :: 6470c485-f06a-44f8-9a40-20d739bda977 found for locator :: ('name', 'submit'). Session_id :: eb986c0ed1c6b2fceb1b1ed33f2f3801
+[32mINFO    [0m SeleniumBase:SeleniumBase.py:372 ### Screenshot saved at path: C:\Users\atique.shaikh\PycharmProjects\Python - Framework\Selenium\git-selenium-framework2\base\..//screenshots//2021-08-17//test_registration_02[test-test-test@test.com]_2021-08-17 23-01-57-684804.png
+[32mINFO    [0m SeleniumBase:SeleniumBase.py:164 Clicked on Element : 6470c485-f06a-44f8-9a40-20d739bda977
+[32mINFO    [0m SeleniumBase:SeleniumBase.py:62 Waiting for 10 seconds to find the element for locator :: ('xpath', "//font[contains(text(),'Thank you')]")
+[32mINFO    [0m SeleniumBase:SeleniumBase.py:66 Element :: 7c1b9078-a050-47a5-b945-0d23cf3618af found for locator :: ('xpath', "//font[contains(text(),'Thank you')]"). Session_id :: eb986c0ed1c6b2fceb1b1ed33f2f3801
+[32mINFO    [0m SeleniumBase:SeleniumBase.py:407 Element is displayed for locator :: ('xpath', "//font[contains(text(),'Thank you')]")
+[32mINFO    [0m SeleniumBase:SeleniumBase.py:372 ### Screenshot saved at path: C:\Users\atique.shaikh\PycharmProjects\Python - Framework\Selenium\git-selenium-framework2\base\..//screenshots//2021-08-17//test_registration_02[test-test-test@test.com]_2021-08-17 23-01-58-298162.png
+[32mINFO    [0m MarkTestStatus:mark_test_status.py:20 ###Verification Successful :: + Testing the registration functionality
+[32mINFO    [0m MarkTestStatus:mark_test_status.py:49 test_registration with data from csv### Test Passed
+[32mINFO    [0m <module>:conftest.py:51 Quiting the browser session
