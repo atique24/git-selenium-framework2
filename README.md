@@ -16,7 +16,8 @@ Provide the locators in tuple. For Eg (By.ID, "Some ID").
 Create your page class and inherit the SeleniumBase class. 
 
 Here are some common SeleniumBase methods that you might find in tests:
-findElement(self, locator, timeout=10, poll_frequency=0.2)
+findElement(self, locator, timeout=10, poll_frequency=0.2)                                                                                                                          
+
 findElements(self, locator)
 selectByIndex(self, locator, value, element=None)
 selectByVisibleText(self, locator, value, element=None)
