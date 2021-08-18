@@ -67,5 +67,5 @@ logs/ today's date / Automation.log
 
 🔵 Supports Class Level SetUp and TearDown. Fresh browser session will be created for each TestClass.
 
-🔵 Can use python default Assert or assertPy for Assertions.
+🔵 Can use python default Assert or assertPy for Assertions
 
