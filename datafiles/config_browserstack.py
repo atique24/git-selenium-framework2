@@ -24,5 +24,3 @@ browser_config = [{
       'name': 'Parallel Test3',
       'build': 'browserstack-build-1'
 }]
-
-print(type(browser_config))
