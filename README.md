@@ -61,7 +61,9 @@ pytest tests\ tests\  --alluredir=TestReport\  #Create files for Allure report. 
 screenshots/ today's date /
 logs/ today's date / Automation.log
 
-🔵 Supports DDT using JSON or CSV. Just put the file data file in //datafiles// folder. You can use @ddt from unitTest or @pytest.parameterize from pytest for Data Driven Testing.
+🔵 Supports DDT using JSON or CSV. Just put the file data file in //datafiles// folder. You can use @ddt from unitTest or @pytest.parameterize from pytest for Data Driven Testing. Please see the example Test.
+
+🔵 Supports TestSuite creating using UnitTest Framework. Please see the examples in the Tests folder.
 
 🔵 Supports Class Level SetUp and TearDown. Fresh browser session will be created for each TestClass.
 
