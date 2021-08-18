@@ -14,7 +14,7 @@ Test using pytest and @pytest.mark.parameterize provider for data driven testing
 class TestRegistration(BaseTest):
 
     @pytest.fixture(autouse=True)
-    def classObject(self):
+    def PageObjects(self):
         self.registration = Registration(self.driver)
         self.ts = MarkTestStatus(self.driver)
 
