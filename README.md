@@ -47,7 +47,7 @@ pytest tests\ tests\  --alluredir=TestReport\  #Create files for Allure report. 
 🔵 Here are some useful command-line options that come with pytest:
 -v  # Verbose mode. Prints the full name of each test run.
 -q  # Quiet mode. Print fewer details in the console output when running tests.
--x  # Stop running the tests after the first failure is reached.
+-x  # Stop running the tests after the first failure is reached
 --html=report.html  # Creates a detailed pytest-html report after tests finish.
 --collect-only (Test Collection)
 -n=NUM  # Multithread the tests using that many threads. (Parallel Testing)
