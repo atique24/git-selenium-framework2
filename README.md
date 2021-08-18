@@ -10,9 +10,9 @@ Selenium Python Framework based on Pytest and POM Design pattern.
 
 
 # Installation
-You can clone https://github.com/atique24/git-selenium-framework2.git
-Set ur application url to the baseUrl variable datafiles//config.py baseUrl
-Provide the locators in tuple. For Eg (By.ID, "Some ID")
+You can clone https://github.com/atique24/git-selenium-framework2.git.
+Set ur application url to the baseUrl variable in datafiles//config.py. 
+Provide the locators in tuple. For Eg (By.ID, "Some ID").
 Create your page class and inherit the SeleniumBase class. 
 
 Here are some common SeleniumBase methods that you might find in tests:
