@@ -57,28 +57,44 @@ rightClick(self, locator, element=None)
 
 🔵 Here are more examples that you can run:
 pytest tests\ --headless   # To run the browser in headless mode. By Default the browser will run in Headed mode.
+
 pytest tests\ --screenshot # To enable screenshot capture. By Default it is set to Off. Screenshots will be captured only in case of failure and attached in the allure report.
+
 pytest tests\ --browser Firefox # To launch Firefox browser. If --browser not specified, then Chrome browser is launched by default. For Edge use --browser Edge
+
 pytest tests\ -n Auto --dist loadfile # This will create multiple browser sessions based on the cpu core. For Parallel testing.
+
 pytest tests\ --html=TestReport\report.html # Simple html report.
+
 pytest tests\ tests\  --alluredir=TestReport\  #Create files for Allure report. Then do allure serve alluredir\TestReport. Allure bat files needs to be download and stored in the path. Logs and Screenshot for failed tests will be attached to the allure report. 
+
 
 🔵 Here are some useful command-line options that come with pytest:
 -v  # Verbose mode. Prints the full name of each test run.
+
 -q  # Quiet mode. Print fewer details in the console output when running tests.
+
 -x  # Stop running the tests after the first failure is reached
+
 --html=report.html  # Creates a detailed pytest-html report after tests finish.
+
 --collect-only (Test Collection)
+
 -n=NUM  # Multithread the tests using that many threads. (Parallel Testing)
--s  # See print statements. (Should be on by default with pytest.ini present.)
---junit-xml=report.xml  # Creates a junit-xml report after tests finish.
+
+-s  # print statements on console.
+
+--junit-xml=report.xml  # Creates a junit-xml report. Can use it with Jenkins and other CI tools for html report generation.
+
 --pdb  # not supported
+
 -m=MARKER  # Run tests with the tags
 
 
 🔵 Logs and screenshots will get saved to the below paths :
-screenshots/ today's date /
-logs/ today's date / Automation.log
+screenshots/today's date/.png
+
+logs/today's date/Automation.log
 
 🔵 Supports DDT using JSON or CSV. Just put the file data file in //datafiles// folder. You can use @ddt from unitTest or @pytest.parameterize from pytest for Data Driven Testing. Please see the example Test.
 
