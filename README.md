@@ -16,25 +16,43 @@ Provide the locators in tuple. For Eg (By.ID, "Some ID").
 Create your page class and inherit the SeleniumBase class. 
 
 Here are some common SeleniumBase methods that you might find in tests:
+
 findElement(self, locator, timeout=10, poll_frequency=0.2)                                                                                                                          
 
 findElements(self, locator)
+
 selectByIndex(self, locator, value, element=None)
+
 selectByVisibleText(self, locator, value, element=None)
+
 selectByValue(self, locator, value, element=None)
+
 elementClick(self, locator, element=None)
+
 elementSend(self, locator, message, element=None)
+
 getTitle(self)
+
 getText(self, locator, element=None)
+
 getTextElementList(self, locator, elements=None)
+
 getAttribute(self, locator, attributeType, element=None)
+
 waitToClickElement(self, locator, time=2, poll=0.2)
+
 waitForIframe(self, locator, index, time=10, poll=0.5)
+
 getInnerText(self, locator, element=None)
+
 isElementDisplayed(self, locator, element=None)
+
 switchFrame(self, value)
+
 slider(self, locator, XCORD, YCORD, element=None)
+
 doubleClick(self, locator, element=None)
+
 rightClick(self, locator, element=None)
 
 🔵 Here are more examples that you can run:
