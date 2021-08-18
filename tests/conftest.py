@@ -37,7 +37,6 @@ def headless(request):
 # ---------------------for new session for each Test class
 @pytest.fixture(scope="class")
 def oneTimeSetup(request, browser, screenshot, headless):
-
     SeleniumBase.EnableScreenshotForTest(screenshot)  # ------ Enable / Disable screenshot
     wdf = WebDriverFactory(browser, headless)
 
