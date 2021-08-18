@@ -19,7 +19,7 @@ Test using pytest and unittest @ddt provider for data driven testing
 class TestLogin(BaseTest, unittest.TestCase):
 
     @pytest.fixture(autouse=True)
-    def classObject(self):
+    def PageObjects(self):
         self.login = Login(self.driver)
         self.ts = MarkTestStatus(self.driver)
 
