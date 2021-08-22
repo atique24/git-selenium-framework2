@@ -29,6 +29,7 @@ class TestLogin(BaseTest, unittest.TestCase):
     @file_data("..//..//datafiles//login.json")
     @pytest.mark.run(1)
     def test_login(self, username, password):
+        self.login.visit("http://demo.guru99.com/test/newtours/")
         self.login.enter_username(username)
         self.login.enter_password(password)
         self.login.click_submit_button()
