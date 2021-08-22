@@ -30,7 +30,3 @@ def custom_logger(loglevel=logging.INFO):
     logger.addHandler(filehander)
 
     return logger
-
-
-# atique = custom_logger()
-# custom_logger().info(help)
