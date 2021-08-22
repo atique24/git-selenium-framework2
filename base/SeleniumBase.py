@@ -1,7 +1,9 @@
 import datetime
 
+from assertpy import assert_that
+from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support import expected_conditions as ec
 from selenium.common.exceptions import *
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.select import Select
@@ -55,20 +57,28 @@ class SeleniumBase:
     #     else:
     #         self.cl.info("Invalid Locatortype " + str(locatorType))
 
+    def visit(self, url):
+        try:
+            self.driver.get(url)
+        except Exception as e:
+            self.cl.error("Unable to open URL from :: " + str(url) + '. ' + "Exception Occurred :: " + str(
+                e.__class__.__name__))
+
     def findElement(self, locator, timeout=10, poll_frequency=0.2):
         element = None
+
         try:
             wait = WebDriverWait(self.driver, timeout=timeout, poll_frequency=poll_frequency)
             self.cl.info(
                 "Waiting for " + str(timeout) + " seconds to find the element for locator :: " + str(
                     locator))
-            element = wait.until(EC.presence_of_element_located(locator))
+            element = wait.until(ec.presence_of_element_located(locator))
             self.cl.info(
                 "Element :: " + str(element.id) + " found for locator :: " + str(locator) + ". Session_id :: " + str(
                     element.parent.session_id))
 
             # element = self.driver.find_element(*locator)
-            self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
+            self.driver.execute_script("arguments[0].scrollIntoView(false);", element)
             self.driver.execute_script("arguments[0].style.border='2px solid red'", element)
 
         except Exception as e:
@@ -191,7 +201,19 @@ class SeleniumBase:
             print_stack()
 
     def getTitle(self):
-        return self.driver.title
+        title = None
+        try:
+            title = self.driver.title
+            self.cl.info("The current page title is :: " + str(title))
+
+        except Exception as e:
+            self.cl.error(
+                "Unable to fetch the current page title. Exception occurred :: " + '. ' + str(
+                    e.__class__.__name__) + str(e))
+            print_stack()
+        return title
+
+
 
     def getText(self, locator, element=None):
         element_text = None
@@ -222,8 +244,8 @@ class SeleniumBase:
                 elements = self.findElements(locator)
             if len(elements) > 0:
                 for item in elements:
-                    itemtext = item.text
-                    elementText.append(itemtext)
+                    itemText = item.text
+                    elementText.append(itemText)
 
             else:
                 self.cl.error(
@@ -256,7 +278,7 @@ class SeleniumBase:
             print_stack()
         return elementAttribute
 
-    # def getAttributelist(self, locator, attributeType, elements=None):
+    # def getAttributeList(self, locator, attributeType, elements=None):
     #     element_attribute = []
     #
     #     try:
@@ -309,7 +331,7 @@ class SeleniumBase:
                                                      StaleElementReferenceException, ElementClickInterceptedException])
             self.cl.info(
                 "Waiting to click on element : " + str(locator) + "for time " + str(time) + "sec")
-            element = wait.until(EC.element_to_be_clickable(locator))
+            element = wait.until(ec.element_to_be_clickable(locator))
             self.cl.info("Element is Available for action")
 
         except Exception as e:
@@ -327,11 +349,11 @@ class SeleniumBase:
                 index) + "for time " + str(
                 time) + "sec")
             wait.until(
-                EC.frame_to_be_available_and_switch_to_it((self.driver.find_elements_by_tag_name(locator)[index])))
+                ec.frame_to_be_available_and_switch_to_it((self.driver.find_elements_by_tag_name(locator)[index])))
             self.cl.info("iFrame is Available for switching")
 
         except Exception as e:
-            self.cl.error("Unable to find the iframe. Following Exeption occurred " + '. ' + str(
+            self.cl.error("Unable to find the iframe. Following Exception occurred " + '. ' + str(
                 e.__class__.__name__) + str(e))
 
     def elementClear(self, locator, element=None):
@@ -354,7 +376,7 @@ class SeleniumBase:
             print_stack()
 
     def saveScreenshots(self):
-        test_name = os.environ.get('PYTEST_CURRENT_TEST').split(' ')[0]  # fetch the current testname
+        test_name = os.environ.get('PYTEST_CURRENT_TEST').split(' ')[0]  # fetch the current TestName
         new_name = test_name.split("::")
         filename = new_name[-1] + "_" + self.util.generate_date_time() + ".png"
         screenshotDirectory = "..//screenshots//" + str(datetime.date.today()) + "//"
@@ -381,7 +403,7 @@ class SeleniumBase:
             if locator:
                 element = self.findElement(locator)
             if element:
-                elementText = element.get_attribute("innerText")
+                innerText = element.get_attribute("innerText")
                 self.cl.info("InnerText of element is " + str(innerText))
             else:
                 self.cl.error(
@@ -431,8 +453,9 @@ class SeleniumBase:
                 self.driver.execute_script("window.scrollBy(0,700);")
                 self.cl.info("Scrolling the screen down")
 
-        except:
-            self.cl.error("Exception occurred when trying to scroll the screen")
+        except Exception as e:
+            self.cl.error("Exception occurred when trying to scroll the screen :: " + str(
+                e.__class__.__name__) + str(e))
             print_stack()
 
     def scrollingHorizontal(self, direction):
@@ -450,8 +473,9 @@ class SeleniumBase:
                     self.saveScreenshots()
                 self.cl.info("Scrolling the screen down")
 
-        except:
-            self.cl.error("Exception occured when trying to scroll the screen")
+        except Exception as e:
+            self.cl.error("Exception occurred when trying to scroll the screen :: " + str(
+                e.__class__.__name__) + str(e))
             print_stack()
 
     def switchFrame(self, value):
@@ -538,42 +562,40 @@ class SeleniumBase:
             self.cl.error("Unable to refresh the browser. Exception occurred :: " + str(
                 e.__class__.__name__) + str(e))
 
-    # def currentBrowserWindow(self):
-    #     current_window = None
-    #     try:
-    #         current_window = self.driver.current_window_handle
-    #         self.cl.info("The current window is :: " + str(current_window))
-    #
-    #     except Exception as e:
-    #         self.cl.error('Unable to get the current window. Exception Occurred :: ' + str(
-    #             e.__class__.__name__) + str(e))
-    #
-    #     return current_window
+    def currentBrowserWindow(self):
+        current_window = None
+        try:
+            current_window = self.driver.current_window_handle
+            self.cl.info("The current window is :: " + str(current_window))
 
-    # def allBrowserWindow(self):
-    #     all_window = None
-    #     try:
-    #         all_window = self.driver.window_handles
-    #         self.cl.info("All available Window's are :: " + str(all_window))
+        except Exception as e:
+            self.cl.error('Unable to get the current window. Exception Occurred :: ' + str(
+                e.__class__.__name__) + str(e))
+
+        return current_window
+
+    def allBrowserWindow(self):
+        all_window = None
+        try:
+            all_window = self.driver.window_handles
+            self.cl.info("All available Window's are :: " + str(all_window))
+
+        except Exception as e:
+            self.cl.info('Unable to get all the windows. Exception Occurred :: ' + str(
+                e.__class__.__name__) + str(e))
+        return all_window
+
     #
-    #     except Exception as e:
-    #         self.cl.info('Unable to get all the windows. Exception Occurred :: ' + str(
-    #             e.__class__.__name__) + str(e))
-    #     return all_window
+    def switchWindow(self, windowNumber: int):
+        try:
+            allWindow = self.allBrowserWindow()
+            self.driver.switch_to.window(allWindow[windowNumber])
+            self.cl.info("Switched to new window :: " + str(allWindow[windowNumber]))
+        except Exception as e:
+            self.cl.info("Unable to switch to new window. Following Exception occurred :: " + str(
+                e.__class__.__name__) + " "+ str(e))
+
     #
-    # def switchWindow(self):
-    #     try:
-    #         current_window = self.currentBrowserWindow()
-    #         all_window_available = self.allBrowserWindow()
-    #
-    #         for items in all_window_available:
-    #             if items != current_window:
-    #                 self.driver.switch_to.window(items)
-    #                 self.cl.info("Switched to window :: " + str(items))
-    #
-    #     except Exception as e:
-    #         self.cl.info("Unable to switch to new window. Following Exception occurred :: " + str(e))
-    # 
     # def switch_to_parent_window(self):
     #     try:
     #         all_window_available = self.all_window_handles()
@@ -678,3 +700,32 @@ class SeleniumBase:
             self.cl.error(
                 "Unable to right click on element " + str(element) + ". Following Exception Occurred :: " + str(
                     e.__class__.__name__) + " " + str(e))
+
+
+    def assertTitle(self, expectedTitle):
+        actualTile = self.getTitle()
+        assert_that(actualTile).is_equal_to(expectedTitle)
+
+    def assertTitleContains(self, titleSubString):
+        result = None
+        try:
+            result = WebDriverWait(self.driver,11,0.2).until(ec.title_contains(titleSubString))
+            self.cl.info("Title of the Page contains text :: " + str(titleSubString))
+
+        except Exception as e:
+            self.cl.error("Title of the Page does not contains text :: " + str(titleSubString) + ". Following Exception occurred :: " + str(
+                    e.__class__.__name__) + " " + str(e))
+        finally:
+            assert_that(result).is_true()
+
+
+    def assertElementDisplayed(self, locator, element=None):
+        assert_that(self.isElementDisplayed(locator, element)).is_true()
+
+    def assertText(self,locator, expectedText, element=None):
+        text = self.getText(locator, element)
+        assert_that(text).is_equal_to(expectedText)
+
+    def assertTextContains(self, textSubString, locator, element=None):
+        text = self.getText(locator, element)
+        assert_that(text).contains_ignoring_case(textSubString)
