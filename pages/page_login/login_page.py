@@ -11,7 +11,6 @@ class Login(SeleniumBase):
         self.driver = driver
         self.lp = LoginPageLocators()
 
-
     @allure.step("Enter the username")
     def enter_username(self,username):
         self.elementSend(self.lp.username, username)
