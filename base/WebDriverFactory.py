@@ -1,9 +1,10 @@
+from platformdirs import system
 from selenium import webdriver
 from utilities.customlogger import custom_logger
 import logging
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
-from datafiles import config
+from datafiles.config_browserstack import *
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import IEDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
@@ -11,26 +12,28 @@ from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from msedge.selenium_tools import EdgeOptions
 
 
-class WebDriverFactory():
+class WebDriverFactory:
     cl = custom_logger(logging.INFO)
 
-    def __init__(self, browser, headless):
+    def __init__(self, browser, headless, url):
         self.browser = browser
         self.headless = headless
+        self.baseUrl = url
 
     def get_browser_instance(self):
-        global driver
+        driver = None
         try:
             if self.browser.lower() == "firefox":
                 options = FirefoxOptions()
                 if self.headless:
                     options.add_argument("--headless")
-                #options.add_argument("--disable-gpu")
+                options.add_argument("--disable-gpu")
                 profile = webdriver.FirefoxProfile()
-                options.add_argument("-width=1920");
-                options.add_argument("-height=1080");
+                options.add_argument("-width=1920")
+                options.add_argument("-height=1080")
                 profile.accept_untrusted_certs = True
-                driver = webdriver.Firefox(executable_path=GeckoDriverManager().install(), firefox_profile=profile, options=options)
+                driver = webdriver.Firefox(executable_path=GeckoDriverManager().install(), firefox_profile=profile,
+                                           options=options)
 
             elif self.browser.lower() == "chrome":
                 chrome_options = Options()
@@ -38,12 +41,12 @@ class WebDriverFactory():
                     chrome_options.add_argument('headless')
                 chrome_options.add_argument('window-size=1920x1080')
                 chrome_options.add_argument('ignore-certificate-errors')
-                #chrome_options.add_argument("--disable-gpu")
+                chrome_options.add_argument("--disable-gpu")
                 chrome_options.add_argument('--start-maximized')
-                chrome_options.add_experimental_option('prefs', {'geolocation': True})
+                # chrome_options.add_experimental_option('prefs', {'geolocation': True})
                 chrome_options.add_experimental_option('useAutomationExtension', False)
                 chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-                #driver = webdriver.Chrome(options=chrome_options, executable_path='drivers//chromedriver.exe')
+                # driver = webdriver.Chrome(options=chrome_options, executable_path='drivers//chromedriver.exe')
                 driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
 
             elif self.browser.lower() == "ie":
@@ -55,25 +58,42 @@ class WebDriverFactory():
                     options.add_argument('headless')
                 options.use_chromium = True
                 options.add_argument('window-size=1920x1080')
-                options.add_argument("disable-gpu")
+                #options.add_argument("disable-gpu")
                 driver = webdriver.Chrome(EdgeChromiumDriverManager().install(), options=options)
 
-            else:
-                self.cl.error("Browser not supported :: " + str(self.browser) + ". Supported browser types are Chrome, Firefox, Edge.")
+            elif self.browser.lower() == 'browserstack':
+                driver = webdriver.Remote(command_executor=bb_url, desired_capabilities=browser_config)
 
-            driver.delete_all_cookies()
-            #driver.maximize_window()
-            driver.get(config.baseUrl)
-            driver.implicitly_wait(5)
+            else:
+                raise ValueError
+
+
             if self.headless:
                 self.cl.info("Starting " + str(self.browser).upper() + " browser in headless mode")
             else:
-                self.cl.info("Starting " + str(self.browser) + " browser ")
+                self.cl.info("Starting " + str(self.browser).upper() + " browser ")
+                driver.maximize_window()
 
-            self.cl.info("Opening the URL :: " + str(config.baseUrl))
+            driver.delete_all_cookies()
+
+            if self.baseUrl:
+                driver.get(self.baseUrl)
+                self.cl.info("Opening the URL :: " + str(self.baseUrl))
+            driver.implicitly_wait(5)
+
 
             return driver
 
+
+        except ValueError as e:
+            self.cl.error("Browser not supported :: " + str(
+                self.browser) + ". Supported browser types are Chrome, Firefox, Edge. Exception occurred. :: " + str(
+                e.__class__.__name__) + ' ' + str(e))
+            raise e
+
         except Exception as e:
             self.cl.error("Exception occurred. :: " + str(
-                    e.__class__.__name__) + ' ' + str(e))
+                e.__class__.__name__) + ' ' + str(e))
+            raise e
+
+
