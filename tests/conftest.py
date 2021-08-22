@@ -17,6 +17,7 @@ def pytest_addoption(parser):
     parser.addoption("--browser", action="store", default="Chrome", help="Type in browser type")
     parser.addoption("--screenshot", action="store_true", default=False, help="To enable/disable screenshots")
     parser.addoption("--headless", action="store_true", default=False, help="Browser Headless mode")
+    parser.addoption("--url", action="store", default=None, help="URL of the Application under test")
 
 
 @pytest.fixture(scope="session")
@@ -34,11 +35,17 @@ def headless(request):
     return request.config.getoption("--headless")
 
 
+@pytest.fixture(scope="session")
+def url(request):
+    return request.config.getoption("--url")
+
+
 # ---------------------for new session for each Test class
 @pytest.fixture(scope="class")
-def oneTimeSetup(request, browser, screenshot, headless):
+def oneTimeSetup(request, browser, screenshot, headless, url):
+    wdf = WebDriverFactory(browser, headless, url)
     SeleniumBase.EnableScreenshotForTest(screenshot)  # ------ Enable / Disable screenshot
-    wdf = WebDriverFactory(browser, headless)
+
 
     global driver
     driver = wdf.get_browser_instance()
