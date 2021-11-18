@@ -1,0 +1,4 @@
+date,class,function,status,duration,email,firstname,lastname,testData
+2021-11-18 20:17:19.758126,TestRegistration,test_registration_01,passed,2.626426800000001,test@test.com,test,test,
+2021-11-18 20:17:21.237000,TestRegistration,test_registration_02,passed,1.2418180999999997,test@test.com,test,test,
+2021-11-18 20:17:22.986675,TestRegistration,test_registration_03,passed,1.4374004000000014,,,,"{'firstname': 'test', 'lastname': 'test', 'email': 'test@test.com'}"
