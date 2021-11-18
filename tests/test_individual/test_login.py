@@ -27,7 +27,7 @@ class TestLogin(BaseTest, unittest.TestCase):
     @allure.testcase("Login Test")
     @allure.description("Testing the login functionality")
     @file_data("..//..//datafiles//login.json")
-    @pytest.mark.run(1)
+    @pytest.mark.order(1)
     def test_login(self, username, password):
         self.login.visit("http://demo.guru99.com/test/newtours/")
         self.login.enter_username(username)
