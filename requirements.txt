@@ -1,24 +1,21 @@
-allure-pytest==2.9.43
+allure-pytest==2.9.45
 assertpy==1.1
-cx-Oracle==8.1.0
-ddt==1.4.2
+cx-Oracle==8.2.1
 pipenv==2021.5.29
-pytest==6.2.4
-pytest-cov==2.12.1
+pytest==6.2.5
+#pytest-cov==2.12.1
 pytest-fixtures==0.1.0
 pytest-html==3.1.1
 pytest-order==1.0.0
-pytest-reporter==0.5.1
-pytest-reporter-html1==0.8.2
-pytest-rerunfailures==10.1
-pytest-sugar==0.9.4
-pytest-xdist==2.3.0
-requests==2.25.1
+#pytest-reporter==0.5.1
+#pytest-reporter-html1==0.8.2
 selenium==3.141.0
-webdriver-manager==3.4.2
-xlrd==2.0.1
+webdriver-manager==3.5.1
 pytest-check
-msedge-selenium-tools ==3.141
-
-
-
+msedge-selenium-tools ==3.141.3
+browserstack-local
+pytest-csv
+pytest-xdist==2.4.0
+pytest-assume
+pytest-rerunfailures == 10.2
+pillow
