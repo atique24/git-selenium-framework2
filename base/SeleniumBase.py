@@ -96,7 +96,7 @@ class SeleniumBase:
         elements = []
         try:
             elements = self.driver.find_elements(*locator)
-            if len(elements) > 0:
+            if len(element) > 0:
                 self.cl.info("Elements list returned::  " + str(elements) + " for locator :: " + str(locator))
 
             else:
@@ -444,20 +444,32 @@ class SeleniumBase:
             print_stack(limit=5)
             raise e
 
-
-
-    def waitForIframe(self, locator, index=None, time=20, poll=0.2):
+    def wait_and_switch_Iframe(self, locator, index=None, time=20, poll=0.2):
         try:
-            if self.enableScreenshot:
-                self.saveScreenshots()
             wait = WebDriverWait(self.driver, timeout=time, poll_frequency=poll,
                                  ignored_exceptions=[NoSuchFrameException, NoSuchElementException, TimeoutException])
-            self.cl.info("Waiting to find iframe with : " + str(locator) + "with index position:: " + str(
-                index) + "for time " + str(
-                time) + "sec")
-            wait.until(
-                ec.frame_to_be_available_and_switch_to_it(locator))
-            self.cl.info("Switched to Iframe")
+            if self.enableScreenshot:
+                self.saveScreenshots()
+
+            if isinstance(locator, tuple):
+                self.cl.info("Waiting to find iframe with :: " + str(locator) + " for time " + str(
+                    time) + "sec")
+                wait.until(ec.frame_to_be_available_and_switch_to_it(locator))
+                self.cl.info("Switched to Iframe with locator :: " + str(locator))
+
+            elif isinstance(index, int) and locator == None:
+                self.cl.info("Waiting to find iframe with index position :: " + str(index) + " for time " + str(
+                    time) + "sec")
+                wait.until(
+                    ec.frame_to_be_available_and_switch_to_it(self.driver.find_elements(By.TAG_NAME, "iframe")[index]))
+                self.cl.info("Switched to Iframe with index position :: " + str(index))
+
+            # self.cl.info("Waiting to find iframe with : " + str(locator) + "with index position:: " + str(
+            #     index) + "for time " + str(
+            #     time) + "sec")
+            # wait.until(
+            #     ec.frame_to_be_available_and_switch_to_it(locator))
+            # self.cl.info("Switched to Iframe")
 
 
         except Exception as e:
