@@ -70,7 +70,7 @@ class WebDriverFactory:
                 options.add_argument('--inprivate')
                 options.add_argument('--log-level=3')
                 options.add_experimental_option("excludeSwitches", ["enable-automation"])
-                driver = webdriver.Chrome(EdgeChromiumDriverManager(cache_valid_range=10, log_level=None).install(), options=options)
+                driver = webdriver.Chrome(EdgeChromiumDriverManager(cache_valid_range=10, log_level=1).install(), options=options)
 
             elif self.browser.lower() == 'browserstack':
                 bs_local = Local()

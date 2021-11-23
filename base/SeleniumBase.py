@@ -444,10 +444,14 @@ class SeleniumBase:
             print_stack(limit=5)
             raise e
 
-    def wait_and_switch_Iframe(self, locator, index=None, time=20, poll=0.2):
+    def wait_and_switch_Iframe(self, locator=None, index=None, time=20, poll=0.2):
         try:
             wait = WebDriverWait(self.driver, timeout=time, poll_frequency=poll,
                                  ignored_exceptions=[NoSuchFrameException, NoSuchElementException, TimeoutException])
+
+            if (not locator and not index) or (locator and index):
+                raise ValueError(" locator or index position is required")
+
             if self.enableScreenshot:
                 self.saveScreenshots()
 
@@ -463,6 +467,9 @@ class SeleniumBase:
                 wait.until(
                     ec.frame_to_be_available_and_switch_to_it(self.driver.find_elements(By.TAG_NAME, "iframe")[index]))
                 self.cl.info("Switched to Iframe with index position :: " + str(index))
+
+            elif not locator and not index:
+                raise ValueError("locator or index position is required")
 
             # self.cl.info("Waiting to find iframe with : " + str(locator) + "with index position:: " + str(
             #     index) + "for time " + str(
