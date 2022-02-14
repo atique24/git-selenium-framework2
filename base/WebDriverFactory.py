@@ -1,14 +1,18 @@
 from selenium import webdriver
 from utilities.customlogger import custom_logger
 import logging
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
+from selenium.webdriver.edge.options import Options as EdgeOptions
 from webdriver_manager.chrome import ChromeDriverManager
-from datafiles.config_browserstack import *
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import IEDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
-from selenium.webdriver.firefox.options import Options as FirefoxOptions
-from msedge.selenium_tools import EdgeOptions
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.firefox.service import Service
+from selenium.webdriver.edge.service import Service
+from datafiles.config_browserstack import *
+# from msedge.selenium_tools import EdgeOptions
 from browserstack.local import Local
 
 
@@ -34,27 +38,27 @@ class WebDriverFactory:
                 profile = webdriver.FirefoxProfile()
                 # options.add_argument("--private")
                 profile.accept_untrusted_certs = True
-                driver = webdriver.Firefox(executable_path=GeckoDriverManager(cache_valid_range=10).install(), firefox_profile=profile,
+                service = Service(executable_path=GeckoDriverManager(cache_valid_range=10).install())
+                driver = webdriver.Firefox(service=service, firefox_profile=profile,
                                            options=options)
 
             elif self.browser.lower() == "chrome":
-                chrome_options = Options()
+                options = ChromeOptions()
                 if self.headless:
-                    chrome_options.add_argument('headless')
-                    chrome_options.add_argument('window-size=1920x1080')
-                chrome_options.add_argument('ignore-certificate-errors')
-
+                    options.add_argument('headless')
+                    options.add_argument('window-size=1920x1080')
                 if self.mobile:
                     mobile_emulation = {"deviceName": self.device}
-                    chrome_options.add_experimental_option("mobileEmulation", mobile_emulation)
-
-                chrome_options.add_argument('--incognito')
-                # chrome_options.add_argument('--start-maximized')
-                chrome_options.add_experimental_option('useAutomationExtension', False)
-                chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-                #chrome_options.add_experimental_option("excludeSwitches", ["enable-logging"])
-                chrome_options.add_argument('--log-level=3')
-                driver = webdriver.Chrome(ChromeDriverManager(cache_valid_range=10).install(), options=chrome_options)
+                    options.add_experimental_option("mobileEmulation", mobile_emulation)
+                options.add_argument('ignore-certificate-errors')
+                options.add_argument('--incognito')
+                # options.add_argument('--start-maximized')
+                options.add_experimental_option('useAutomationExtension', False)
+                options.add_experimental_option("excludeSwitches", ["enable-automation"])
+                # options.add_experimental_option("excludeSwitches", ["enable-logging"])
+                options.add_argument('--log-level=3')
+                service = Service(ChromeDriverManager(cache_valid_range=10).install())
+                driver = webdriver.Chrome(service=service, options=options)
 
             elif self.browser.lower() == "ie":
                 driver = webdriver.Ie(IEDriverManager().install())
@@ -70,7 +74,8 @@ class WebDriverFactory:
                 options.add_argument('--inprivate')
                 options.add_argument('--log-level=3')
                 options.add_experimental_option("excludeSwitches", ["enable-automation"])
-                driver = webdriver.Chrome(EdgeChromiumDriverManager(cache_valid_range=10, log_level=1).install(), options=options)
+                service = Service(EdgeChromiumDriverManager(cache_valid_range=10, log_level=1).install())
+                driver = webdriver.Chrome(service=service, options=options)
 
             elif self.browser.lower() == 'browserstack':
                 bs_local = Local()
@@ -91,7 +96,6 @@ class WebDriverFactory:
             else:
                 raise ValueError
 
-
             if self.headless:
                 self.cl.info("Starting " + str(self.browser).upper() + " browser in headless mode")
             else:
@@ -102,7 +106,7 @@ class WebDriverFactory:
                     driver.maximize_window()
 
             driver.delete_all_cookies()
-            #driver.set_page_load_timeout(30)
+            # driver.set_page_load_timeout(30)
 
             if self.baseUrl:
                 driver.get(self.baseUrl)
