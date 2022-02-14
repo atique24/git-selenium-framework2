@@ -1,7 +1,7 @@
 import datetime
 import logging
 import os
-import time
+
 
 from assertpy import assert_that
 from selenium.common.exceptions import *
@@ -70,8 +70,8 @@ class SeleniumBase:
             raise e
 
     def findElement(self, locator, timeout=20, poll_frequency=0.2):
-        element = None
         try:
+            element = None
             wait = WebDriverWait(self.driver, timeout=timeout, poll_frequency=poll_frequency)
             # self.cl.info(
             #     "Waiting for " + str(timeout) + " seconds to find the element for locator :: " + str(
@@ -93,10 +93,10 @@ class SeleniumBase:
         return element
 
     def findElements(self, locator):
-        elements = []
         try:
+            elements = []
             elements = self.driver.find_elements(*locator)
-            if len(element) > 0:
+            if len(elements) > 0:
                 self.cl.info("Elements list returned::  " + str(elements) + " for locator :: " + str(locator))
 
             else:
@@ -283,7 +283,6 @@ class SeleniumBase:
                 element = self.findElement(locator)
             if element:
                 element_text = element.text.strip()
-                element_text
                 self.cl.info("Text of the element : " + str(element.id) + " is " + ' "' + element_text + '"')
                 if self.enableScreenshot:
                     self.saveScreenshots()
@@ -444,12 +443,12 @@ class SeleniumBase:
             print_stack(limit=5)
             raise e
 
-    def wait_and_switch_Iframe(self, locator=None, index=None, time=20, poll=0.2):
+    def wait_and_switch_Iframe(self, locator=None, index=None, timeout=20, poll=0.2):
         try:
-            wait = WebDriverWait(self.driver, timeout=time, poll_frequency=poll,
+            wait = WebDriverWait(self.driver, timeout=timeout, poll_frequency=poll,
                                  ignored_exceptions=[NoSuchFrameException, NoSuchElementException, TimeoutException])
 
-            if (not locator and not index) or (locator and index):
+            if (not locator and index is None) or (locator and index):
                 raise ValueError(" locator or index position is required")
 
             if self.enableScreenshot:
@@ -457,13 +456,13 @@ class SeleniumBase:
 
             if isinstance(locator, tuple):
                 self.cl.info("Waiting to find iframe with :: " + str(locator) + " for time " + str(
-                    time) + "sec")
+                    timeout) + "sec")
                 wait.until(ec.frame_to_be_available_and_switch_to_it(locator))
                 self.cl.info("Switched to Iframe with locator :: " + str(locator))
 
             elif isinstance(index, int) and locator == None:
                 self.cl.info("Waiting to find iframe with index position :: " + str(index) + " for time " + str(
-                    time) + "sec")
+                    timeout) + "sec")
                 wait.until(
                     ec.frame_to_be_available_and_switch_to_it(self.driver.find_elements(By.TAG_NAME, "iframe")[index]))
                 self.cl.info("Switched to Iframe with index position :: " + str(index))
@@ -901,14 +900,14 @@ class SeleniumBase:
         return currentUrl
 
     def assertTitle(self, expectedTitle):
-        actualTile = self.getTitle()
+        actualTile = self.driver.title
         assert_that(actualTile).is_equal_to(expectedTitle)
 
     def assertTitleContains(self, titleSubString):
         result = None
         try:
             result = WebDriverWait(self.driver, 15, 0.2).until(ec.title_contains(titleSubString))
-            self.cl.info("The title of page is :: " + str(self.getTitle()))
+            self.cl.info("The title of page is :: " + str(self.driver.title))
             self.cl.info("Title of the Page contains text :: " + str(titleSubString))
 
         except Exception as e:
