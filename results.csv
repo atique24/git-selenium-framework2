@@ -1,2 +1,6 @@
-date,class,function,status,duration
-2021-11-23 21:59:26.982041,TestLogin,test_login_1,passed,3.8710024999999995
+date,class,function,status,duration,email,firstname,lastname,testData
+2022-02-12 11:29:11.770510,TestLogin,test_login_1,passed,6.5705584,,,,
+2022-02-12 11:29:22.222284,TestPractisePage,test_one,passed,5.1489484999999995,,,,
+2022-02-12 11:29:47.403626,TestRegistration,test_registration_01,failed,20.0731244,test@test.com,test,test,
+2022-02-12 11:30:08.204110,TestRegistration,test_registration_02,failed,20.142783500000007,test@test.com,test,test,
+2022-02-12 11:30:28.783556,TestRegistration,test_registration_03,failed,20.143670799999995,,,,"{'firstname': 'test', 'lastname': 'test', 'email': 'test@test.com'}"
