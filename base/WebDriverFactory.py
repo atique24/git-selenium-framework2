@@ -14,9 +14,12 @@ from selenium.webdriver.edge.service import Service
 from datafiles.config_browserstack import *
 # from msedge.selenium_tools import EdgeOptions
 from browserstack.local import Local
+<<<<<<< HEAD
 
 
 # from seleniumwire import webdriver
+=======
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
 
 
 class WebDriverFactory:
@@ -38,6 +41,7 @@ class WebDriverFactory:
                     options.add_argument("--headless")
                     options.add_argument("-width=1920")
                     options.add_argument("-height=1080")
+<<<<<<< HEAD
 
                 options.add_argument("--disable-gpu")
                 # profile = webdriver.FirefoxProfile()
@@ -45,6 +49,14 @@ class WebDriverFactory:
                 # profile.accept_untrusted_certs = True
                 service = Service(executable_path=GeckoDriverManager(cache_valid_range=10).install())
                 driver = webdriver.Firefox(service=service,
+=======
+                # options.add_argument("--disable-gpu")
+                profile = webdriver.FirefoxProfile()
+                # options.add_argument("--private")
+                profile.accept_untrusted_certs = True
+                service = Service(executable_path=GeckoDriverManager(cache_valid_range=10).install())
+                driver = webdriver.Firefox(service=service, firefox_profile=profile,
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
                                            options=options)
 
             elif self.browser.lower() == "chrome":
@@ -64,7 +76,10 @@ class WebDriverFactory:
                 options.add_argument('--log-level=3')
                 service = Service(ChromeDriverManager(cache_valid_range=10).install())
                 driver = webdriver.Chrome(service=service, options=options)
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
 
             elif self.browser.lower() == "ie":
                 driver = webdriver.Ie(IEDriverManager().install())
@@ -74,14 +89,23 @@ class WebDriverFactory:
                 if self.headless:
                     options.add_argument('headless')
                     options.add_argument('window-size=1920x1080')
+<<<<<<< HEAD
                 #options.use_chromium = True
+=======
+                options.use_chromium = True
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
                 options.add_argument('ignore-certificate-errors')
                 options.add_experimental_option('useAutomationExtension', False)
                 options.add_argument('--inprivate')
                 options.add_argument('--log-level=3')
                 options.add_experimental_option("excludeSwitches", ["enable-automation"])
+<<<<<<< HEAD
                 service = Service(EdgeChromiumDriverManager(cache_valid_range=10).install())
                 driver = webdriver.Edge(service=service)
+=======
+                service = Service(EdgeChromiumDriverManager(cache_valid_range=10, log_level=1).install())
+                driver = webdriver.Chrome(service=service, options=options)
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
 
             elif self.browser.lower() == 'browserstack':
                 bs_local = Local()
@@ -121,6 +145,10 @@ class WebDriverFactory:
             # driver.implicitly_wait(10)
             return driver
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
         except ValueError as val:
             self.cl.error("Browser not supported :: " + str(
                 self.browser) + ". Supported browser types are Chrome, Firefox, Edge. Exception occurred. :: " + str(

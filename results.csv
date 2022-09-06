@@ -1,4 +1,12 @@
 date,class,function,status,duration,email,firstname,lastname,testData
+<<<<<<< HEAD
 2022-09-06 22:31:44.257507,TestRegistration,test_registration_01,passed,2.7180344000000005,test@test.com,test,test,
 2022-09-06 22:31:47.281847,TestRegistration,test_registration_02,passed,2.350068200000001,test@test.com,test,test,
 2022-09-06 22:31:50.237868,TestRegistration,test_registration_03,passed,2.4017692000000004,,,,"{'firstname': 'test', 'lastname': 'test', 'email': 'test@test.com'}"
+=======
+2022-02-12 11:29:11.770510,TestLogin,test_login_1,passed,6.5705584,,,,
+2022-02-12 11:29:22.222284,TestPractisePage,test_one,passed,5.1489484999999995,,,,
+2022-02-12 11:29:47.403626,TestRegistration,test_registration_01,failed,20.0731244,test@test.com,test,test,
+2022-02-12 11:30:08.204110,TestRegistration,test_registration_02,failed,20.142783500000007,test@test.com,test,test,
+2022-02-12 11:30:28.783556,TestRegistration,test_registration_03,failed,20.143670799999995,,,,"{'firstname': 'test', 'lastname': 'test', 'email': 'test@test.com'}"
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119

@@ -1,7 +1,11 @@
 import datetime
 import logging
 import os
+<<<<<<< HEAD
 import time
+=======
+
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
 
 from assertpy import assert_that
 from selenium.common.exceptions import *
@@ -33,6 +37,7 @@ class SeleniumBase:
 
     @classmethod
     def setEnv(cls, env):
+<<<<<<< HEAD
         if env.lower() == "batstore":
             cls.env = "http://bat-"
 
@@ -59,6 +64,23 @@ class SeleniumBase:
         try:
             url = self.env + url
             self.cl.info("Opening the Url :: " + str(url))
+=======
+        if env.lower() == "sit":
+            cls.env = "http://sit-"
+
+        elif env.lower() == "staging":
+            cls.env = "http://staging-"
+
+        elif env.lower() == "preprod":
+            cls.env = "http://preprod-"
+
+        else:
+            cls.env = "http://sit-"
+
+    def visit(self, url):
+        try:
+            #url = self.env + url
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
             self.driver.get(url)
             element = self.driver.find_elements(By.TAG_NAME, 'title')
             if len(element) == 0:
@@ -66,7 +88,11 @@ class SeleniumBase:
                 while i < 5:
                     if len(element) == 0:
                         i += 1
+<<<<<<< HEAD
                         time.sleep(2)
+=======
+                        #time.sleep(2)
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
                         self.cl.info("Website is not loaded. Reloading the website for :: " + str(i) + 'st time')
                         self.driver.get(url)
                         element = self.driver.find_elements(By.TAG_NAME, 'title')
@@ -80,9 +106,14 @@ class SeleniumBase:
                 e.__class__.__name__))
             raise e
 
+<<<<<<< HEAD
     def findElement(self, locator, timeout, poll_frequency=0.2):
         element = None
+=======
+    def findElement(self, locator, timeout=20, poll_frequency=0.2):
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
         try:
+            element = None
             wait = WebDriverWait(self.driver, timeout=timeout, poll_frequency=poll_frequency)
             # self.cl.info(
             #     "Waiting for " + str(timeout) + " seconds to find the element for locator :: " + str(
@@ -104,15 +135,21 @@ class SeleniumBase:
         return element
 
     def findElements(self, locator):
-        element = []
         try:
+<<<<<<< HEAD
             element = self.driver.find_elements(*locator)
             if len(element) > 0:
                 self.cl.info("Elements list returned::  " + str(element) + " for locator :: " + str(locator))
+=======
+            elements = []
+            elements = self.driver.find_elements(*locator)
+            if len(elements) > 0:
+                self.cl.info("Elements list returned::  " + str(elements) + " for locator :: " + str(locator))
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
 
             else:
                 self.cl.info(
-                    "Elements not found for locator :: " + str(locator) + ". Empty List returned " + str(element))
+                    "Elements not found for locator :: " + str(locator) + ". Empty List returned " + str(elements))
 
         except Exception as e:
             self.cl.error(
@@ -120,7 +157,11 @@ class SeleniumBase:
                     e.__class__.__name__) + ' ' + str(e))
             print_stack(limit=5)
             raise NoSuchElementException
+<<<<<<< HEAD
         return element
+=======
+        return elements
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
 
     def selectByIndex(self, locator, value, element=None, timeout=30):
         try:
@@ -138,12 +179,19 @@ class SeleniumBase:
                 e.__class__.__name__) + str(e))
             print_stack(limit=5)
             raise e
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
 
     def selectByVisibleText(self, locator, value, element=None, timeout=30):
         try:
             if locator:
+<<<<<<< HEAD
                 element = self.findElement(locator, timeout=timeout)
+=======
+                element = self.findElement(locator)
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
 
             if element:
                 sel = Select(element)
@@ -162,7 +210,11 @@ class SeleniumBase:
     def selectByValue(self, locator, value, element=None, timeout=30):
         try:
             if locator:
+<<<<<<< HEAD
                 element = self.findElement(locator, timeout=timeout)
+=======
+                element = self.findElement(locator)
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
 
             if element:
                 sel = Select(element)
@@ -180,6 +232,7 @@ class SeleniumBase:
             print_stack(limit=5)
             raise e
 
+<<<<<<< HEAD
 
     def wait_for_element_to_be_visible(self, locator, timeout=30, poll_frequency=0.2):
         element = None
@@ -210,6 +263,37 @@ class SeleniumBase:
         try:
             if locator:
                 element = self.findElement(locator, timeout=timeout)
+=======
+    def visibilityOfElementLocated(self, locator, timeout=15, poll_frequency=0.2):
+        element = None
+        try:
+            wait = WebDriverWait(self.driver, timeout=timeout, poll_frequency=poll_frequency)
+            self.cl.info(
+                "Waiting for " + str(timeout) + " seconds for checking the element visibility :: " + str(
+                    locator))
+            element = wait.until(ec.visibility_of_element_located(locator))
+
+            self.cl.info(
+                "Element :: " + str(element.id) + " is visible on page for locator :: " + str(
+                    locator) + ". Session_id :: " + str(
+                    element.parent.session_id))
+            self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
+            self.driver.execute_script("arguments[0].style.border='3px solid red'", element)
+
+
+        except Exception as e:
+            self.cl.error("Unable to find element with locator :: " + str(locator) + '. Exception occurred ' + str(
+                e.__class__.__name__) + str(e))
+            print_stack(limit=5)
+            raise e
+
+        return element
+
+    def elementClick(self, locator, element=None, force=None):
+        try:
+            if locator:
+                element = self.findElement(locator)
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
                 # wait = WebDriverWait(self.driver, timeout=10, poll_frequency=0.2)
                 # element = wait.until(ec.element_to_be_clickable(locator))
 
@@ -238,7 +322,10 @@ class SeleniumBase:
             if locator:
                 element = self.findElement(locator, timeout=timeout)
             if element:
+<<<<<<< HEAD
                 element.clear()
+=======
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
                 element.send_keys(message)
                 self.cl.info("Text :: " + str(message) + " entered on element :: " + str(element.id))
             else:
@@ -252,7 +339,11 @@ class SeleniumBase:
             print_stack(limit=5)
             raise e
 
+<<<<<<< HEAD
     def verifyExactTitle(self, expectedTitle, timeout=30, poll_frequency=0.2):
+=======
+    def verifyExactTitle(self, expectedTitle, timeout=10, poll_frequency=0.2):
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
         try:
             wait = WebDriverWait(self.driver, timeout=timeout, poll_frequency=poll_frequency)
             result = wait.until(ec.title_is(expectedTitle))
@@ -272,7 +363,11 @@ class SeleniumBase:
             raise e
         return result
 
+<<<<<<< HEAD
     def verifyTitleContains(self, title, timeout=30, poll_frequency=0.2):
+=======
+    def verifyTitleContains(self, title, timeout=15, poll_frequency=0.2):
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
         try:
             wait = WebDriverWait(self.driver, timeout=timeout, poll_frequency=poll_frequency)
             result = wait.until(ec.title_contains(title))
@@ -290,14 +385,21 @@ class SeleniumBase:
             raise e
         return result
 
+<<<<<<< HEAD
     def getElementText(self, locator, timeout=30, element=None):
+=======
+    def getElementText(self, locator, element=None):
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
         element_text = None
         try:
             if locator:
                 element = self.findElement(locator, timeout=timeout)
             if element:
                 element_text = element.text.strip()
+<<<<<<< HEAD
                 element_text
+=======
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
                 self.cl.info("Text of the element : " + str(element.id) + " is " + ' "' + element_text + '"')
                 if self.enableScreenshot:
                     self.saveScreenshots()
@@ -315,7 +417,11 @@ class SeleniumBase:
 
         return element_text
 
+<<<<<<< HEAD
     def getElementsText(self, locator,timeout=30,elements=None):
+=======
+    def getElementsText(self, locator, elements=None):
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
         elementText = []
         try:
             if locator:
@@ -339,7 +445,11 @@ class SeleniumBase:
         elementAttribute = None
         try:
             if locator:
+<<<<<<< HEAD
                 element = self.findElement(locator, timeout=timeout)
+=======
+                element = self.findElement(locator)
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
 
             if element:
                 elementAttribute = element.get_attribute(attributeType)
@@ -399,7 +509,11 @@ class SeleniumBase:
     #         print_stack(limit=5)
     #         raise e
 
+<<<<<<< HEAD
     def getValueOfCssProperty(self, locator, attributeType, element=None, timeout=30):
+=======
+    def getValueOfCssProperty(self, locator, attributeType, element=None):
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
         cssAttributeProperty = None
         try:
             if locator:
@@ -423,7 +537,11 @@ class SeleniumBase:
             raise e
         return cssAttributeProperty
 
+<<<<<<< HEAD
     def wait_element_to_be_clickable_and_click(self, locator, time=30, poll=0.2):
+=======
+    def waitToClickElement(self, locator, time=15, poll=0.2):
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
         element = None
         try:
             wait = WebDriverWait(self.driver, timeout=time, poll_frequency=poll,
@@ -447,11 +565,18 @@ class SeleniumBase:
             raise e
         return element
 
+<<<<<<< HEAD
     def moveToElementAndClick(self, locator, timeout=30):
         try:
             element = self.findElement(locator, timeout=timeout)
             self.actions.move_to_element(element).click().perform()
             self.cl.info("Moved and Clicked on Element :: " +str(element.id))
+=======
+    def moveToElementAndClick(self, locator):
+        try:
+            element = self.findElement(locator)
+            self.actions.move_to_element(element).click().perform()
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
 
         except Exception as e:
             self.cl.error("Unable to move to element and click the element " + str(
@@ -459,6 +584,7 @@ class SeleniumBase:
             print_stack(limit=5)
             raise e
 
+<<<<<<< HEAD
     def check_text_on_page(self, text, timeout=30):
         result = False
         locator = f"//*[contains(text(), '{text}')]"
@@ -489,17 +615,42 @@ class SeleniumBase:
 
             if isinstance(locator, tuple):
                 self.cl.info("Waiting to find iframe with :: " + str(locator)  + " for time " + str(
+=======
+    def wait_and_switch_Iframe(self, locator=None, index=None, timeout=20, poll=0.2):
+        try:
+            wait = WebDriverWait(self.driver, timeout=timeout, poll_frequency=poll,
+                                 ignored_exceptions=[NoSuchFrameException, NoSuchElementException, TimeoutException])
+
+            if (not locator and index is None) or (locator and index):
+                raise ValueError(" locator or index position is required")
+
+            if self.enableScreenshot:
+                self.saveScreenshots()
+
+            if isinstance(locator, tuple):
+                self.cl.info("Waiting to find iframe with :: " + str(locator) + " for time " + str(
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
                     timeout) + "sec")
                 wait.until(ec.frame_to_be_available_and_switch_to_it(locator))
                 self.cl.info("Switched to Iframe with locator :: " + str(locator))
 
             elif isinstance(index, int) and locator == None:
+<<<<<<< HEAD
                 self.cl.info("Waiting to find iframe with index position :: " + str(index)   + " for time " + str(
+=======
+                self.cl.info("Waiting to find iframe with index position :: " + str(index) + " for time " + str(
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
                     timeout) + "sec")
                 wait.until(
                     ec.frame_to_be_available_and_switch_to_it(self.driver.find_elements(By.TAG_NAME, "iframe")[index]))
                 self.cl.info("Switched to Iframe with index position :: " + str(index))
 
+<<<<<<< HEAD
+=======
+            elif not locator and not index:
+                raise ValueError("locator or index position is required")
+
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
             # self.cl.info("Waiting to find iframe with : " + str(locator) + "with index position:: " + str(
             #     index) + "for time " + str(
             #     time) + "sec")
@@ -638,7 +789,11 @@ class SeleniumBase:
     def isElementDisplayed(self, locator, element=None, timeout=30):
         try:
             if locator:
+<<<<<<< HEAD
                 element = self.findElement(locator, timeout=timeout)
+=======
+                element = self.findElement(locator)
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
                 if self.enableScreenshot:
                     self.saveScreenshots()
 
@@ -829,6 +984,10 @@ class SeleniumBase:
         except Exception as e:
             self.cl.info("Unable to press SpaceBar key. Following Exception occurred :: " + str(e))
 
+<<<<<<< HEAD
+=======
+    #
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
     # def enter(self):
     #     try:
     #         self.actions.key_down(Keys.ENTER).key_up(Keys.ENTER).perform()
@@ -929,14 +1088,18 @@ class SeleniumBase:
         return currentUrl
 
     def assertTitle(self, expectedTitle):
-        actualTile = self.getTitle()
+        actualTile = self.driver.title
         assert_that(actualTile).is_equal_to(expectedTitle)
 
     def assertTitleContains(self, titleSubString):
         result = None
         try:
             result = WebDriverWait(self.driver, 15, 0.2).until(ec.title_contains(titleSubString))
+<<<<<<< HEAD
             self.cl.info("The title of page is :: " + str(self.getTitle()))
+=======
+            self.cl.info("The title of page is :: " + str(self.driver.title))
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
             self.cl.info("Title of the Page contains text :: " + str(titleSubString))
 
         except Exception as e:
@@ -959,8 +1122,11 @@ class SeleniumBase:
 
     def getPageSource(self):
         return self.driver.page_source
+<<<<<<< HEAD
 
     def js_execute_script(self, script, element):
         self.driver.execute_script(script)
 
 
+=======
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119

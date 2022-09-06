@@ -7,7 +7,7 @@ import os
 def custom_logger(loglevel=logging.INFO):
 
     filename = "automation.log"
-    logDirectory = "..//logs//" + str(datetime.date.today()) + "//"
+    logDirectory = "..//logs//automation logs//" + str(datetime.date.today()) + "//"
     relativeFilename = logDirectory + filename
     currentDirectory = os.path.dirname(__file__)
     destinationPath = os.path.join(currentDirectory, relativeFilename)
@@ -30,3 +30,7 @@ def custom_logger(loglevel=logging.INFO):
     logger.addHandler(filehander)
 
     return logger
+
+
+
+

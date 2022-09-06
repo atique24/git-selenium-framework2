@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 bb_url = "https://atiqueshaikh_LU1WHV:f7PsKYDjoMmgyzbqnwP2@hub-cloud.browserstack.com/wd/hub"
 key = 'f7PsKYDjoMmgyzbqnwP2'
+=======
+bb_url = "Your Browserstack URL"
+key = 'Your Key'
+>>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
 localIdentifier = 'local'
 # browser_config = {
 #       'os_version': '10',
