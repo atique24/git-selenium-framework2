@@ -5,6 +5,7 @@ from assertpy import assert_that
 
 
 class LoginPage(SeleniumBase):
+    accept_privacy = (By.CSS_SELECTOR, "#save")
     username = (By.NAME, "userName")
     password = (By.NAME, "password")
     submit = (By.NAME, "submit")
@@ -14,6 +15,12 @@ class LoginPage(SeleniumBase):
     def __init__(self, driver):
         super().__init__(driver)
         self.driver = driver
+
+    @allure.step("Accepting the Privacy Policy")
+    def accept_privacy_message(self):
+        self.wait_and_switch_Iframe(index=6)
+        self.elementClick(self.accept_privacy, force=True)
+        self.exitIframe()
 
     @allure.step("Enter the username")
     def enter_username(self, username):
