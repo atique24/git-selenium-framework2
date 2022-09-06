@@ -1,4 +1,4 @@
-#!C:\Users\atique.shaikh\OneDrive - Accenture\Desktop\Python - Framework\Selenium\git-selenium-framework2\venv\Scripts\python.exe
+#!c:\users\atique\pycharmprojects\git-selenium-framework2\venv\scripts\python.exe
 # Copyright (c) 2005-2012 Stephen John Machin, Lingfo Pty Ltd
 # This script is part of the xlrd package, which is released under a
 # BSD-style licence.

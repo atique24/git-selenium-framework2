@@ -1,4 +1,4 @@
-#!C:\Users\atique.shaikh\OneDrive - Accenture\Desktop\Python - Framework\Selenium\git-selenium-framework2\venv\Scripts\python.exe
+#!c:\users\atique\pycharmprojects\git-selenium-framework2\venv\scripts\python.exe
 
 # $Id: rst2xetex.py 7847 2015-03-17 17:30:47Z milde $
 # Author: Guenter Milde

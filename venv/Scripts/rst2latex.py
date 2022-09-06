@@ -1,4 +1,4 @@
-#!C:\Users\atique.shaikh\OneDrive - Accenture\Desktop\Python - Framework\Selenium\git-selenium-framework2\venv\Scripts\python.exe
+#!c:\users\atique\pycharmprojects\git-selenium-framework2\venv\scripts\python.exe
 
 # $Id: rst2latex.py 5905 2009-04-16 12:04:49Z milde $
 # Author: David Goodger <goodger@python.org>

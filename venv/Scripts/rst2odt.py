@@ -1,4 +1,4 @@
-#!C:\Users\atique.shaikh\OneDrive - Accenture\Desktop\Python - Framework\Selenium\git-selenium-framework2\venv\Scripts\python.exe
+#!c:\users\atique\pycharmprojects\git-selenium-framework2\venv\scripts\python.exe
 
 # $Id: rst2odt.py 5839 2009-01-07 19:09:28Z dkuhlman $
 # Author: Dave Kuhlman <dkuhlman@rexx.com>

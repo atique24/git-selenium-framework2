@@ -1,4 +1,4 @@
-#!C:\Users\atique.shaikh\OneDrive - Accenture\Desktop\Python - Framework\Selenium\git-selenium-framework2\venv\Scripts\python.exe
+#!c:\users\atique\pycharmprojects\git-selenium-framework2\venv\scripts\python.exe
 
 # $Id: rst2html.py 4564 2006-05-21 20:44:42Z wiemann $
 # Author: David Goodger <goodger@python.org>
