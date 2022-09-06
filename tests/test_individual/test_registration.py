@@ -12,24 +12,24 @@ Test using pytest and @pytest.mark.parameterize provider for data driven testing
 """
 
 
-class TestRegistration(BaseTest):
+class TestRegistration():
 
     @pytest.fixture(autouse=True)
     def PageObjects(self):
-        self.registration = Registration(self.driver)
         self.ts = MarkTestStatus(self.driver)
 
     @allure.testcase("Registration Test")
     @allure.description("Testing the Registration functionality")
     @pytest.mark.parametrize("firstname,lastname,email", json_to_list("datafiles//registration.json"))
     #@pytest.mark.run(1)
-    def test_registration_01(self, firstname, lastname, email):
-        self.registration.click_register_button()
-        self.registration.enter_firstname(firstname)
-        self.registration.enter_lastname(lastname)
-        self.registration.enter_email(email)
-        self.registration.click_submit_button()
-        result = self.registration.check_registration_message()
+    def test_registration_01(self, register_page,firstname, lastname, email):
+        register_page.accept_privacy_message()
+        register_page.click_register_button()
+        register_page.enter_firstname(firstname)
+        register_page.enter_lastname(lastname)
+        register_page.enter_email(email)
+        register_page.click_submit_button()
+        result = register_page.check_registration_message()
         self.ts.finalMark(testcase="test_registration with data from json", result=result, resultMessage="Testing the registration functionality")
 
     @pytest.fixture(autouse=True)
@@ -41,13 +41,13 @@ class TestRegistration(BaseTest):
     @allure.description("Testing the Registration functionality")
     @pytest.mark.parametrize("firstname,lastname,email", getCsvData("datafiles//registration.csv"))
     # @pytest.mark.run(2)
-    def test_registration_02(self, firstname, lastname, email):
-        self.registration.click_register_button()
-        self.registration.enter_firstname(firstname)
-        self.registration.enter_lastname(lastname)
-        self.registration.enter_email(email)
-        self.registration.click_submit_button()
-        result = self.registration.check_registration_message()
+    def test_registration_02(self, register_page,firstname, lastname, email):
+        register_page.click_register_button()
+        register_page.enter_firstname(firstname)
+        register_page.enter_lastname(lastname)
+        register_page.enter_email(email)
+        register_page.click_submit_button()
+        result = register_page.check_registration_message()
         self.ts.finalMark(testcase="test_registration with data from csv", result=result,
                           resultMessage="Testing the registration functionality")
 
@@ -55,13 +55,13 @@ class TestRegistration(BaseTest):
     @allure.description("Testing the Registration functionality")
     @pytest.mark.parametrize("testData", json_to_dict("datafiles//registration.json"))
     # @pytest.mark.run(3)
-    def test_registration_03(self, testData):
-        self.registration.click_register_button()
-        self.registration.enter_firstname(testData['firstname'])
-        self.registration.enter_lastname(testData['lastname'])
-        self.registration.enter_email(testData['email'])
-        self.registration.click_submit_button()
-        result = self.registration.check_registration_message()
+    def test_registration_03(self, register_page ,testData):
+        register_page.click_register_button()
+        register_page.enter_firstname(testData['firstname'])
+        register_page.enter_lastname(testData['lastname'])
+        register_page.enter_email(testData['email'])
+        register_page.click_submit_button()
+        result = register_page.check_registration_message()
         self.ts.finalMark(testcase="test_registration with data from csv", result=result,
                           resultMessage="Testing the registration functionality")
 
