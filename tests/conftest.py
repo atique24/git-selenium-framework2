@@ -3,16 +3,11 @@ import datetime
 import allure
 import pytest
 from base.WebDriverFactory import WebDriverFactory
-<<<<<<< HEAD
 from pages.page_login.login_page import LoginPage
 from pages.page_register.register_page import Registration
-=======
->>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
 from utilities.customlogger import custom_logger
 import logging
 from base.SeleniumBase import SeleniumBase
-
-
 
 driver = None
 
@@ -24,11 +19,7 @@ def pytest_addoption(parser):
     parser.addoption("--screenshot", action="store_true", default=False, help="To enable/disable screenshots")
     parser.addoption("--headless", action="store_true", default=False, help="Browser Headless mode")
     parser.addoption("--url", action="store", default=None, help="URL of the Application under test")
-<<<<<<< HEAD
     parser.addoption("--env", action="store", default="batstore", help="URL of the Application under test")
-=======
-    parser.addoption("--env", action="store", default="sit", help="URL of the Application under test")
->>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
     parser.addoption("--mobile", action="store_true", default=False, help="Run Test in Chrome Mobile Emulator")
     parser.addoption("--device", action="store", default="iPhone X", help="Run Test in Chrome Mobile Emulator")
 
@@ -70,14 +61,9 @@ def device(request):
 
 # ---------------------for new session for each Test class
 @pytest.fixture(scope="class")
-<<<<<<< HEAD
 def oneTimeSetup(request, browser, screenshot, headless, url, env, mobile, device):
     cl.info("############### Starting Test :: " + os.environ.get('PYTEST_CURRENT_TEST').split(' ')[
         0] + " #######################")
-=======
-def oneTimeSetup(request, browser, screenshot, headless, url,env ,mobile, device):
-    cl.info("############### Starting Test :: " + os.environ.get('PYTEST_CURRENT_TEST').split(' ')[0] + " #######################")
->>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
     wdf = WebDriverFactory(browser, headless, url, mobile, device)
     SeleniumBase.EnableScreenshotForTest(screenshot)  # ------ Enable / Disable screenshot
     SeleniumBase.setEnv(env)
@@ -90,7 +76,6 @@ def oneTimeSetup(request, browser, screenshot, headless, url,env ,mobile, device
         yield driver
         driver.quit()
         cl.info("Quiting the browser session")
-<<<<<<< HEAD
         cl.info("############### Test Ended :: " + os.environ.get('PYTEST_CURRENT_TEST').split(' ')[
             0] + " #######################")
 
@@ -100,11 +85,6 @@ def sb(oneTimeSetup):
     return SeleniumBase(driver)
 
 
-=======
-        cl.info("############### Test Ended :: " + os.environ.get('PYTEST_CURRENT_TEST').split(' ')[0] + " #######################")
-
-
->>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
 # for single driver session for all test class
 # @pytest.fixture(scope="session")
 # def oneTimeSetup(request, browser):
@@ -143,7 +123,6 @@ def pytest_runtest_makereport(item, call):
 
 def pytest_csv_register_columns(columns):
     columns['date'] = lambda item, report: {'date': str(datetime.datetime.now())}
-<<<<<<< HEAD
 
 
 @pytest.fixture(autouse=True)
@@ -154,5 +133,3 @@ def login_page(oneTimeSetup):
 @pytest.fixture(autouse=True)
 def register_page(oneTimeSetup):
     return Registration(oneTimeSetup)
-=======
->>>>>>> 2cfa2876295f5d2916d222d8a0866cc4b5e57119
