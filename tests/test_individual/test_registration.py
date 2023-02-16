@@ -12,7 +12,7 @@ Test using pytest and @pytest.mark.parameterize provider for data driven testing
 """
 
 
-class TestRegistration():
+class TestRegistration(BaseTest):
 
     @pytest.fixture(autouse=True)
     def PageObjects(self):

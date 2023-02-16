@@ -1,2 +1,2 @@
 date,class,function,status,duration,data
-2022-09-06 23:31:01.151019,TestLogin,test_login,passed,2.0231847999999992,"{'username': 'admin', 'password': 'admin'}"
+2023-02-16 23:25:33.475297,TestLogin,test_login,failed,0.022724500013282523,"{'username': 'admin', 'password': 'admin'}"
